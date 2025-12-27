@@ -60,9 +60,10 @@ By co-locating artefacts and communication, the workbench enables:
 
 Conventions governing communication and project coordination within this shared workbench are documented in:
 
-- [`00-governance-docs/communication-and-project-management.md`](00-governance-docs/communication-conventions.md)
+- [`00-project-governance/communication-and-project-management.md`](00-project-governance/communication-conventions.md)
 
 This is not documentation theatre. It is an attempt to show how a unified workbench can support durable, auditable systems in the digital age.
+
 ---
 
 ## How to use this repository
@@ -141,7 +142,7 @@ Each artefact declares:
 
 See:
 
-- [`00-governance-docs/artefact-classification.md`](00-governance-docs/artefact-classification.md)
+- [`00-project-governance/artefact-classification.md`](00-project-governance/artefact-classification.md)
 
 Classification is not advisory. It is enforced by automation.
 
@@ -165,7 +166,7 @@ Automation replaces manual policing:
 
 See:
 
-- [`00-governance-docs/linting-rules.md`](00-governance-docs/linting-rules.md)
+- [`00-project-governance/linting-rules.md`](00-project-governance/linting-rules.md)
 
 ---
 
@@ -173,7 +174,7 @@ See:
 
 ```
 policy-to-production/
-├── 00-governance-docs/          # Project governance: rules, conventions, communication, glossary. roadmaps, etc.
+├── 00-project-governance/          # Project governance: rules, conventions, communication, glossary. roadmaps, etc.
 ├── 10-legislative-framework     # Policy and legal context
 ├── 20-rulebook                  # Scheme rules and operational obligations
 ├── 30-architecture              # High-level system design
