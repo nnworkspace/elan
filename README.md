@@ -29,21 +29,40 @@ Governance is enforced mechanically through automation, not informally through p
 
 ---
 
-## What this repository is (and is not)
+## The workbench as a shared environment
 
-### This repository **is**
+This repository treats a Git-based platform such as GitHub or GitLab as the **shared workbench** of a complex institutional project.
+
+Its value lies not only in automation, but in the way it brings together artefacts, discussion, review, decisions, and delivery in a single, versioned environment. Issues, merge requests, comments, discussion, and reviews are treated as **first-class project artefacts**, preserving context and rationale alongside the code and documentation they relate to.
+
+In this sense, the repository **is**:
 
 - a Markdown-first, Git-based reference structure
 - an educational template for policy-to-production traceability
 - a demonstration of how automation enforces governance discipline
-- readable by engineers, architects, auditors, managers, and executives
+- a shared environment readable across disciplines — legal, technical, operational, and managerial
 
-### This repository **is not**
+And it is **not**:
 
 - a production-ready system
 - a full implementation of the Digital Euro
-- a replacement for legal, regulatory, or procurement processes
+- a substitute for legal, regulatory, or procurement processes
 
+Those boundaries are intentional. This repository focuses on what follows intent and procurement: how diverse builders work together over time without losing semantic integrity.
+
+By co-locating artefacts and communication, the workbench enables:
+
+- transparency across disciplines
+- end-to-end traceability of decisions
+- shared understanding between builders (lawyers, engineers, operators, etc.)
+- standardisation without rigidity
+- a streamlined working experience grounded in respect for the craft
+
+Conventions governing communication and project coordination within this shared workbench are documented in:
+
+- [`00-governance-docs/communication-and-project-management.md`](00-governance-docs/communication-conventions.md)
+
+This is not documentation theatre. It is an attempt to show how a unified workbench can support durable, auditable systems in the digital age.
 ---
 
 ## How to use this repository
@@ -93,6 +112,20 @@ In practice, teams should **promote the folder structure shown here into multipl
 
 This repository demonstrates *how to organise the work* — not how to bypass security or contractual boundaries.
 
+### Procurement and vendor engagement (scope note)
+
+Large institutional projects are, in practice, also procurement projects.
+
+Public tenders, technical requirements, evaluation criteria, contracts, and vendor agreements play a decisive role in shaping delivery. These processes are often governed by strict legal frameworks, and many of the resulting artefacts — particularly evaluations, commercial terms, and contractual details — are inherently confidential.
+
+This repository does not attempt to simulate procurement processes or tender documentation. That omission is deliberate.
+
+The purpose of this repository is to focus on what follows procurement: how policy intent, requirements, implementation, testing, and delivery are governed over time once multiple internal and external actors begin to build together.
+
+In real projects, procurement artefacts would typically reside in separate systems or repositories with appropriate access control, and would be linked to the technical workbench through explicit references and contractual obligations.
+
+By keeping procurement out of scope here, the repository remains focused on its primary objective: demonstrating how automation, traceability, and a shared workbench preserve institutional intent throughout implementation and operation.
+
 ---
 
 ## Artefact classification and visibility
@@ -108,7 +141,7 @@ Each artefact declares:
 
 See:
 
-- `docs/artefact-classification.md`
+- [`00-governance-docs/artefact-classification.md`](00-governance-docs/artefact-classification.md)
 
 Classification is not advisory. It is enforced by automation.
 
@@ -132,7 +165,7 @@ Automation replaces manual policing:
 
 See:
 
-- `docs/linting-rules.md`
+- [`00-governance-docs/linting-rules.md`](00-governance-docs/linting-rules.md)
 
 ---
 
@@ -140,17 +173,17 @@ See:
 
 ```
 policy-to-production/
-├── 00-docs/                    # Governance, conventions, classification, glossary
-├── 01-stakeholders/            # Institutions, roles, responsibilities
-├── 02-legislative-framework/   # Policy and legal context
-├── 03-rulebook/                # Scheme rules, obligations, governance
-├── 04-architecture/            # High-level system design
-├── 05-specifications/          # Technical specifications
-├── 06-code/                    # Illustrative implementations
-├── 07-tests/                   # Acceptance criteria and evidence
-├── 08-ci-cd/                   # Pipeline and deployment concepts
+├── 00-governance-docs/          # Project governance: rules, conventions, communication, glossary. roadmaps, etc.
+├── 10-legislative-framework     # Policy and legal context
+├── 20-rulebook                  # Scheme rules and operational obligations
+├── 30-architecture              # High-level system design
+├── 40-specifications            # Technical specifications
+├── 50-code                      # Illustrative implementations
+├── 60-tests                     # Acceptance criteria and evidence
+├── 70-ci-cd                     # Pipeline and deployment concepts
 ├── README.md
 └── LICENSE
+
 ```
 
 Each directory represents a **layer of intent**, ordered deliberately from abstract mandate to concrete delivery.
