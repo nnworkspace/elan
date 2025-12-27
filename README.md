@@ -16,10 +16,10 @@ _All references to the Digital Euro project in this repository are derived solel
 
 Institutional IT projects often struggle not because of a lack of expertise, but because:
 
-* policy intent is separated from technical implementation
-* legislative and regulatory constraints are detached from engineering reality
-* requirements are implicit rather than explicit
-* code evolves faster than shared understanding
+- policy intent is separated from technical implementation
+- legislative and regulatory constraints are detached from engineering reality
+- requirements are implicit rather than explicit
+- code evolves faster than shared understanding
 
 This repository demonstrates an alternative approach:
 
@@ -33,16 +33,45 @@ Governance is enforced mechanically through automation, not informally through p
 
 ### This repository **is**
 
-* a Markdown-first, Git-based reference structure
-* an educational template for policy-to-production traceability
-* a demonstration of how automation enforces governance discipline
-* readable by engineers, architects, auditors, managers, and executives
+- a Markdown-first, Git-based reference structure
+- an educational template for policy-to-production traceability
+- a demonstration of how automation enforces governance discipline
+- readable by engineers, architects, auditors, managers, and executives
 
 ### This repository **is not**
 
-* a production-ready system
-* a full implementation of the Digital Euro
-* a replacement for legal, regulatory, or procurement processes
+- a production-ready system
+- a full implementation of the Digital Euro
+- a replacement for legal, regulatory, or procurement processes
+
+---
+
+## How to use this repository
+
+This repository is designed to be **used**, not merely read.
+
+You are encouraged to **clone or fork it as a template**, and to adapt the structure to the needs of your own project. The folder layout, classification model, and automation rules are intentionally explicit so that they can be reshaped without losing coherence.
+
+In practice, this means:
+
+- Reorganising or extending folders to reflect your domain
+- Renaming layers to match your institutional language
+- Replacing illustrative artefacts with your own policy texts, specifications, and code
+- Gradually tightening or relaxing automation rules as maturity grows
+
+The structure presented here is not prescriptive; it is **scaffolded**. Its purpose is to help diverse contributors — legal, technical, operational — work within a shared semantic frame.
+
+For projects with **sovereignty, regulatory, or security constraints**, this repository should be hosted accordingly. While GitHub is convenient, many institutional projects will prefer:
+
+- a European-hosted GitLab service, or
+- a self-managed GitLab instance deployed on sovereign infrastructure
+
+The tooling choice matters less than the principle:
+**the workbench must belong to the builders.**
+
+What matters is that all artefacts — rulebooks, specifications, code, tests, and delivery pipelines — live side by side, versioned together, and governed by automation rather than informal process.
+
+This repository demonstrates how such a workbench can be organised.
 
 ---
 
@@ -56,9 +85,9 @@ In real-world projects, artefacts with different visibility or contractual const
 
 GitHub and GitLab provide access control at the repository level, not at the file level. As a result:
 
-* PUBLIC artefacts should live in public repositories
-* RESTRICTED artefacts should live in access-controlled repositories
-* CONFIDENTIAL artefacts should live in NDA-bound repositories
+- PUBLIC artefacts should live in public repositories
+- RESTRICTED artefacts should live in access-controlled repositories
+- CONFIDENTIAL artefacts should live in NDA-bound repositories
 
 In practice, teams should **promote the folder structure shown here into multiple repositories**, each with appropriate access control.
 
@@ -72,14 +101,14 @@ All artefacts in this repository are classified according to an explicit **Artef
 
 Each artefact declares:
 
-* its visibility (PUBLIC, RESTRICTED, CONFIDENTIAL)
-* its intended audience
-* its delivery form (text, source, binary, service)
-* its role in the policy-to-production chain
+- its visibility (PUBLIC, RESTRICTED, CONFIDENTIAL)
+- its intended audience
+- its delivery form (text, source, binary, service)
+- its role in the policy-to-production chain
 
 See:
 
-* `docs/artefact-classification.md`
+- `docs/artefact-classification.md`
 
 Classification is not advisory. It is enforced by automation.
 
@@ -89,21 +118,21 @@ Classification is not advisory. It is enforced by automation.
 
 Traceability is enforced end-to-end:
 
-* policy and legal artefacts anchor requirements
-* specifications derive from explicit mandates
-* implementations reference specifications
-* tests validate specifications
-* delivery artefacts are justified and auditable
+- policy and legal artefacts anchor requirements
+- specifications derive from explicit mandates
+- implementations reference specifications
+- tests validate specifications
+- delivery artefacts are justified and auditable
 
 Automation replaces manual policing:
 
-* linting validates classification and references
-* CI enforces governance rules
-* violations fail fast and visibly
+- linting validates classification and references
+- CI enforces governance rules
+- violations fail fast and visibly
 
 See:
 
-* `docs/linting-rules.md`
+- `docs/linting-rules.md`
 
 ---
 
@@ -136,10 +165,10 @@ Some artefacts — particularly those related to security-sensitive components, 
 
 In this repository, such artefacts are represented by:
 
-* manifests
-* interface descriptions
-* metadata
-* explicit placeholders
+- manifests
+- interface descriptions
+- metadata
+- explicit placeholders
 
 The actual content would live in separate repositories with appropriate access control.
 
@@ -166,22 +195,38 @@ A typical progression is:
 
 ## Intended audience
 
-This repository is written for:
+This repository is written for **builders**.
 
-* engineers working in regulated or public-sector environments
-* architects designing long-lived systems
-* programme managers and technical leads
-* auditors and compliance functions
-* decision-makers responsible for technology governance
+By builders, we do not mean engineers alone. We mean everyone whose work contributes to the construction of a complex digital system:
+
+- lawyers and policy authors who define intent
+- economists and domain experts who shape constraints
+- procurement and governance specialists who structure delivery
+- architects and engineers who translate intent into systems
+- auditors and reviewers who must later reconstruct decisions
+
+Its premise is simple:
+**no durable system can be built if its builders do not share a single source of truth.**
+
+The repository is therefore designed to be intelligible across disciplines, without diluting technical precision or institutional responsibility.
 
 ---
 
 ## How to read this repository
 
-* Executives: start with this README and `architecture/`
-* Architects: start with `architecture/` and `specifications/`
-* Engineers: start with `specifications/` and `code-examples/`
-* Auditors: focus on `legislative-framework/`, `tests/`, and `docs/`
+This repository is not meant to be consumed linearly.
+
+Its value emerges when artefacts are viewed **in relation to one another:** when a rulebook can be read alongside a specification, a test alongside a policy decision, and a deployment step alongside its original mandate.
+
+Readers are encouraged to:
+
+- move freely between layers
+- follow references rather than sections
+- observe how intent is preserved — or lost — as systems become concrete
+
+The repository is organised so that abstraction gradually gives way to implementation, but no layer stands alone. Understanding arises from **co-presence**, not sequence.
+
+This mirrors the reality of institutional projects: progress depends less on perfect documents than on a shared, versioned environment in which intent can survive contact with reality.
 
 ---
 
