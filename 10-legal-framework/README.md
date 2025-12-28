@@ -1,3 +1,13 @@
+---
+artefact_type: governance
+visibility: public
+audience: everyone
+form: text
+role: governance
+status: informative
+owner: project-governance
+---
+
 # Legal Framework
 
 This folder contains **public legislative and legal artefacts** relevant to the Digital Euro.

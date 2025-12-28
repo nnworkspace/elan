@@ -1,3 +1,13 @@
+---
+artefact_type: governance
+visibility: public
+audience: everyone
+form: text
+role: governance
+status: informative
+owner: project-governance
+---
+
 # Issue Templates
 
 This folder contains **issue templates** used to structure how work enters and flows through the project.

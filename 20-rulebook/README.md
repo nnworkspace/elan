@@ -4,7 +4,7 @@ visibility: public
 audience: everyone
 form: text
 role: governance
-status: normative
+status: informative
 owner: rulebook-development-group
 ---
 

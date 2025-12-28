@@ -1,3 +1,13 @@
+---
+artefact_type: governance
+visibility: public
+audience: everyone
+form: text
+role: governance
+status: informative
+owner: project-governance
+---
+
 # Project Governance
 
 This folder contains the **governance documents** that define how this project is organised, controlled, and audited.

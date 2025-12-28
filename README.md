@@ -1,3 +1,13 @@
+---
+artefact_type: governance
+visibility: public
+audience: everyone
+form: text
+role: governance
+status: informative
+owner: project-governance
+---
+
 # policy-to-production
 
 ## From policy intent to running systems — with discipline
