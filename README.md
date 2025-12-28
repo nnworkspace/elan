@@ -10,7 +10,7 @@ The Digital Euro project is used throughout this repository to **bring the workf
 
 _All references to the Digital Euro project in this repository are derived solely from publicly available sources, such as published legislative drafts, official communications, and openly accessible documentation. This repository does not contain, and does not rely upon, any confidential, restricted, or non-public information._
 
----
+
 
 ## Why this repository exists
 
@@ -27,7 +27,7 @@ This repository demonstrates an alternative approach:
 
 Governance is enforced mechanically through automation, not informally through process documents.
 
----
+
 
 ## The workbench as a shared environment
 
@@ -67,7 +67,7 @@ A detailed explanation of how this workbench maintains coherence across distribu
 
 This is not documentation theatre. It is an attempt to show how a unified workbench can support durable, auditable systems in the digital age.
 
----
+
 
 ## How to use this repository
 
@@ -97,7 +97,7 @@ The tooling choice matters less than the principle:
 **the workbench must belong to the builders.**
 
 
----
+
 
 ## A note on scope and realism
 
@@ -131,7 +131,7 @@ In real projects, procurement artefacts would typically reside in separate syste
 
 By keeping procurement out of scope here, the repository remains focused on its primary objective: demonstrating how automation, traceability, and a shared workbench preserve institutional intent throughout implementation and operation.
 
----
+
 
 ## Artefact classification and visibility
 
@@ -150,7 +150,7 @@ See:
 
 Classification is not advisory. It is enforced by automation.
 
----
+
 
 ## Traceability and automation
 
@@ -172,14 +172,14 @@ See:
 
 - [`00-project-governance/linting-rules.md`](00-project-governance/linting-rules.md)
 
----
+
 
 ## Repository structure (conceptual)
 
 ```
 policy-to-production/
 ├── 00-project-governance/          # Project governance: rules, conventions, communication, glossary. roadmaps, etc.
-├── 10-legislative-framework     # Policy and legal context
+├── 10-legal-framework           # Policy and legal context
 ├── 20-rulebook                  # Scheme rules and operational obligations
 ├── 30-architecture              # High-level system design
 ├── 40-specifications            # Technical specifications
@@ -195,7 +195,7 @@ Each directory represents a **layer of intent**, ordered deliberately from abstr
 
 The numeric prefixes make the progression explicit and discourage accidental inversion (for example, writing code before mandate or tests before specification).
 
----
+
 
 ## Relationship to restricted and confidential artefacts
 
@@ -212,7 +212,7 @@ The actual content would live in separate repositories or registries with approp
 
 This makes constraints visible **without violating them**.
 
----
+
 
 ## Relationship to `policy-to-production-doorstop`
 
@@ -229,7 +229,7 @@ A typical progression is:
 1. Start with DoorStop (guided discipline)
 2. Graduate to this repository (earned flexibility)
 
----
+
 
 ## Intended audience
 
@@ -248,7 +248,7 @@ Its premise is simple:
 
 The repository is therefore designed to be intelligible across disciplines, without diluting technical precision or institutional responsibility.
 
----
+
 
 ## How to read this repository
 
@@ -266,7 +266,7 @@ The repository is organised so that abstraction gradually gives way to implement
 
 This mirrors the reality of institutional projects: progress depends less on perfect documents than on a shared, versioned environment in which intent can survive contact with reality.
 
----
+
 
 ## Status
 
@@ -274,7 +274,7 @@ This repository is a **living educational reference**.
 
 Its value lies in structure, clarity, and discipline — not completeness.
 
----
+
 
 ## Licence
 
