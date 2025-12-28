@@ -33,34 +33,37 @@ Governance is enforced mechanically through automation, not informally through p
 
 This repository treats a Git-based platform such as GitHub or GitLab as the **shared workbench** of a complex institutional project.
 
-Its value lies not only in automation, but in the way it brings together artefacts, discussion, review, decisions, and delivery in a single, versioned environment. Issues, merge requests, comments, discussion, and reviews are treated as **first-class project artefacts**, preserving context and rationale alongside the code and documentation they relate to.
+Its value lies not only in automation, but in the way it brings together artefacts, discussion, review, decisions, and delivery in a single, versioned environment. Issues, merge requests, comments, and reviews are treated as **first-class project artefacts**, preserving context and rationale alongside the documents and code they shape.
 
 In this sense, the repository **is**:
 
-- a Markdown-first, Git-based reference structure
-- an educational template for policy-to-production traceability
-- a demonstration of how automation enforces governance discipline
-- a shared environment readable across disciplines — legal, technical, operational, and managerial
+- a Markdown-first, Git-based reference structure  
+- an educational template for policy-to-production traceability  
+- a demonstration of how automation enforces governance discipline  
+- a shared environment readable across disciplines — legal, technical, operational, and managerial  
 
-And it is **not**:
+And it **is not**:
 
-- a production-ready system
-- a full implementation of the Digital Euro
-- a substitute for legal, regulatory, or procurement processes
+- a production-ready system  
+- a full implementation of the Digital Euro  
+- a substitute for legal, regulatory, or procurement processes  
 
 Those boundaries are intentional. This repository focuses on what follows intent and procurement: how diverse builders work together over time without losing semantic integrity.
 
-By co-locating artefacts and communication, the workbench enables:
+By treating communication, coordination, and delivery as part of the same workbench, the project supports:
 
-- transparency across disciplines
-- end-to-end traceability of decisions
-- shared understanding between builders (lawyers, engineers, operators, etc.)
-- standardisation without rigidity
-- a streamlined working experience grounded in respect for the craft
+- transparency across disciplines  
+- durable traceability of decisions  
+- shared understanding between builders  
+- standardisation without rigidity  
 
-Conventions governing communication and project coordination within this shared workbench are documented in:
+Conventions governing communication and project coordination are documented in:
 
-- [`00-project-governance/communication-and-project-management.md`](00-project-governance/communication-conventions.md)
+- [`00-project-governance/communication-and-project-management.md`](00-project-governance/communication-and-project-management.md)
+
+A detailed explanation of how this workbench maintains coherence across distributed repositories, registries, and visibility boundaries is provided in:
+
+- [`00-project-governance/logical-system-and-visibility.md`](00-project-governance/logical-system-and-visibility.md)
 
 This is not documentation theatre. It is an attempt to show how a unified workbench can support durable, auditable systems in the digital age.
 
@@ -74,24 +77,25 @@ You are encouraged to **clone or fork it as a template**, and to adapt the struc
 
 In practice, this means:
 
-- Reorganising or extending folders to reflect your domain
-- Renaming layers to match your institutional language
-- Replacing illustrative artefacts with your own policy texts, specifications, and code
-- Gradually tightening or relaxing automation rules as maturity grows
+- reorganising or extending layers to reflect your domain  
+- renaming folders to match your institutional language  
+- replacing illustrative artefacts with your own policy texts, specifications, and code  
+- adjusting automation rules as organisational maturity grows  
 
 The structure presented here is not prescriptive; it is **scaffolded**. Its purpose is to help diverse contributors — legal, technical, operational — work within a shared semantic frame.
 
+In real institutional projects, artefacts will often be **physically distributed** across multiple repositories and registries due to visibility, contractual, or security constraints. Public rulebooks, restricted specifications, confidential implementations, and binary deliveries may therefore live in different locations.
+
+This repository demonstrates how such a system can remain **logically unified**, even when physically distributed, through explicit classification and automated enforcement.
+
 For projects with **sovereignty, regulatory, or security constraints**, this repository should be hosted accordingly. While GitHub is convenient, many institutional projects will prefer:
 
-- a European-hosted GitLab service, or
-- a self-managed GitLab instance deployed on sovereign infrastructure
+- a European-hosted GitLab service, or  
+- a self-managed GitLab instance deployed on sovereign infrastructure  
 
-The tooling choice matters less than the principle:
+The tooling choice matters less than the principle:  
 **the workbench must belong to the builders.**
 
-What matters is that all artefacts — rulebooks, specifications, code, tests, and delivery pipelines — live side by side, versioned together, and governed by automation rather than informal process.
-
-This repository demonstrates how such a workbench can be organised.
 
 ---
 
@@ -204,7 +208,7 @@ In this repository, such artefacts are represented by:
 - metadata
 - explicit placeholders
 
-The actual content would live in separate repositories with appropriate access control.
+The actual content would live in separate repositories or registries with appropriate access control.
 
 This makes constraints visible **without violating them**.
 
