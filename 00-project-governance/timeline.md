@@ -1,3 +1,13 @@
+---
+artefact_type: governance
+visibility: public
+audience: everyone
+form: text
+role: governance
+status: normative
+owner: project-governance
+---
+
 # Digital Euro Project Timeline
 
 This document provides a high-level, factual timeline of the Digital Euro project based on publicly available information published by the European Central Bank (ECB) and related EU institutions.

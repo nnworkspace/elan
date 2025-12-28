@@ -1,3 +1,13 @@
+---
+artefact_type: governance
+visibility: public
+audience: everyone
+form: text
+role: governance
+status: normative
+owner: project-governance
+---
+
 # Stakeholders in the Digital Euro Project
 
 This list identifies the major categories of stakeholders involved in the Digital Euro project and explains their roles. While the precise composition of stakeholder groups and working bodies may evolve, the categories below reflect current public engagement and institutional design as communicated by the European Central Bank (ECB) and related bodies.

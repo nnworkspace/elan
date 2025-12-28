@@ -1,3 +1,14 @@
+---
+artefact_type: governance
+visibility: public
+audience: everyone
+form: text
+role: governance
+status: normative
+owner: project-governance
+---
+
+
 # Artefact Classification Model
 
 ## Purpose
@@ -6,10 +17,10 @@ This document defines the **Artefact Classification Model** used throughout this
 
 Its purpose is to make explicit how different project artefacts are:
 
-* governed
-* shared
-* delivered
-* audited
+- governed
+- shared
+- delivered
+- audited
 
 The model applies uniformly to **all artefacts**, regardless of whether they are legal texts, specifications, source code, binaries, or hosted services.
 
@@ -17,14 +28,14 @@ The model applies uniformly to **all artefacts**, regardless of whether they are
 
 ## Why classification is necessary
 
-Large, multi‑stakeholder institutional projects inevitably produce artefacts with **different audiences, sensitivities, and delivery forms**.
+Large, multi-stakeholder institutional projects inevitably produce artefacts with **different audiences, sensitivities, and delivery forms**.
 
 Treating all artefacts as if they were equally public, equally open, or equally distributable leads to:
 
-* accidental disclosure of sensitive information
-* unclear responsibilities
-* fragile governance
-* loss of trust between institutions and vendors
+- accidental disclosure of sensitive information
+- unclear responsibilities
+- fragile governance
+- loss of trust between institutions and vendors
 
 This classification model does **not** aim to restrict transparency unnecessarily. Its aim is to:
 
@@ -36,14 +47,15 @@ This classification model does **not** aim to restrict transparency unnecessaril
 
 The model applies to:
 
-* legislative and policy documents
-* scheme rulebooks
-* architectural descriptions
-* technical specifications
-* source code
-* binary deliverables (e.g. SDKs)
-* hosted services (e.g. simulators, test environments)
-* CI/CD artefacts and reports
+- legislative and policy documents
+- scheme rulebooks
+- architectural descriptions
+- technical specifications
+- source code
+- binary deliverables (e.g. SDKs)
+- hosted services (e.g. simulators, test environments)
+- CI/CD artefacts and reports
+- governance instruments (e.g. issue templates)
 
 No artefact is exempt.
 
@@ -51,230 +63,164 @@ No artefact is exempt.
 
 ## Classification axes
 
-Each artefact is classified along **four independent axes**:
+Each artefact is classified along **four semantic axes**:
 
-1. Visibility
-2. Audience
-3. Form
-4. Traceability role
+1. Visibility  
+2. Audience  
+3. Form  
+4. Role  
 
-All four axes **must** be declared.
+In addition, each artefact declares governance attributes (artefact type, status, and owner) to establish authority and responsibility.
 
----
-
-## 1. Visibility
-
-Visibility defines **who is allowed to read or access** an artefact.
-
-### Values
-
-#### PUBLIC
-
-* Freely publishable
-* No contractual, legal, or security restriction
-* Suitable for public repositories and documentation
-
-Typical examples:
-
-* legislation
-* public policy documents
-* scheme rulebooks
-* high‑level architecture descriptions
+All declared fields are mandatory.
 
 ---
 
-#### RESTRICTED
-
-* Access limited by institutional role
-* Not publicly distributed
-* Shared with clearly defined stakeholder groups
-
-Typical examples:
-
-* PSP integration specifications
-* operational procedures
-* internal architecture details
-
----
-
-#### CONFIDENTIAL
-
-* Access limited by contract or NDA
-* Visibility restricted to explicitly named parties
-* May involve platform security or vendor‑specific constraints
-
-Typical examples:
-
-* platform‑specific offline components
-* secure element integrations
-* cryptographic implementation details
-
-> **Note:**
-> CONFIDENTIAL does not imply secrecy by choice, but constraint by necessity.
-
----
-
-## 2. Audience
-
-Audience defines **who the artefact is written for** or who must act upon it.
-
-Multiple audiences may be listed.
-
-### Common audience categories
-
-* ECB
-* NCB
-* PSP
-* VENDOR
-* PLATFORM_PROVIDER
-* AUDITOR
-* PUBLIC
-
-Audience classification clarifies responsibility and expectation, even when visibility is restricted.
-
----
-
-## 3. Form
-
-Form defines **how the artefact is delivered**.
-
-### Values
-
-#### TEXT
-
-* Human‑readable documentation
-* Markdown, PDF, legal text, specifications
-
----
-
-#### SOURCE
-
-* Human‑readable source code
-* Intended for inspection and modification by authorised parties
-
----
-
-#### BINARY
-
-* Non‑human‑readable deliverables
-* SDKs, libraries, firmware, signed packages
-
-Binary artefacts are legitimate first‑class deliverables when required by security, platform, or contractual constraints.
-
----
-
-#### SERVICE
-
-* Hosted or network‑accessible components
-* Simulators, test endpoints, shared environments
-
-Service artefacts are versioned and governed even if no source is distributed.
-
----
-
-## 4. Traceability role
-
-Traceability role defines **how the artefact fits into the chain from intent to operation**.
-
-### Values
-
-* POLICY
-* LEGAL
-* RULE
-* ARCHITECTURE
-* SPECIFICATION
-* IMPLEMENTATION
-* TEST
-* EVIDENCE
-* DELIVERY
-
-Every artefact must contribute to at least one traceability role.
-
----
-
-## Declaring classification
-
-Each artefact must explicitly declare its classification.
-
-How classification is embedded depends on the **form of the artefact**.
-
-### Embedding rules
-
-To balance auditability with repository clarity, this project uses a **hybrid embedding model**:
-
-* **Textual artefacts** (documents, source code, configuration files)
-  declare classification **inline**.
-* **Non-textual artefacts** (binaries, archives, hosted services)
-  declare classification via a **sidecar metadata file**.
-
-An artefact must declare its classification in **exactly one place**:
-
-* Inline **or** sidecar — never both, never neither.
-
-These rules are enforced by automation.
-
----
-
-### Inline classification (textual artefacts)
-
-Textual artefacts include:
-
-* Markdown documents
-* source code (any language)
-* configuration files
-* scripts
-* CI/CD definitions
-
-Classification metadata is embedded directly in the artefact.
-
-#### Example (Markdown front-matter)
+## Canonical schema
 
 ```yaml
 ---
-artefact:
-  visibility: RESTRICTED
-  audience:
-    - PSP
-    - NCB
-  form: TEXT
-  role: SPECIFICATION
----
-```
-
-#### Example (source code header)
-
-```text
-/* artefact:
- *   visibility: CONFIDENTIAL
- *   audience:
- *     - ECB
- *     - VENDOR
- *   form: SOURCE
- *   role: IMPLEMENTATION
- */
-```
-
+artefact_type: <TYPE>
+visibility: <VISIBILITY>
+audience: <AUDIENCE | LIST>
+form: <FORM>
+role: <ROLE>
+status: <STATUS>
+owner: <OWNER>
 ---
 
-### Sidecar metadata (non-textual artefacts)
+```
 
-Non-textual artefacts include:
+### Field definitions
 
-* binary deliverables (SDKs, libraries, firmware)
-* archives
-* hosted services or simulators
+|Field|Meaning|Allowed values|
+|---|---|---|
+|artefact_type|Kind of artefact|governance,governance-instrument,policy,rulebook,specification,implementation,test,evidence,delivery|
+|visibility|Who may access the artefact|public,restricted,confidential|
+|audience|Who the artefact is written for|everyone,ECB,NCB,PSP,VENDOR,PLATFORM_PROVIDER,AUDITOR|
+|form|How the artefact is delivered|text,source,binary,service|
+|role|Traceability position|policy,legal,rule,architecture,specification,implementation,test,evidence,delivery,governance|
+|status|Normative weight|normative,operative,informative|
+|owner|Institutional responsibility|free text (organisation or role)|
 
-These artefacts cannot reliably carry structured metadata.
 
-In these cases, classification is declared in a **sidecar metadata file** with the same base name.
+### Example: Markdown document (inline metadata)
+
+```yaml
+---
+artefact_type: specification
+visibility: restricted
+audience:
+  - PSP
+  - NCB
+form: text
+role: specification
+status: normative
+owner: eurosystem
+---
+```
+This form is used for:
+- Markdown documents
+- specifications
+- governance texts
+- configuration expressed as text
+
+### Applying the schema in source code
+
+For source code, the **same schema** is embedded as a structured comment at the top of the file.
+
+The syntax of the comment must respect the language, but the **content must remain identical**.
+
+#### Example: C / C++ / Java / JavaScript (block comment)
+
+```c
+/*
+artefact_type: implementation
+visibility: confidential
+audience:
+  - ECB
+  - VENDOR
+form: source
+role: implementation
+status: operative
+owner: vendor-xyz
+*/
+
+```
+
+#### Example: Python / Shell / YAML (line comments)
+
+```python
+# artefact_type: implementation
+# visibility: restricted
+# audience:
+#   - PSP
+# form: source
+# role: implementation
+# status: operative
+# owner: eurosystem
+
+```
+
+#### Example: SQL
+
+```sql
+-- artefact_type: test
+-- visibility: restricted
+-- audience: AUDITOR
+-- form: source
+-- role: test
+-- status: informative
+-- owner: project-governance
+
+```
+
+---
+
+### Folder-level metadata (tool-constrained artefacts)
+
+Some artefacts are governed by external tools that impose fixed file formats or headers
+(e.g. issue templates in GitHub or GitLab).
+
+In such cases, classification MUST be declared once at the **folder level** using a dedicated metadata file.
+
+Folder-level metadata applies uniformly to all artefacts in that folder unless explicitly overridden.
 
 #### Example
 
+```sh
+
+00-project-governance/issue-templates/
+├── _metadata.yaml
+├── requirement.md
+├── clarification.md
+
 ```
-sdk/offline-wallet-sdk.zip
-sdk/offline-wallet-sdk.meta.yaml
+```yaml
+artefact:
+  visibility: PUBLIC
+  audience: everyone
+  form: TEXT
+  role: GOVERNANCE_INSTRUMENT
+
 ```
 
+### 3. Sidecar metadata (non-textual artefacts)
+
+**Non-textual artefacts** MUST declare classification via a sidecar metadata file.
+
+This includes:
+
+- binary deliverables (SDKs, libraries, firmware)
+- archives
+- hosted services or simulators
+
+#### Example
+
+```sh
+sdk/offline-wallet-sdk.zip
+sdk/offline-wallet-sdk.meta.yaml
+``` 
 ```yaml
 artefact:
   visibility: CONFIDENTIAL
@@ -285,52 +231,48 @@ artefact:
   form: BINARY
   role: IMPLEMENTATION
 ```
+--- 
+
+## Declaring classification
+
+Each artefact must explicitly declare its classification.
+
+How classification is declared depends on the **nature of the artefact** and any **tooling constraints** that apply.
 
 ---
 
-### Validation and enforcement
+## Precedence rules
+
+1. Sidecar metadata overrides folder-level metadata
+2. Folder-level metadata overrides inline defaults
+3. Inline metadata applies only to the artefact in which it appears
+
+Exceptions must be explicit and intentional.
+
+---
+
+### Notes on consistency
+
+- The **keys and values MUST NOT be renamed**
+- Capitalisation of values should be consistent across the repository
+- Each artefact MUST resolve to exactly one effective metadata declaration.
+
+Metadata MAY be defined at multiple levels (inline, folder-level, or sidecar),
+but precedence rules MUST result in a single, unambiguous set of metadata
+that applies to the artefact.
+
+Conflicting or ambiguous declarations are rejected by design.
+
+---
+
+## Validation and enforcement
 
 Automation enforces the following rules:
 
-* textual artefacts **must** declare inline classification
-* textual artefacts **must not** have sidecar metadata files
-* non-textual artefacts **must** have a sidecar metadata file
-* non-textual artefacts **must not** declare inline classification
-* all declared values must conform to this model
-
-Artefacts that violate these rules are rejected by design.
-
----
-
-```yaml
-artefact:
-  visibility: RESTRICTED
-  audience:
-    - PSP
-    - NCB
-  form: TEXT
-  role: SPECIFICATION
-```
-
----
-
-## Enforcement
-
-Classification is not advisory.
-
-Automation enforces compliance through:
-
-* linting rules
-* CI checks
-* review requirements
-
-Artefacts that:
-
-* lack classification
-* declare invalid values
-* violate visibility or traceability rules
-
-are rejected by design.
+- every artefact MUST be classifiable via one mechanism
+- artefacts MUST NOT declare classification in multiple places
+- declared values MUST conform to this model
+- violations are rejected by design
 
 ---
 
@@ -338,26 +280,27 @@ are rejected by design.
 
 This model enables auditors to:
 
-* understand what artefacts exist
-* understand why some artefacts are restricted
-* verify that constraints are respected
-* trace decisions from policy to delivery
+- understand what artefacts exist
+- understand why some artefacts are restricted
+- verify that constraints are respected
+- trace decisions from policy to delivery
 
-Auditability is achieved **without requiring access to confidential content**.
+The project can be audited by inspecting metadata, structure, and traceability, without automatically granting access to sensitive content.
 
 ---
 
 ## Relationship to tools
 
-This classification model is **tool‑agnostic**.
+This classification model is **tool-agnostic**.
 
 It can be:
 
-* enforced manually
-* enforced through custom automation
-* encoded in opinionated frameworks (e.g. DoorStop)
+- enforced manually
+- enforced through custom automation
+- encoded in opinionated frameworks (e.g. DoorStop)
 
-The model defines *what* must be governed. Tools define *how*.
+The model defines _what_ must be governed.
+Tools define _how_.
 
 ---
 

@@ -1,3 +1,13 @@
+---
+artefact_type: governance
+visibility: public
+audience: everyone
+form: text
+role: governance
+status: normative
+owner: project-governance
+---
+
 # Logical System and Visibility Boundaries
 
 ## Purpose
