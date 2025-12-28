@@ -7,6 +7,21 @@
 # status: normative
 # owner: system-architecture
 # ---
+#
+#
+# DISCLAIMER
+# ----------
+# This OpenAPI specification is NOT an official ECB or Eurosystem API.
+#
+# It is provided solely for EDUCATIONAL PURPOSES to demonstrate:
+# - how functional, interface, and data-model specifications
+#   can be realised as machine-readable APIs,
+# - how traceability between artefacts can be made explicit,
+# - how such artefacts can be governed and validated by automation.
+#
+# All content is derived from publicly available information
+# and reasonable technical assumptions.
+# No confidential, proprietary, or insider information is included.
 
 openapi: 3.0.3
 

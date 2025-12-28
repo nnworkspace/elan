@@ -1,0 +1,217 @@
+# ---
+# artefact_type: specification
+# visibility: public
+# audience: everyone
+# form: text
+# role: specification
+# status: normative
+# owner: system-architecture
+# ---
+#
+# DISCLAIMER
+# ----------
+# This OpenAPI specification is NOT an official ECB or Eurosystem API.
+#
+# It is provided solely for EDUCATIONAL PURPOSES to demonstrate:
+# - how functional, interface, and data-model specifications
+#   can be realised as machine-readable APIs,
+# - how traceability between artefacts can be made explicit,
+# - how such artefacts can be governed and validated by automation.
+#
+# All content is derived from publicly available information
+# and reasonable technical assumptions.
+# No confidential, proprietary, or insider information is included.
+
+openapi: 3.0.3
+
+info:
+  title: Liquidity Reservation API
+  version: "0.1.0"
+  description: |
+    Illustrative OpenAPI specification for liquidity reservation
+    within the Digital Euro Service Platform (DESP).
+
+    Normative references:
+    - Spec LR-1: liquidity-reservation-functional-spec.md
+    - Spec LR-2: liquidity-reservation-interfaces-spec.md
+    - Spec LR-3: liquidity-reservation-data-model-spec.md
+
+    This specification exists to demonstrate methodology,
+    structure, and traceability — not to define a real API.
+
+# All endpoints defined here are exposed by:
+# COMP-EUR-05 — Digital Euro Access Gateway
+# and operate on authoritative state within:
+# COMP-EUR-04 — Digital Euro Service Platform (DESP)
+
+servers:
+  - url: https://api.example.eu/desp/liquidity
+
+components:
+  parameters:
+    # Spec references:
+    # - Functional spec: LR-F-06 — Idempotency
+    # - Interface spec: INT-LR-04 — Idempotent invocation
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+      description: |
+        Client-generated idempotency key.
+
+        Repeated requests with the same key and identical payload
+        MUST result in the same outcome without duplicate side effects.
+        Conflicting reuse MUST be rejected.
+
+  schemas:
+    # Spec reference:
+    # - Data model spec: Liquidity reservation entity
+    LiquidityReservation:
+      type: object
+      required:
+        - reservation_id
+        - liquidity_source_id
+        - amount
+        - state
+      properties:
+        reservation_id:
+          type: string
+          description: Globally unique reservation identifier
+        liquidity_source_id:
+          type: string
+          description: Referenced liquidity source
+        amount:
+          type: number
+          format: decimal
+          description: Reserved amount
+        state:
+          type: string
+          description: Current reservation lifecycle state
+          enum:
+            - REQUESTED
+            - RESERVED
+            - CONSUMED
+            - RELEASED
+            - EXPIRED
+        created_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+paths:
+
+  /reservations:
+    post:
+      summary: Create liquidity reservation
+      operationId: createLiquidityReservation
+      description: |
+        Creates a new liquidity reservation for a specified amount
+        from a given liquidity source.
+
+        Spec references:
+        - Functional spec: LR-F-01 — Create reservation
+        - Functional spec: LR-F-02 — Reservation exclusivity
+        - Interface spec: Flow 1 — Create reservation
+        - Data model spec: LiquidityReservation entity
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - liquidity_source_id
+                - amount
+                - expires_at
+              properties:
+                liquidity_source_id:
+                  type: string
+                amount:
+                  type: number
+                  format: decimal
+                expires_at:
+                  type: string
+                  format: date-time
+      responses:
+        "201":
+          description: Reservation created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LiquidityReservation"
+        "400":
+          description: Invalid request
+        "409":
+          description: Insufficient liquidity or idempotency conflict
+
+  /reservations/{reservationId}/consume:
+    post:
+      summary: Consume liquidity reservation
+      operationId: consumeLiquidityReservation
+      description: |
+        Consumes an existing liquidity reservation
+        as part of settlement execution.
+
+        Spec references:
+        - Functional spec: LR-F-03 — Consume reservation
+        - Interface spec: Flow 2 — Consume reservation
+        - Data model spec: Reservation lifecycle
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: reservationId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Reservation consumed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LiquidityReservation"
+        "403":
+          description: Not authorised
+        "409":
+          description: Invalid reservation state or conflict
+
+  /reservations/{reservationId}/release:
+    post:
+      summary: Release liquidity reservation
+      operationId: releaseLiquidityReservation
+      description: |
+        Releases a previously created liquidity reservation
+        without consuming it.
+
+        Spec references:
+        - Functional spec: LR-F-04 — Release reservation
+        - Interface spec: Flow 3 — Release reservation
+        - Data model spec: Reservation lifecycle
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: reservationId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Reservation released
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LiquidityReservation"
+        "403":
+          description: Not authorised
+        "409":
+          description: Invalid reservation state or conflict
+
