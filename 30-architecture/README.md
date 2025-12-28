@@ -1,10 +1,10 @@
 ---
-artefact_type: governance
+artefact_type: architecture
 visibility: public
 audience: everyone
 form: text
-role: governance
-status: informative
+role: architecture
+status: normative
 owner: system-architect
 ---
 
@@ -29,7 +29,7 @@ The architecture is characterized by a strict **Intermediated Model**:
 
 This design enforces a "privacy partition": the central settlement engine processes transactions pseudonymously, while the mapping to real-world identities remains strictly within the domain of the Intermediaries.
 
-> **Note on Accuracy:** The architectural descriptions in this folder represent our best understanding of the official ECB design choices based on public documentation available as of late 2025. They are structured to support the "fictional" specifications in this repository and should be viewed as illustrative of a compliant implementation.
+> **Note on Accuracy:** The architectural descriptions in this folder represent our best understanding of the official ECB design choices based on public documentation available as of December 2025. They are structured to support the "fictional" specifications in this repository and should be viewed as illustrative of a compliant implementation.
 
 ## Contents
 

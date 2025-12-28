@@ -12,7 +12,7 @@ owner: system-architect
 
 ## Purpose
 This document lists the mandatory **Logical Components** of the Digital Euro architecture.
-It serves as the master inventory for the system. Every piece of code or infrastructure in the `50-code` layer must map to one of these components.
+It serves as the master inventory for the system. Every piece of code or infrastructure in the `50-code` layer must map to at least one of these components.
 
 ## Naming Convention
 Components are identified by ID: `COMP-<DOMAIN>-<ID>`.
@@ -77,4 +77,14 @@ These components are operated by private sector banks/fintechs. They are the **o
 | `COMP-EUR-02` | **Rules:** One Person/One Identity, Holding Limits. |
 | `COMP-PSP-02` | **Rules:** Waterfall, Reverse Waterfall, Zero-Holding Merchant logic. |
 
+## Spec-ready interfaces
+
+The following interfaces are expected to be specified downstream:
+
+- I_Onboarding → Alias Service
+- I_Settlement → Settlement Engine
+- I_Liquidity → Waterfall Engine
+- I_Wallet → PSP Gateway
+
+These interfaces are illustrative and non-authoritative.
 
