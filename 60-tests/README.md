@@ -16,6 +16,8 @@ It exists to demonstrate — in a structured and auditable way — that the syst
 
 This is not a collection of unit tests or framework-level test suites. It is an **evidence layer**.
 
+These artefacts are designed to be both **human-readable** and **increasingly machine-executable**, allowing assurance to evolve from governed intent toward automation without losing traceability.
+
 ## Purpose
 
 In complex institutional systems, correctness is not established by isolated component tests alone.
@@ -78,9 +80,9 @@ By separating claims from tooling, this folder enables:
 - and long-term auditability without exposing internal attack surfaces.
 
 
-## What belongs in this folder
+## What belongs in this folder (or a top-level test repository)
 
-The artefacts in this folder describe **what must be true of the system** at a system or component boundary.
+Artefacts in this folder describe **what must be true of the system** and provide structured, automation-ready representations of those assurances at system or component boundaries.
 
 They typically cover:
 
@@ -132,6 +134,46 @@ The following do **not** belong here and should live close to the code or toolin
 - tool-specific load or penetration testing scripts.
 
 Those are implementation concerns. This folder is concerned with **system behaviour, assurance, and trust**.
+
+## Folder (or top-level test repository) structure
+
+To execute this strategy, the folder is organised into several distinct assurance categories:
+
+```text
+60-tests/
+├── 100-conformance-scenarios/    # FUNCTIONAL (Business Logic)
+│   ├── onboarding/
+│   ├── liquidity-reservation/
+│   └── ...                       # (Other features)
+│
+├── 200-contract-definitions/     # INTERFACES (Schemas)
+│   ├── common/                   # Shared types (e.g. Error models)
+│   ├── onboarding/
+│   └── ...
+│
+├── 300-security/                 # SECURITY (Abuse Cases & Auth)
+│   ├── system-level/             # Global Rules (e.g. TLS, Rate Limiting)
+│   ├── onboarding/               # Feature-specific (e.g. Role Separation)
+│   └── ...
+│
+├── 400-operational/              # OPERATIONAL (NFRs)
+│   ├── system-level/             # Smoke Tests & Region Failover
+│   ├── onboarding/               # Feature SLOs (e.g. 5 TPS)
+│   ├── liquidity-reservation/    # Feature SLOs (e.g. 50k TPS)
+│   └── ...
+│
+└── 900-test-vectors/             # DATA (Invariants)
+    ├── onboarding/
+    └── ...
+``` 
+
+| Folder | Purpose | Format |
+| :--- | :--- | :--- |
+| **100-conformance-scenarios** | **Functional.** Business logic and feature behaviour. | Gherkin |
+| **200-contract-definitions** | **Interfaces.** Static API constraints. | JSON Schema |
+| **300-security** | **Security.** Abuse cases, authorisation limits, and audit integrity. | Gherkin |
+| **400-operational** | **Non-Functional.** Readiness (smoke), resilience scenarios, and performance SLOs. | Gherkin / YAML |
+| **900-test-vectors** | **Invariants.** Golden data. | JSON / CSV |
 
 
 ## Relationship to specifications
