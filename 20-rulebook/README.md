@@ -44,15 +44,22 @@ The Digital Euro Rulebook is organised by functional domain in this demonstratio
 | [`functional-onboarding.md`](./functional-onboarding.md) | Rules for entry and identity. | One Person/One Identity, KYC responsibilities, Portability. |
 | [`liquidity-and-waterfall.md`](./liquidity-and-waterfall.md) | Rules for funding and defunding. | Manual funding, Automated Waterfall, Reverse Waterfall, Holding Limits. |
 
+
 ## Traceability Relationships
 
-This folder sits at the center of the traceability chain:
+This Rulebook Set (`SET-RULEBOOK`) sits at the center of the traceability chain.
 
-- **Upstream (`10-legal-framework`):** Rules here derive their authority from the Legal Framework.
+- **Upstream (`10-legal-framework`):**
+  Rules here derive their authority from the external Legal Framework.
     * *Example:* The "Reverse Waterfall" rule derives from the legal mandate to prevent excessive capital flight from commercial banks.
+
 - **Downstream (`30-architecture` & `40-specifications`):**
-    * Technical specifications MUST reference specific Rulebook artefacts to justify their existence.
-    * **Linting Rule `LINT-T2`** enforces that every Specification anchors to a Rule.
+  Technical specifications and architectural decisions MUST reference specific rules within this Set.
+
+    * **Version-Awareness:** Downstream artefacts must cite the **Set Version** (e.g., `@rule=SET-RULEBOOK:0.1.0`) exactly as declared in this folder's **`manifest.yaml`**. This ensures that technical decisions are bound to a specific, immutable version of the rules.
+    * **Enforcement:**
+        * **`LINT-T2`** enforces that every Specification anchors to a Rule.
+        * **`LINT-T4`** enforces that the reference includes the specific version suffix to prevent drift.
 
 ## Governance
 

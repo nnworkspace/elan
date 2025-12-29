@@ -43,13 +43,17 @@ The architecture is defined through three primary views:
 
 ## Traceability Relationships
 
-- **Upstream (`20-rulebook`):** Every architectural component exists to satisfy a Rule.
-    - *Example:* The **Alias Service** component exists to satisfy the *Single Identity Principle* (`functional-onboarding.md`).
-    - *Example:* The **Waterfall Engine** component exists to satisfy the *Liquidity Management* rules (`liquidity-and-waterfall.md`).
+This Architecture Set (`SET-ARCH`) sits between the rules and the detailed specifications.
 
-- **Downstream (`40-specifications`):**
-    - Specifications define the *interfaces* (APIs) for the components listed here.
-    - Code (`50-code`) implements the components defined here.
+- **Upstream (`20-rulebook`):**
+  Every architectural component exists to satisfy a Rule.
+    - *Example:* The **Alias Service** component exists to satisfy the *Single Identity Principle* defined in the Rulebook.
+    - **Version-Awareness:** Architectural decisions must reference the specific **Rulebook Set Version** (e.g., `@rule=SET-RULEBOOK:1.0.0`) as declared in `20-rulebook/manifest.yaml`. This ensures our design satisfies the exact rules in force at the time of design.
+    - **Enforcement:** `LINT-T2` (Anchoring) and `LINT-T4` (Version Syntax).
+
+- **Downstream (`40-specifications` & `50-code`):**
+    - **Specifications (`40`):** detailed technical specifications (e.g. `SPEC-SET-ONB`) must cite the **Architecture Set Version** (e.g. `@arch=SET-ARCH:0.1.0`) they realise. This prevents specifications from implementing features that deviate from the agreed system design.
+    - **Code (`50`):** Implementations must trace back to the architectural components they realise.
 
 ## Governance
 

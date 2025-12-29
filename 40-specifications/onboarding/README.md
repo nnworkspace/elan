@@ -1,22 +1,24 @@
 ---
-artefact_type: governance
+artefact_type: specification
 visibility: public
 audience: everyone
 form: text
-role: governance
+role: documentation
 status: informative
-owner: system-architect
+owner: system-design
 ---
 
-# Technical Specifications
+# Participant Onboarding Specification Set
 
-## 1. Scope and Methodology
+## 1. Identity and Scope
 
-This folder contains the **Technical Specifications** (TS) set that define the binding state of the system.
+This folder contains the **Participant Onboarding Specification Set** (`SPEC-SET-ONB`).
 
-Each file has a distinct role. Together they form a complete, layered specification
-governing how liquidity is reserved, consumed, and released within the Digital Euro system.
+It defines the technical requirements, interfaces, data models, and state machines required to onboard a new Participant (PSP) onto the Digital Euro infrastructure.
 
+### Versioning Strategy
+**This folder is versioned as an atomic unit.**
+The current normative version of this set is defined in the **[`manifest.yaml`](./manifest.yaml)** file. Individual Markdown files do not carry independent version numbers.
 
 ## 2. ⚠️ LEGAL NOTICE: FICTIONAL CONTENT
 
@@ -26,23 +28,50 @@ governing how liquidity is reserved, consumed, and released within the Digital E
 >
 > **Do not use these specifications to build actual software for the Digital Euro.**
 
+## 3. Traceability & Dependencies
 
-## 3. The Specification Registry
+This Specification Set is not standalone. It acts as the bridge between high-level mandates and concrete verification.
 
-The specifications in this folder are organised as a modular **Standardisation Set**.
+### 3.1 Upstream Dependencies (Mandates)
 
-### Feature: Participant Onboarding
+This set implements mandates defined in the following governed sets:
 
-| ID | Title | Role |
+- **Rulebook:** implements the *Participant Onboarding Rules* from:
+    - `@rule=SET-RULEBOOK:0.9.0` (specifically `functional-onboarding.md`)
+- **Architecture:** adheres to the *System Context* and *Security Zones* from:
+    - `@arch=SET-ARCH:0.1.0`
+
+### 3.2 Downstream Consumers (Verification)
+
+The following artefacts rely on the version of this specification set:
+
+- **Test Suite:** The logic here is verified by the Conformance Test Suite:
+    - `@test=TEST-SET-ONB:0.1.1` (located in `60-tests/100-conformance-scenarios/onboarding/`)
+- **Implementation:** The Reference Implementation derives its logic from here:
+    - `50-code/adapter-service` (must declare compliance to `SPEC-SET-ONB:0.1.1`)
+
+**Traceability Enforcement:**
+
+Mismatches between the version defined in `manifest.yaml` and the versions cited by downstream consumers will be flagged by **LINT-T5 (Spec Drift)**.
+
+## 4. The Specification Suite
+
+The set consists of the following modular components.
+Each component has a unique **Global ID** to allow precise citation in code and tests (e.g., `Ref: SPEC-OB-FUNC`).
+
+| Global ID | File | Role |
 | :--- | :--- | :--- |
-| **[SPEC-ROOT]** | [`onboarding-spec-overview.md`](./onboarding-spec-overview.md) | **Root Document**<br>Defines the Scope, Document Map, and Traceability rules. |
-| **[SPEC-FUNC]** | [`onboarding-functional-spec.md`](./onboarding-functional-spec.md) | **Functional Spec**<br>Defines the State Machine (`DRAFT` → `ACTIVE`) and business rules. |
-| **[SPEC-INT]** | [`onboarding-interfaces-spec.md`](./onboarding-interfaces-spec.md) | **Interface Spec**<br>Defines the interaction flows between PSP and Platform. |
-| **[SPEC-DATA]** | [`onboarding-data-model-spec.md`](./onboarding-data-model-spec.md) | **Data Model Spec**<br>Defines the authoritative entities and privacy constraints. |
-| **[SPEC-API]** | [`openapi.yaml`](./openapi.yaml) | **OpenAPI Definition**<br>Machine-readable contract implementing the above specs. |
+| **SPEC-OB-ROOT** | [`onboarding-spec-overview.md`](./onboarding-spec-overview.md) | **Root Document**<br>Defines the Scope, Document Map, and Traceability rules. |
+| **SPEC-OB-FUNC** | [`onboarding-functional-spec.md`](./onboarding-functional-spec.md) | **Functional Spec**<br>Defines the State Machine (`DRAFT` → `ACTIVE`) and business rules. |
+| **SPEC-OB-INT** | [`onboarding-interfaces-spec.md`](./onboarding-interfaces-spec.md) | **Interface Spec**<br>Defines the interaction flows between PSP and Platform. |
+| **SPEC-OB-DATA** | [`onboarding-data-model-spec.md`](./onboarding-data-model-spec.md) | **Data Model Spec**<br>Defines the authoritative entities and privacy constraints. |
+| **SPEC-OB-API** | [`openapi.yaml`](./openapi.yaml) | **OpenAPI Definition**<br>Machine-readable contract implementing the above specs. |
 
-## 4. Governance & Linting
+## 5. Governance & Linting
 
-* **LINT-T2 (Traceability):** All specifications MUST include a "Normative References" clause linking to the Rulebook.
-* **LINT-V1 (Visibility):** Public specifications cannot reference Confidential internal documents.
+This folder is subject to the following automated governance rules:
 
+- **LINT-T2 (Anchoring):** Every specification file must reference a Rulebook ID.
+- **LINT-T4 (Version Syntax):** References must include the version suffix (e.g., `:0.1.0`).
+- **LINT-T5** (Spec Drift): Referenced versions must match the `RELEASED` version in the target manifest.
+- **LINT-C1 (Classification):** All files must carry valid YAML metadata headers.
