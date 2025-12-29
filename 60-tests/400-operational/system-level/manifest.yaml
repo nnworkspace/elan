@@ -1,0 +1,41 @@
+artefact_type: evidence
+form: text
+role: manifest
+visibility: public
+audience: everyone
+status: FICTIONAL-RELEASED
+
+set:
+  id: OPS-SYS
+  name: System-level Operational Assurance
+  version: 0.1.0
+  description: >
+    Operational assurance set defining system-wide guarantees
+    related to deployability, availability, resilience,
+    and operational readiness. These guarantees apply uniformly
+    across all features and components.
+
+upstream:
+  specifications:
+    - id: SPEC-OPS-GLOBAL
+      version: 0.1
+  rulebooks:
+    - id: RULEBOOK-DE
+      version: 0.9
+
+contains:
+  - SYS-OPT-deploy-readiness.yaml
+  
+governance:
+  owner: system-quality
+  review_cycle: per-release
+  change_policy: versioned-set-only
+
+notes:
+  - >
+    This manifest defines an atomic system-level operational
+    assurance baseline. All contained artefacts inherit the
+    version and lifecycle state declared here.
+  - >
+    System-level operational assurances apply regardless of
+    feature-specific behaviour and MUST always hold.

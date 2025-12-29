@@ -1,8 +1,8 @@
-# artefact_type: test
+# artefact_type: evidence
 # visibility: public
 # audience: everyone
 # form: text
-# role: test
+# role: evidence
 # status: normative
 # owner: system-security
 

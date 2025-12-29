@@ -1,0 +1,51 @@
+# artefact_type: evidence
+# visibility: public
+# audience: everyone
+# form: text
+# role: evidence
+# status: operative
+# owner: system-quality
+
+# ------------------------------------------------------------------------------
+# Operational Assurance Manifest: Onboarding Capability
+# ------------------------------------------------------------------------------
+# Tracing: Validates 'onboarding' specific operational expectations as per
+# the folder organization guidelines in the README.
+# ------------------------------------------------------------------------------
+
+metadata:
+  # Tracing: Unique ID for audit logs
+  assurance_id: "OPS-ONB-001"
+  # Tracing: Links to the specific throughput requirement for Onboarding
+  upstream_id: "REQ-ONB-PERF-050" 
+  # Tracing: Verifies against this specific version of the requirement
+  upstream_version: "v2.1.0"
+  scope: "onboarding"
+  type: "performance-profile"
+  description: "Defines throughput capacity and latency SLOs for user onboarding."
+
+load_profile:
+  # Tracing: Baseline traffic as defined in 'Marketing Campaign Q3' projections
+  nominal_throughput: 100  # RPS (Requests Per Second)
+  # Tracing: Max capacity claim based on hardware provisioning (REQ-INFRA-09)
+  spike_throughput: 5000   # RPS
+
+service_level_objectives:
+  latency:
+    # Tracing: "95% of requests < 200ms" (SLO-ONB-LAT-01)
+    p95_threshold_ms: 200
+    # Tracing: "99% of requests < 500ms" (SLO-ONB-LAT-02)
+    p99_threshold_ms: 500
+    # Tracing: Hard timeout limit to prevent connection pile-up
+    max_threshold_ms: 1000
+  
+  error_budget:
+    # Tracing: Allowable failure rate (0.1%) during normal operation
+    max_error_rate_nominal: 0.001 
+    
+  degradation_policy:
+    # Tracing: Failover behavior defined in REQ-RESILIENCE-04
+    allow_partial_outage: true
+    min_success_rate_under_stress: 0.80 # 80% success
+    expected_error_code: 429 # Too Many Requests
+    recovery_time_seconds: 60

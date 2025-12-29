@@ -1,6 +1,6 @@
-artefact_type: assurance-set
-form: manifest
-role: security-assurance
+artefact_type: evidence
+form: text
+role: manifest
 visibility: public
 audience: everyone
 status: FICTIONAL-RELEASED

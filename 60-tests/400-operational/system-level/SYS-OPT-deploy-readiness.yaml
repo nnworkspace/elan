@@ -1,0 +1,56 @@
+# artefact_type: evidence
+# visibility: public
+# audience: everyone
+# form: text
+# role: evidence
+# status: operative
+# owner: system-quality
+
+# ------------------------------------------------------------------------------
+# Operational Assurance Manifest: System Level
+# ------------------------------------------------------------------------------
+# Tracing: This manifest validates global operational guarantees as defined in 
+# the 'system-level/' scope of the Operational Assurance README.
+# ------------------------------------------------------------------------------
+
+metadata:
+  # Tracing: Unique ID for audit logs
+  assurance_id: "OPS-SYS-001"
+  # Tracing: Links to the functional requirement for Deployment & Availability
+  upstream_id: "REQ-SYS-OPS-001"
+  # Tracing: Verifies against this specific version of the requirement
+  upstream_version: "v1.2.0"
+  scope: "system-level"
+  type: "smoke-test"
+  description: "Verifies deployment sanity, startup timeouts, and health check availability."
+
+expectations:
+  startup:
+    # Tracing: Derived from non-functional requirement NFR-STARTUP-05 (max 60s cold start)
+    min_uptime_seconds: 60
+    
+  health_checks:
+    live_endpoint:
+      path: "/health/live"
+      method: "GET"
+      # Tracing: Standard Kubernetes liveness probe timeout allowance
+      timeout_ms: 5000
+      # Tracing: Must align with 'initialDelaySeconds' in k8s deployment.yaml
+      max_startup_latency_seconds: 30
+      expected_status: 200
+    
+    ready_endpoint:
+      path: "/health/ready"
+      method: "GET"
+      # Tracing: Ensures traffic is not routed until dependencies are verified
+      expected_body_json_match: 
+        status: "UP"
+
+  observability:
+    # Tracing: Required for SRE dashboards (OPS-DASH-01)
+    metrics_endpoint: "/metrics"
+    required_metrics:
+      - "system_uptime_seconds"
+      - "jvm_memory_used_bytes"
+
+      
