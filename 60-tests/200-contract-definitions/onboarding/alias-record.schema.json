@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://specs.digitaleuro.eu/schemas/onboarding/record/v1",
+  "_header": {
+    "artefact_type": "contract_definition",
+    "visibility": "public",
+    "audience": "everyone",
+    "form": "text",
+    "role": "assurance",
+    "status": "normative",
+    "owner": "system-quality",
+    "traceability": [
+      "@spec=SPEC-OB-DATA:0.1.0"
+    ]
+  },
+  "title": "Alias Record Contract",
+  "description": "Validates the authoritative User Record returned by the Eurosystem. Traces to the Data Model Specification.",
+  "type": "object",
+  "required": [
+    "alias_id",
+    "status",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "alias_id": {
+      "type": "string",
+      "description": "The unique identifier stored in the central registry. [Trace: DAT-ALS-01]",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "status": {
+      "type": "string",
+      "description": "Lifecycle state of the alias. [Trace: DAT-ALS-03]",
+      "enum": [
+        "ACTIVE",
+        "SUSPENDED"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp of registration."
+    }
+  }
+}

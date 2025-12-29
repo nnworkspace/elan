@@ -1,0 +1,34 @@
+# artefact_type: evidence
+# visibility: public
+# audience: everyone
+# form: text
+# role: manifest
+# status: normative
+# owner: system-quality
+
+meta:
+  # Unique Identifier for this Contract Set
+  id: CONTRACT-SET-ONB
+  
+  # Human-readable title
+  title: "Onboarding Interface Contracts (Schemas)"
+  
+  # Version of these Contract Definitions
+  version: "0.1.0"
+  
+  # Lifecycle State
+  status: FICTIONAL-RELEASED
+  
+  date: 2025-12-29
+
+# Dependency Declaration:
+# Validates interfaces defined in the following Spec Set
+targets:
+  specification_id: SPEC-SET-ONB
+  specification_version: "0.1.0"
+
+# The executable contents (JSON Schemas)
+contains:
+  - onboarding-request.schema.json
+  - alias-record.schema.json
+
