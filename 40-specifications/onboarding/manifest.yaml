@@ -1,0 +1,34 @@
+# artefact_type: specification
+# visibility: public
+# audience: everyone
+# form: text
+# role: manifest
+# status: operative
+# owner: system-architect
+
+meta:
+  # Unique Identifier for the Onboarding Product
+  id: SPEC-SET-ONB
+  
+  # Human-readable title
+  title: "Participant Onboarding Specification Set"
+  
+  # The Normative Version (This is the "Truth" for tests)
+  version: "1.0.0"
+  
+  # The Lifecycle State
+  status: FICTIONAL-RELEASED
+  
+  # The Freeze Date
+  date: 2025-10-15
+
+# The explicit list of files that constitute this version
+# Derived from your folder structure
+contains:
+  - README.md
+  - onboarding-spec-overview.md
+  - onboarding-functional-spec.md
+  - onboarding-data-model-spec.md
+  - onboarding-interfaces-spec.md
+  - openapi.yaml
+

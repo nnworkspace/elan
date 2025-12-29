@@ -1,0 +1,34 @@
+# artefact_type: test
+# visibility: public
+# audience: everyone
+# form: text
+# role: manifest
+# status: operative
+# owner: system-quality
+
+meta:
+  # Unique Identifier for this Test Suite
+  id: TEST-SET-ONB
+  
+  # Human-readable title
+  title: "Participant Onboarding Conformance Suite"
+  
+  # The Version of the *Tests* (Not the specs!)
+  # Example: We fixed a bug in the test code, so we bump to 1.0.1
+  version: "0.1.1"
+  
+  # Lifecycle State
+  status: FICTIONAL-RELEASED
+  
+  date: 2025-10-20
+
+# Dependency Declaration:
+# This Test Suite is designed to validate the following Spec Version
+targets:
+  specification_id: SPEC-SET-ONB
+  specification_version: "0.1.0"
+
+# The executable contents
+contains:
+  - ONB-TS-01-submission.feature
+  - ONB-TS-02-activation.feature

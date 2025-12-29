@@ -1,0 +1,30 @@
+# artefact_type: rulebook
+# visibility: public
+# audience: everyone
+# form: text
+# role: manifest
+# status: operative
+# owner: scheme-authority
+
+meta:
+  # Unique Identifier for the Rulebook Set
+  id: SET-RULEBOOK
+  
+  # Human-readable title
+  title: "Digital Euro Scheme Rulebook"
+  
+  # The Normative Version
+  version: "0.9.0"
+  
+  # The Lifecycle State
+  status: FICTIONAL-RELEASED
+  
+  # The Freeze Date
+  date: 2025-10-15
+
+# The explicit list of files that constitute this version
+contains:
+  - README.md
+  - actors-and-roles.md
+  - functional-onboarding.md
+  - liquidity-and-waterfall.md

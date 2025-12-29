@@ -1,0 +1,30 @@
+# artefact_type: specification
+# visibility: public
+# audience: everyone
+# form: text
+# role: manifest
+# status: operative
+# owner: system-architecture
+
+meta:
+  # Unique Identifier for the Architecture Set
+  id: SET-ARCH
+  
+  # Human-readable title
+  title: "High-Level System Architecture"
+  
+  # The Normative Version
+  version: "0.1.0"
+  
+  # The Lifecycle State
+  status: FICTIONAL-RELEASED
+  
+  # The Freeze Date
+  date: 2025-12-29
+
+# The explicit list of files that constitute this version
+contains:
+  - README.md
+  - system-context.md
+  - component-inventory.md
+  - security-and-privacy-zones.md
