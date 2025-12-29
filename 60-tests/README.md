@@ -10,16 +10,11 @@ owner: system-quality
 
 # System Tests and Evidence
 
-This folder contains **system-level tests, acceptance criteria, and assurance artefacts**
-derived from the project’s specifications.
+This folder contains **system-level tests, acceptance criteria, and assurance artefacts** derived from the project’s specifications.
 
-It exists to demonstrate — in a structured and auditable way —
-that the system behaves as intended **across components** and **over time**.
+It exists to demonstrate — in a structured and auditable way — that the system behaves as intended **across components** and **over time**.
 
-This is not a collection of unit tests or framework-level test suites.
-It is an **evidence layer**.
-
----
+This is not a collection of unit tests or framework-level test suites. It is an **evidence layer**.
 
 ## Purpose
 
@@ -35,30 +30,23 @@ What ultimately matters is that:
 
 This folder provides that evidence.
 
----
 
 ## Specifications vs verification artefacts
 
 It is essential to distinguish clearly between **specifications** and the artefacts stored in this folder.
 
-Specifications describe **what the system must do**.
-They define intent, behaviour, and constraints, independent of how compliance is demonstrated.
+Specifications describe **what the system must do**. They define intent, behaviour, and constraints, independent of how compliance is demonstrated.
 
-The artefacts in this folder describe something different:
-they specify **how confidence is established** that the specifications are being met.
+The artefacts in this folder describe something different: they specify **how confidence is established** that the specifications are being met.
 
 In other words:
 
 - specifications state *what must be true*,
 - verification artefacts state *how we know it is true*.
 
-For this reason, verification artefacts are intentionally **not part of the specification layer**.
-They sit downstream, translating normative intent into concrete, testable claims.
+For this reason, verification artefacts are intentionally **not part of the specification layer**. They sit downstream, translating normative intent into concrete, testable claims.
 
-This separation allows specifications to remain stable and timeless,
-while verification methods can evolve as tools, environments, and risk profiles change.
-
----
+This separation allows specifications to remain stable and timeless, while verification methods can evolve as tools, environments, and risk profiles change.
 
 ## Claims, evidence, and tools
 
@@ -70,12 +58,9 @@ A typical verification artefact expresses:
 - the conditions under which the claim must hold,
 - the types of evidence that are acceptable to substantiate it.
 
-The **tools used to produce that evidence** — such as load-testing frameworks,
-security scanners, or custom scripts — are deliberately treated as interchangeable
-implementation details.
+The **tools used to produce that evidence** — such as load-testing frameworks, security scanners, or custom scripts — are deliberately treated as interchangeable implementation details.
 
-Tool-specific artefacts are therefore not stored here.
-They may live in component repositories, vendor environments, or secured CI/CD pipelines.
+Tool-specific artefacts are therefore not stored here. They may live in component repositories, vendor environments, or secured CI/CD pipelines.
 
 This distinction is intentional:
 
@@ -92,7 +77,6 @@ By separating claims from tooling, this folder enables:
 - secure handling of sensitive test configurations,
 - and long-term auditability without exposing internal attack surfaces.
 
----
 
 ## What belongs in this folder
 
@@ -101,6 +85,7 @@ The artefacts in this folder describe **what must be true of the system** at a s
 They typically cover:
 
 ### Feature-level assurances
+
 - **End-to-end acceptance tests**  
   Validating complete business flows (e.g. onboarding lifecycle) across multiple components.
 
@@ -113,10 +98,12 @@ They typically cover:
 - **Invariant checks**  
   Asserting properties that must always hold (e.g. valid lifecycle order, uniqueness rules).
 
-- **Smoke tests**  
-  Minimal system readiness checks used after deployment or configuration changes.
-
 ### Operational and non-functional assurances
+
+- **Smoke tests**  
+  Minimal system readiness checks used after deployment or configuration changes,
+  acting as gates before deeper testing is performed.
+
 - **Security assurances**  
   Behavioural guarantees such as authentication enforcement, authorisation rules,
   and audit event generation.
@@ -129,11 +116,10 @@ They typically cover:
   Uptime targets, recovery time objectives (RTO), and recovery point objectives (RPO),
   typically derived from contractual or institutional obligations.
 
-These artefacts may be implemented as automated tests, manual procedures,
-simulations, or derived reports.
+These artefacts may be implemented as automated tests, manual procedures, simulations, or derived reports.
+
 The key requirement is that they are **traceable to specifications and obligations**.
 
----
 
 ## What does not belong in this folder
 
@@ -145,23 +131,18 @@ The following do **not** belong here and should live close to the code or toolin
 - micro-benchmarks or tuning experiments,
 - tool-specific load or penetration testing scripts.
 
-Those are implementation concerns.
-This folder is concerned with **system behaviour, assurance, and trust**.
+Those are implementation concerns. This folder is concerned with **system behaviour, assurance, and trust**.
 
----
 
 ## Relationship to specifications
 
-Every artefact in this folder SHOULD reference one or more specification identifiers
-from the `40-specifications/` layer.
+Every artefact in this folder SHOULD reference one or more specification identifiers from the `40-specifications/` layer.
 
 This establishes a clear chain:
 
 > **Specification → Verification / Evidence → Report**
 
 Automation may enforce this relationship.
-
----
 
 ## Relationship to CI/CD and reports
 
@@ -171,30 +152,19 @@ Tests and evidence defined here are typically:
 - summarised into higher-level reports,
 - consumed by engineers, architects, auditors, and executives.
 
-The `70-reports/` folder contains **derived views** of this evidence.
-This folder contains the **source assertions**.
-
----
+The `70-reports/` folder contains **derived views** of this evidence. This folder contains the **source assertions**.
 
 ## A note on tone and intent
 
 This folder is intentionally technology-agnostic.
 
-Its purpose is not to prescribe *how* to test,
-but to make explicit **what claims are being made about the system**
-and **how those claims can be justified**.
+Its purpose is not to prescribe *how* to test, but to make explicit **what claims are being made about the system** and **how those claims can be justified**.
 
-In institutional projects, this clarity is often more valuable
-than any single test framework.
-
----
+In institutional projects, this clarity is often more valuable than any single test framework.
 
 ## Disclaimer
 
 The contents of this folder are **illustrative and educational**.
 
-They demonstrate how system-level assurance and traceability
-could be organised in a complex, multi-stakeholder project.
-They do not represent official test suites or audit requirements
-for the Digital Euro or any other real system.
+They demonstrate how system-level assurance and traceability could be organised in a complex, multi-stakeholder project. They do not represent official test suites or audit requirements for the Digital Euro or any other real system.
 
