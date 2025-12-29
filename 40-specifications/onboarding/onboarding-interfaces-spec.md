@@ -12,296 +12,128 @@ owner: system-architecture
 
 ## Purpose
 
-This document defines the **behavioural interactions between system components**
-required to implement the participant onboarding lifecycle.
+This document defines the **component interactions** required to execute the onboarding lifecycle.
+It maps the abstract **State Transitions** (defined in the Functional Spec) to concrete **Interface Operations**.
 
-It bridges:
+## 1. Component Inventory (Actors)
 
-- the **functional onboarding requirements**, and
-- concrete **API and protocol specifications** (e.g. OpenAPI).
+The specific architectural components participating in these flows.
 
-This specification defines *what interactions must occur*, not *how they are technically realised*.
+| ID | Component Name | Role | Responsibility | Trace |
+| :--- | :--- | :--- | :--- | :--- |
+| **SYS-PSP** | **PSP Gateway** | Client | Initiates requests; handles retries and idempotency keys. | `COMP-PSP-01` |
+| **SYS-GWY** | **Access Gateway** | Interface | Termination point for TLS; validates mTLS and Idempotency. | `COMP-EUR-05` |
+| **SYS-CORE** | **DESP Core** | Server | The System of Record. Executes the state change. | `COMP-EUR-04` |
 
----
+## 2. Interface Operation Catalog
 
-## Normative references
+The list of logical operations exposed by the Access Gateway (`SYS-GWY`) to support onboarding.
 
-This specification is constrained by:
+| Op ID | Operation Name | Direction | Functional Trace |
+| :--- | :--- | :--- | :--- |
+| **OP-ONB-01** | `SubmitParticipant` | `PSP` $\to$ `EUR` | Executes `TR-03` (Draft $\to$ Submitted) |
+| **OP-ONB-02** | `GetParticipantStatus` | `PSP` $\to$ `EUR` | Queries `DAT-PAR-005` (Lifecycle State) |
+| **OP-ONB-03** | `ActivateParticipant` | `PSP` $\to$ `EUR` | Executes `TR-06` (Verified $\to$ Active) |
 
-- *Participant Onboarding — Functional Specification*  
-- *System Architecture — Component Inventory*  
+## 3. Interaction Flows
 
-All interactions described here **MUST** comply with the functional requirements and lifecycle rules defined upstream.
+### 3.1 Flow: Submission (Happy Path)
 
----
+This flow covers the transition from `DRAFT` to `SUBMITTED`.
 
-## Architectural components in scope
-
-This specification applies to the following components:
-
-- **COMP-PSP-01 — Digital Euro Gateway (PSP-side)**  
-- **COMP-EUR-04 — Digital Euro Service Platform (DESP)**  
-- **COMP-EUR-05 — Digital Euro Access Gateway**  
-- **COMP-EUR-02 — Alias Service** (indirectly)
-
----
-
-## Interaction principles
-
-### INT-G-01 — Layered responsibility
-
-Participant onboarding is a **joint responsibility**:
-
-- **PSP-side gateways** handle client-facing interactions, retries, idempotency, and pre-validation.
-- **DESP services**, accessed via the **Access Gateway**, perform authoritative platform operations.
-
-No single component **MAY** bypass this separation of concerns.
-
----
-
-### INT-G-02 — Canonical platform access
-
-All PSP interactions with DESP **MUST** occur via the **Digital Euro Access Gateway**.
-
-Direct access to internal DESP services **MUST NOT** be exposed.
-
----
-
-### INT-G-03 — Explicit orchestration
-
-Lifecycle state transitions **MUST** be triggered explicitly.
-
-Neither PSP gateways nor DESP services **MAY** advance onboarding state implicitly.
-
----
-
-### INT-G-04 — Idempotent invocation
-
-PSP-facing onboarding operations **MUST** support idempotent invocation.
-
-- Idempotency handling is the responsibility of **COMP-PSP-01**.
-- Replayed requests **MUST NOT** result in duplicate side effects.
-- Conflicting reuse of idempotency keys **MUST** be rejected.
-
----
-
-## Interface responsibilities
-
-### Digital Euro Gateway (PSP-side) — `COMP-PSP-01`
-
-The PSP-side Digital Euro Gateway **MUST**:
-
-- expose onboarding APIs to internal PSP systems  
-- authenticate and authorise PSP actors  
-- handle request retries and idempotency  
-- perform syntactic and completeness validation  
-- invoke the Digital Euro Access Gateway for authoritative operations  
-
-It **MUST NOT**:
-
-- create or mutate authoritative onboarding state within DESP  
-- bypass platform validation rules  
-
----
-
-### Digital Euro Access Gateway — `COMP-EUR-05`
-
-The Access Gateway **MUST**:
-
-- authenticate and authorise PSP system identities  
-- validate request semantics and lifecycle preconditions  
-- route authorised requests to appropriate DESP services  
-- enforce platform-level controls (rate limiting, logging, observability)  
-
-It **MUST NOT**:
-
-- perform PSP-specific business logic  
-- process or store end-user PII  
-
----
-
-### Digital Euro Service Platform (DESP) — `COMP-EUR-04`
-
-DESP services **MUST**:
-
-- persist authoritative participant records  
-- enforce lifecycle state integrity  
-- perform platform-level checks (e.g. alias uniqueness where applicable)  
-- generate audit-relevant events for onboarding decisions  
-
-DESP services **MUST NOT**:
-
-- accept direct calls from PSPs  
-- rely on PSP-side state for lifecycle authority  
-
----
-
-## Interaction flows
-
-### Flow 1 — Draft creation
+**Visualisation (Normative)**
 
 ```mermaid
 sequenceDiagram
-    participant PSP as PSP Integration Layer
-    participant AG as Digital Euro Access Gateway
-    participant DESP as Digital Euro Service Platform
+    autonumber
+    participant PSP as PSP Gateway (SYS-PSP)
+    participant GWY as Access Gateway (SYS-GWY)
+    participant CORE as DESP Core (SYS-CORE)
 
-    PSP->>AG: Create participant (draft)
-    AG->>AG: Authenticate & authorise PSP
-    AG->>DESP: Create participant record
-    DESP-->>AG: Record created (state = DRAFT)
-    AG-->>PSP: Participant ID
+    Note over PSP, CORE: Context: User wants to submit application (TR-03)
+
+    PSP->>GWY: POST /participants (Idempotency-Key: UUID)
+    
+    activate GWY
+    GWY->>GWY: Validate mTLS & QWAC
+    
+    GWY->>CORE: Forward Request
+    activate CORE
+    CORE->>CORE: Validate Mandatory Fields (ONB-VAL-02)
+    CORE->>CORE: Check Uniqueness (ONB-GEN-01)
+    CORE->>CORE: Write State: SUBMITTED
+    CORE-->>GWY: 201 Created (ParticipantID)
+    deactivate CORE
+
+    GWY-->>PSP: 201 Created (ParticipantID)
+    deactivate GWY
 ```
 
-**Trigger:** onboarding initiation by PSP
+**Step-by-Step Definition**
 
-1. PSP actor invokes the PSP-side Digital Euro Gateway to create a participant record.
-2. The PSP Gateway validates request structure.
-3. The PSP Gateway calls the Digital Euro Access Gateway.
-4. The Access Gateway routes the request to DESP.
-5. DESP creates a participant record in state `DRAFT`.
-6. The participant identifier is returned to the PSP.
+| Step ID | Sender | Receiver | Message / Action | Constraints / Rules | Trace |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **STEP-SUB-01** | `SYS-PSP` | `SYS-GWY` | `POST /participants` | Must include `Idempotency-Key` header. | `INT-TEC-01` |
+| **STEP-SUB-02** | `SYS-GWY` | `SYS-GWY` | *Authenticate* | Must validate eIDAS QWAC certificate. | `SEC-AUTH-01` |
+| **STEP-SUB-03** | `SYS-GWY` | `SYS-CORE` | *Forward* | Internal secure channel (mTLS). | `ARCH-SEC-02` |
+| **STEP-SUB-04** | `SYS-CORE` | `SYS-CORE` | *Validate* | Execute Rule `ONB-VAL-02` (Completeness). | `TR-03` |
+| **STEP-SUB-05** | `SYS-CORE` | `SYS-PSP` | `201 Created` | Body must contain `participant_id` and `state=SUBMITTED`. | `DAT-PAR-005` |
 
-**Constraints:**
-- No eligibility or certification checks are performed.
-- The operation MUST be idempotent at the PSP gateway.
+### 3.2 Flow: Activation (Key Exchange)
 
----
+This flow covers the transition from `VERIFIED` to `ACTIVE`.
 
-### Flow 2 — Submission
+**Visualisation (Normative)**
 
 ```mermaid
 sequenceDiagram
-    participant PSP as PSP Integration Layer
-    participant AG as Digital Euro Access Gateway
-    participant DESP as Digital Euro Service Platform
+    autonumber
+    participant PSP as PSP Gateway
+    participant GWY as Access Gateway
+    participant CORE as DESP Core
 
-    PSP->>AG: Submit onboarding data
-    AG->>AG: Validate request & lifecycle preconditions
-    AG->>DESP: Transition DRAFT → SUBMITTED
-    DESP-->>AG: State updated
-    AG-->>PSP: Submission accepted
-
+    PSP->>GWY: POST /participants/{id}/activate
+    GWY->>CORE: Forward Command
+    
+    CORE->>CORE: Verify State == VERIFIED (Guard)
+    CORE->>PSP: Fetch JWKS (Public Keys)
+    PSP-->>CORE: Return JWK Set
+    
+    CORE->>CORE: Validate Keys
+    CORE->>CORE: Write State: ACTIVE
+    
+    CORE-->>PSP: 200 OK (Status: ACTIVE)
 ```
 
-**Trigger:** explicit submission by PSP
+**Step-by-Step Definition**
 
-1. PSP actor invokes submission via the PSP Gateway.
-2. The PSP Gateway validates completeness.
-3. The PSP Gateway invokes the Access Gateway.
-4. The Access Gateway validates lifecycle preconditions.
-5. DESP transitions the participant from `DRAFT` to `SUBMITTED`.
+| Step ID | Sender | Receiver | Message / Action | Constraints / Rules | Trace |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **STEP-ACT-01** | `SYS-PSP` | `SYS-GWY` | `POST .../activate` | Only permitted if current state is `VERIFIED`. | `TR-06` |
+| **STEP-ACT-02** | `SYS-CORE` | `SYS-PSP` | `GET {jwks_url}` | System must verify the PSP's signing keys are reachable. | `ONB-VAL-03` |
+| **STEP-ACT-03** | `SYS-CORE` | `SYS-CORE` | *State Transition* | Audit log must record `TR-06`. | `ONB-AUD-01` |
 
-**Constraints:**
-- Incomplete submissions MUST be rejected.
-- Duplicate submissions MUST be idempotent.
 
----
+## 4. Technical Constraints
 
-### Flow 3 — Verification
+Cross-cutting technical rules for all interfaces.
 
-```mermaid
-sequenceDiagram
-    participant PSP as PSP Integration Layer
-    participant AG as Digital Euro Access Gateway
-    participant DESP as Digital Euro Service Platform
+| ID | Constraint | Requirement Description | Trace |
+| :--- | :--- | :--- | :--- |
+| **INT-TEC-01** | **Idempotency** | All state-changing verbs (`POST`, `PUT`, `PATCH`) MUST require an `Idempotency-Key` HTTP header (UUID v4). | `ONB-GEN-03` |
+| **INT-TEC-02** | **Sync/Async** | Onboarding operations defined here are **Synchronous**. The system MUST respond within 30 seconds or return `504 Gateway Timeout`. | `NFR-PERF-01` |
+| **INT-TEC-03** | **Error Format** | All 4xx/5xx responses MUST return a JSON `Problem Details` object (RFC 7807). | `RFC-7807` |
 
-    PSP->>AG: Submit verification result
-    AG->>AG: Validate PSP & verifier authority
-    AG->>DESP: Perform platform checks
-    DESP-->>AG: Checks passed
-    AG->>DESP: Transition SUBMITTED → VERIFIED
-    DESP-->>AG: State updated + audit record
-    AG-->>PSP: Verification accepted
+## Appendix: How to Parse This Specification
 
-```
+**For Automation Engineers:**
 
-**Trigger:** verification completion by authorised authority
+1.  **Sequence Parsing:**
+    * The `mermaid` blocks contain standard Mermaid syntax.
+    * You can extract these blocks to generate live documentation images during the build process.
+    * *Validation:* Ensure the `participant` names in Mermaid match the IDs in **Section 1**.
 
-1. Authorised verifier invokes verification via the PSP Gateway.
-2. The PSP Gateway validates verifier authorisation.
-3. The PSP Gateway invokes the Access Gateway.
-4. The Access Gateway routes the request to DESP.
-5. DESP performs required platform checks (e.g. alias validation).
-6. DESP transitions the participant from `SUBMITTED` to `VERIFIED`.
-7. An auditable verification record is generated.
-
----
-
-### Flow 4 — Activation
-
-```mermaid
-sequenceDiagram
-    participant PSP as PSP Integration Layer
-    participant AG as Digital Euro Access Gateway
-    participant DESP as Digital Euro Service Platform
-
-    PSP->>AG: Activate participant
-    AG->>AG: Validate lifecycle preconditions
-    AG->>DESP: Transition VERIFIED → ACTIVE
-    DESP-->>AG: State updated
-    AG-->>PSP: Participant activated
-
-```
-
-**Trigger:** explicit activation decision
-
-1. Authorised PSP or Eurosystem actor invokes activation via the PSP Gateway.
-2. The PSP Gateway validates preconditions.
-3. The PSP Gateway invokes the Access Gateway.
-4. DESP transitions the participant from `VERIFIED` to `ACTIVE`.
-
-**Constraints:**
-- Activation MUST NOT be implicit.
-- Only verified participants MAY be activated.
-
----
-
-## Error handling
-
-### INT-E-01 — Invalid state transitions
-
-Attempts to perform illegal lifecycle transitions **MUST** result in:
-
-- rejection
-- explicit error response
-- audit log entry  
-
----
-
-### INT-E-02 — Authorisation failures
-
-Unauthorised onboarding requests **MUST** be rejected without side effects.
-
----
-
-## Mapping to API specifications
-
-The interactions defined in this document are intended to be realised via:
-
-- PSP-facing onboarding APIs  
-- Access Gateway platform APIs  
-- structured error responses and lifecycle endpoints  
-
-The exact API shape is defined in the accompanying OpenAPI specification.
-
----
-
-## Relationship to downstream artefacts
-
-This interface behaviour specification constrains:
-
-- OpenAPI definitions  
-- component-level implementations  
-- automated tests  
-- CI/CD validation rules  
-
-Any downstream artefact **MUST NOT** contradict the interaction patterns defined herein.
-
----
-
-## Disclaimer
-
-This specification is illustrative.
-
-It demonstrates how onboarding responsibilities may be shared between intermediaries and the Eurosystem platform and does not represent an official ECB technical specification.
+2.  **Contract Testing:**
+    * Iterate through **Section 3 (Step-by-Step Definitions)**.
+    * For every step where `Receiver` is `SYS-CORE`, assert that a corresponding API Endpoint exists in the OpenAPI definition.
+    * If `Constraints` mentions `Idempotency-Key`, assert that the API Schema requires that header.

@@ -12,196 +12,82 @@ owner: system-architecture
 
 ## Purpose
 
-This document defines the **logical data model** for participant onboarding
-used by the Digital Euro Service Platform (DESP).
+This document defines the **logical data model** for participant onboarding used by the Digital Euro Service Platform (DESP).
 
-It specifies the **minimum authoritative data** required to:
+It serves two purposes:
+1.  **Human Reference:** A clear definition of what data exists and why.
+2.  **Machine Contract:** A structured definition that can be parsed to validate API schemas (OpenAPI) and database definitions.
 
-- support the onboarding lifecycle,
-- enforce scheme rules,
-- enable auditability,
-- and realise the onboarding APIs.
+## 1. Design Principles
 
-This data model is **illustrative**, not an official ECB schema.
+The following principles apply globally to the data model.
 
----
+| ID | Principle | Requirement Statement | Trace |
+| :--- | :--- | :--- | :--- |
+| **DM-GEN-01** | **Minimal Authority** | DESP MUST store **only authoritative platform data**. It MUST NOT store real-world identities, customer KYC documents, or personal identifiers. | `RULE-PRIV-01` |
+| **DM-GEN-02** | **Lifecycle-First** | All participant data MUST be attributable to a **well-defined lifecycle state** as defined in the Functional Spec. | `ONB-FUNC-02` |
+| **DM-GEN-03** | **Immutability** | Once assigned, `participant_id` and `bic` MUST NOT be changed. | `ARCH-SEC-01` |
 
-## Normative context
+## 2. Data Dictionary
 
-This specification derives from:
+### 2.1 Entity: Participant
+The `Participant` entity represents a legal institution (e.g., a PSP) interacting with the platform.
 
-- the Digital Euro Scheme Rulebook (roles, obligations, lifecycle intent)
-- Participant Onboarding — Functional Specification
-- Participant Onboarding — Interface Behaviour Specification
+**Parsing Context:** `Scope: Participant`
 
-Where the rulebook is silent, this model applies **conservative, privacy-preserving defaults**.
+| ID | Attribute | Type | Card. | Description / Constraint | Trace |
+| :--- | :--- | :--- | :---: | :--- | :--- |
+| `DAT-PAR-001` | **`participant_id`** | `UUID` | 1..1 | **Primary Key.** Internal platform identifier.<br>Format: UUIDv4. | `ARCH-ID-01` |
+| `DAT-PAR-002` | **`bic`** | `String` | 1..1 | **Natural Key.** Business Identifier Code.<br>Regex: `^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$` | `ISO-9362` |
+| `DAT-PAR-003` | **`legal_name`** | `String` | 1..1 | Registered legal name of the entity.<br>Max Length: 120 chars. | `RULE-ONB-01` |
+| `DAT-PAR-004` | **`role`** | `Enum` | 1..1 | The operational role.<br>Values: `PSP`, `NCB`, `DISTRIBUTOR`. | `RULE-ACT-02` |
+| `DAT-PAR-005` | **`lifecycle_state`** | `Enum` | 1..1 | Current state in the onboarding workflow.<br>Values: `DRAFT`, `SUBMITTED`, `VERIFIED`, `ACTIVE`, `SUSPENDED`. | `ONB-FUNC-01` |
+| `DAT-PAR-006` | **`created_at`** | `Timestamp` | 1..1 | UTC timestamp of record creation.<br>Format: ISO-8601. | `AUDIT-01` |
+| `DAT-PAR-007` | **`updated_at`** | `Timestamp` | 1..1 | UTC timestamp of last state change. | `AUDIT-01` |
 
----
+### 2.2 Entity: OnboardingAuditLog
+An append-only log of all state transitions for a participant.
 
-## Design principles
+**Parsing Context:** `Scope: AuditLog`
 
-### DM-G-01 — Minimal authority
+| ID | Attribute | Type | Card. | Description / Constraint | Trace |
+| :--- | :--- | :--- | :---: | :--- | :--- |
+| `DAT-LOG-001` | **`event_id`** | `UUID` | 1..1 | Unique event identifier. | `AUDIT-01` |
+| `DAT-LOG-002` | **`participant_ref`** | `UUID` | 1..1 | Foreign Key to `Participant`. | `DAT-PAR-001` |
+| `DAT-LOG-003` | **`transition`** | `String` | 1..1 | The transition executed.<br>Format: `OLD_STATE:NEW_STATE`. | `ONB-FUNC-03` |
+| `DAT-LOG-004` | **`actor_ref`** | `String` | 1..1 | The system or user ID performing the action.<br>Must not be null. | `SEC-AUTH-01` |
+| `DAT-LOG-005` | **`evidence_hash`** | `String` | 0..1 | SHA-256 hash of the supporting verification documents (not the docs themselves). | `DM-GEN-01` |
 
-DESP stores **only authoritative platform data**.
+## 3. Data Mapping & Validation
 
-It MUST NOT store:
-- real-world identities,
-- customer KYC documents,
-- personal identifiers.
+This section provides normative mapping for implementers.
 
-Those remain the responsibility of PSPs.
+### 3.1 JSON Schema Mapping
+For the purpose of API validation (OpenAPI), the Types defined above map as follows:
 
----
+| Spec Type | JSON Type | Format / Pattern |
+| :--- | :--- | :--- |
+| `UUID` | `string` | `uuid` |
+| `Timestamp` | `string` | `date-time` |
+| `Enum` | `string` | (Restricted to allowed values) |
 
-### DM-G-02 — Lifecycle-first modelling
+### 3.2 Confidentiality Rules
 
-All participant data MUST be attributable to a **well-defined lifecycle state**.
-
-Lifecycle states and transitions are defined upstream in the onboarding specifications.
-
----
-
-### DM-G-03 — Separation of concern
-
-The data model distinguishes between:
-
-- **identity references** (opaque, hashed, or pseudonymised),
-- **operational status** (lifecycle),
-- **audit metadata** (who, when, why).
-
----
-
-## Core entity: Participant
-
-### Logical definition
-
-A **Participant** represents a supervised intermediary
-that is authorised (or in the process of being authorised)
-to participate in the digital euro scheme.
-
----
-
-### Participant entity
-
-| Field | Type | Description |
-|------|------|-------------|
-| `participant_id` | String | Globally unique identifier assigned by DESP |
-| `psp_id` | String | Identifier of the PSP responsible for onboarding |
-| `state` | Enum | Current lifecycle state |
-| `created_at` | Timestamp | Creation time |
-| `updated_at` | Timestamp | Last state change |
-| `version` | Integer | Optimistic concurrency / audit version |
+| Data Classification | Attributes | Handling Requirement |
+| :--- | :--- | :--- |
+| **Public** | `legal_name`, `role`, `bic` | May be exposed in Public Directories. |
+| **Internal** | `participant_id`, `lifecycle_state` | Exposed only to authenticated PSPs. |
+| **Restricted** | `actor_ref` | Visible only to Audit/Security teams. |
 
 ---
 
-## Onboarding Lifecycle state
+## Appendix: How to Parse This Specification
 
-The onboarding lifecycle consists of the following states:
-`DRAFT → SUBMITTED → VERIFIED → ACTIVE`
+**For Automation Engineers:**
+This document is structured to be parsed by the project's CI/CD `spec-linter`.
 
-### State definitions
+1.  **Extractor:** Look for Markdown tables immediately following an H3 header (`###`).
+2.  **Identifier:** The first column `ID` is the primary key for the requirement.
+3.  **Traceability:** The `Trace` column MUST resolve to a valid ID in the `20-rulebook`, `30-architecture` or `40-specifications` layer.
+4.  **Validation:** The `Constraint` column contains machine-testable regex or value sets where applicable.
 
-- **DRAFT**  
-  The participant record exists but is incomplete.  
-  No validation or verification has occurred.
-
-- **SUBMITTED**  
-  The participant has formally submitted onboarding information for verification.  
-  Data is immutable except through explicit correction flows.
-
-- **VERIFIED**  
-  All mandatory checks and certifications have been completed successfully.  
-  The participant is eligible for activation.
-
-- **ACTIVE**  
-  The participant is authorised to operate within the Digital Euro system.
-
-State transitions are strictly controlled and auditable.
-
-
-## Verification record
-
-### Purpose
-
-Captures the **fact of verification** without storing verification evidence.
-
----
-
-### Verification entity
-
-| Field | Type | Description |
-|------|------|-------------|
-| `verification_id` | String | Unique identifier |
-| `participant_id` | String | Associated participant |
-| `verified_by` | String | Authority or role performing verification |
-| `verified_at` | Timestamp | Verification timestamp |
-| `result` | Enum | `APPROVED` / `REJECTED` |
-| `remarks` | String (optional) | Non-sensitive notes |
-
----
-
-## Audit metadata
-
-### Purpose
-
-Ensures auditability **without exposing confidential content**.
-
----
-
-### Audit event
-
-| Field | Type | Description |
-|------|------|-------------|
-| `event_id` | String | Unique event identifier |
-| `participant_id` | String | Affected participant |
-| `event_type` | Enum | CREATE, SUBMIT, VERIFY, ACTIVATE |
-| `performed_by` | String | Actor role (not personal identity) |
-| `performed_at` | Timestamp | Event time |
-| `source` | String | PSP Integration Layer / Access Gateway |
-
-Audit events are **append-only**.
-
----
-
-## Privacy considerations
-
-- DESP data MUST NOT be sufficient to reconstruct real-world identities.
-- All identifiers are opaque references.
-- PSPs retain full responsibility for identity, KYC, and customer data.
-
-This aligns with the scheme’s privacy-by-design principles.
-
----
-
-## Mapping to API specification
-
-| Data Model Element | OpenAPI Element |
-|-------------------|-----------------|
-| Participant | `Participant` schema |
-| Lifecycle state | `state` enum |
-| State transitions | POST lifecycle endpoints |
-| Audit events | Non-exposed internal records |
-
----
-
-## Mapping to downstream artefacts
-
-This data model constrains:
-
-- database schemas (illustrative)
-- API payloads
-- test fixtures
-- lifecycle validation logic
-- CI/CD checks for state integrity
-
-Any downstream artefact MUST remain consistent with this model.
-
----
-
-## Disclaimer
-
-This data model is illustrative.
-
-It demonstrates how onboarding intent expressed in rulebooks
-can be realised as a coherent, auditable platform data model,
-without asserting an official ECB implementation.

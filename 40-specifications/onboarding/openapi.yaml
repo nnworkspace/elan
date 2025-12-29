@@ -8,7 +8,6 @@
 # owner: system-architecture
 # ---
 #
-#
 # DISCLAIMER
 # ----------
 # This OpenAPI specification is NOT an official ECB or Eurosystem API.
@@ -27,194 +26,245 @@ openapi: 3.0.3
 
 info:
   title: Participant Onboarding API
-  version: "0.2.0"
+  version: "1.0.0"
   description: |
-    Illustrative OpenAPI specification for participant onboarding
-    within the Digital Euro Service Platform (DESP).
+    **FICTIONAL SPECIFICATION** for the Digital Euro Service Platform (DESP) Onboarding Interface.
+    
+    This API defines the contract for PSPs to manage their lifecycle state within the Eurosystem platform.
+    
+    **Traceability:**
+    - [SPEC-FUNC]: `onboarding-functional-spec.md` (Business Logic)
+    - [SPEC-INT]: `onboarding-interfaces-spec.md` (Protocol behavior)
+    - [SPEC-DATA]: `onboarding-data-model-spec.md` (Data Schemas)
+    
+  contact:
+    name: System Architecture
+    url: https://github.com/policy-to-production
 
-    This API demonstrates how onboarding requirements and
-    specifications are realised as machine-readable interfaces.
-
-    Normative references:
-    - Spec 2: onboarding-functional-spec.md
-    - Spec 3: onboarding-interfaces-spec.md
-    - Spec 4: onboarding-data-model-spec.md
-
-    This is NOT an official ECB API.
-
-# All endpoints defined here are exposed by:
-# COMP-EUR-05 — Digital Euro Access Gateway
-# and operate on authoritative state within:
-# COMP-EUR-04 — Digital Euro Service Platform (DESP)
-
+# Defined in SPEC-INT: Component Inventory
 servers:
-  - url: https://api.example.eu/desp/onboarding
+  - url: https://api.access-gateway.eurosystem.eu/v1
+    description: Digital Euro Access Gateway (COMP-EUR-05)
 
 components:
+  securitySchemes:
+    # Trace: SEC-AUTH-01 (onboarding-interfaces-spec.md)
+    mTLS:
+      type: http
+      scheme: mutual
+      description: Mutual TLS using eIDAS Qualified Website Authentication Certificates (QWACs).
+
   parameters:
-    # Spec references:
-    # - Spec 2 (onboarding-functional-spec.md): ONB-G-03 — Idempotency
-    # - Spec 3 (onboarding-interfaces-spec.md): INT-G-04 — Idempotent invocation
+    # Trace: INT-TEC-01 (onboarding-interfaces-spec.md)
     IdempotencyKey:
       name: Idempotency-Key
       in: header
       required: true
       schema:
         type: string
+        format: uuid
       description: |
-        Client-generated idempotency key.
-
-        Repeated requests with the same key and identical payload
-        MUST result in the same outcome without duplicate side effects.
-        Conflicting reuse of the same key MUST be rejected.
+        Unique key to ensure safe retries. 
+        Replayed requests with the same key MUST return the same result.
 
   schemas:
-    # Spec reference:
-    # - Spec 4 (onboarding-data-model-spec.md): Core entity — Participant
+    # Trace: Section 2.1 Entity: Participant (onboarding-data-model-spec.md)
     Participant:
       type: object
+      description: The authoritative participant record stored in DESP.
       required:
-        - id
-        - state
+        - participant_id
+        - bic
+        - legal_name
+        - role
+        - lifecycle_state
       properties:
-        id:
+        participant_id:
           type: string
-          description: Globally unique participant identifier assigned by DESP
-        state:
+          format: uuid
+          description: |
+            Primary Key. Internal platform identifier.
+            Trace: DAT-PAR-001
+        bic:
           type: string
-          description: Current onboarding lifecycle state
-          enum:
-            - DRAFT
-            - SUBMITTED
-            - VERIFIED
-            - ACTIVE
-        createdAt:
+          pattern: '^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$'
+          description: |
+            Business Identifier Code. Natural Key.
+            Trace: DAT-PAR-002, ONB-VAL-01
+        legal_name:
+          type: string
+          maxLength: 120
+          description: |
+            Registered legal name.
+            Trace: DAT-PAR-003
+        role:
+          type: string
+          enum: [PSP, NCB, DISTRIBUTOR]
+          description: |
+            Operational role.
+            Trace: DAT-PAR-004
+        lifecycle_state:
+          type: string
+          enum: [DRAFT, SUBMITTED, VERIFIED, ACTIVE]
+          description: |
+            Current state in the onboarding workflow.
+            Trace: DAT-PAR-005, SPEC-FUNC Section 2
+        created_at:
           type: string
           format: date-time
-          description: Timestamp of participant creation
-        updatedAt:
+          description: |
+            Trace: DAT-PAR-006
+
+    # Trace: Section 4.4 Error Format (onboarding-interfaces-spec.md)
+    ProblemDetails:
+      type: object
+      properties:
+        type: 
           type: string
-          format: date-time
-          description: Timestamp of last lifecycle state change
+        title: 
+          type: string
+        status: 
+          type: integer
+        detail: 
+          type: string
+        instance: 
+          type: string
+
+security:
+  - mTLS: []
 
 paths:
-
   /participants:
     post:
-      summary: Create participant draft
-      operationId: createParticipantDraft
+      summary: Create Draft Participant
+      operationId: createParticipant
       description: |
         Creates a new participant record in DRAFT state.
-
-        Spec references:
-        - Spec 2 (onboarding-functional-spec.md): ONB-D-01 — Draft creation
-        - Spec 3 (onboarding-interfaces-spec.md): Flow 1 — Draft creation
-        - Spec 4 (onboarding-data-model-spec.md): Participant entity
+        
+        **Functional Trace:** Executes Transition `TR-01` ((null) -> DRAFT).
+        **Interface Trace:** Corresponds to `STEP-SUB-01`.
       parameters:
-        - $ref: "#/components/parameters/IdempotencyKey"
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [bic]
+              properties:
+                bic:
+                  type: string
+                  example: "DEUTDEFFXXX"
       responses:
-        "201":
-          description: Participant draft created
+        '201':
+          description: Draft created successfully.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Participant"
-        "400":
-          description: Invalid request
+                $ref: '#/components/schemas/Participant'
+        '400':
+          description: Invalid BIC format (Trace ONB-VAL-01).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
 
-  /participants/{participantId}/submit:
+  /participants/{participant_id}:
+    get:
+      summary: Get Participant Status
+      operationId: getParticipant
+      description: |
+        Retrieves the current state of a participant.
+        
+        **Interface Trace:** `OP-ONB-02` (GetParticipantStatus).
+      parameters:
+        - name: participant_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Participant details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Participant'
+
+  /participants/{participant_id}/submit:
     post:
-      summary: Submit participant onboarding
+      summary: Submit Application
       operationId: submitParticipant
       description: |
-        Submits onboarding data for verification.
-
-        Transitions participant from DRAFT to SUBMITTED.
-
-        Spec references:
-        - Spec 2 (onboarding-functional-spec.md): ONB-S-01, ONB-S-02, ONB-S-03
-        - Spec 3 (onboarding-interfaces-spec.md): Flow 2 — Submission
-        - Spec 4 (onboarding-data-model-spec.md): Lifecycle state
+        Locks the draft and submits it for Eurosystem verification.
+        
+        **Functional Trace:** Executes Transition `TR-03` (DRAFT -> SUBMITTED).
+        **Interface Trace:** `OP-ONB-01` (SubmitParticipant).
+        **Logic:** Validates mandatory fields (ONB-VAL-02) before transition.
       parameters:
-        - $ref: "#/components/parameters/IdempotencyKey"
-        - name: participantId
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - name: participant_id
           in: path
           required: true
           schema:
             type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [legal_name, role, contact_email, jwks_url]
+              properties:
+                legal_name: 
+                  type: string
+                role: 
+                  type: string
+                  enum: [PSP, NCB]
+                contact_email:
+                  type: string
+                  format: email
+                jwks_url:
+                  type: string
+                  format: uri
       responses:
-        "200":
-          description: Submission accepted
+        '200':
+          description: Application submitted. State is now SUBMITTED.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Participant"
-        "400":
-          description: Incomplete or invalid data
-        "409":
-          description: Invalid lifecycle state or idempotency conflict
+                $ref: '#/components/schemas/Participant'
+        '409':
+          description: Conflict. Participant is not in DRAFT state (Trace ONB-GEN-02).
 
-  /participants/{participantId}/verify:
+  /participants/{participant_id}/activate:
     post:
-      summary: Verify participant onboarding
-      operationId: verifyParticipant
-      description: |
-        Records successful verification of a participant.
-
-        Transitions participant from SUBMITTED to VERIFIED.
-
-        Spec references:
-        - Spec 2 (onboarding-functional-spec.md): ONB-V-01, ONB-V-02, ONB-V-03
-        - Spec 3 (onboarding-interfaces-spec.md): Flow 3 — Verification
-        - Spec 4 (onboarding-data-model-spec.md): Verification record
-      parameters:
-        - $ref: "#/components/parameters/IdempotencyKey"
-        - name: participantId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Participant verified
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Participant"
-        "403":
-          description: Not authorised
-        "409":
-          description: Invalid lifecycle state or idempotency conflict
-
-  /participants/{participantId}/activate:
-    post:
-      summary: Activate participant
+      summary: Activate Participant
       operationId: activateParticipant
       description: |
-        Activates a verified participant.
-
-        Transitions participant from VERIFIED to ACTIVE.
-
-        Spec references:
-        - Spec 2 (onboarding-functional-spec.md): ONB-A-01, ONB-A-02
-        - Spec 3 (onboarding-interfaces-spec.md): Flow 4 — Activation
-        - Spec 4 (onboarding-data-model-spec.md): Lifecycle state
+        Activates a verified participant, enabling access to operational APIs.
+        
+        **Functional Trace:** Executes Transition `TR-06` (VERIFIED -> ACTIVE).
+        **Interface Trace:** `OP-ONB-03` (ActivateParticipant).
+        **Logic:** Performs Key Exchange check (ONB-VAL-03).
       parameters:
-        - $ref: "#/components/parameters/IdempotencyKey"
-        - name: participantId
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - name: participant_id
           in: path
           required: true
           schema:
             type: string
+            format: uuid
       responses:
-        "200":
-          description: Participant activated
+        '200':
+          description: Activation successful. State is now ACTIVE.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Participant"
-        "403":
-          description: Not authorised
-        "409":
-          description: Invalid lifecycle state or idempotency conflict
+                $ref: '#/components/schemas/Participant'
+        '403':
+          description: Forbidden. Participant is not in VERIFIED state (Trace TR-06).
 

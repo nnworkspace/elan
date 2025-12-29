@@ -13,94 +13,59 @@ owner: system-architecture
 ## Purpose
 
 This specification defines the **participant onboarding process** for the Digital Euro system.
-
 It describes how an eligible participant progresses from initial registration to active participation, in accordance with the Scheme Rulebook and the system architecture.
 
-This document is **illustrative**.  
-It demonstrates how rulebook obligations can be transformed into a technical specification suitable for downstream implementation, testing, reporting, and automation.
+> **Illustrative Nature:** This document demonstrates how rulebook obligations can be transformed into a technical specification suitable for downstream implementation, testing, reporting, and automation. It is **not** an official ECB specification.
 
+## 1. Scope Definition
 
-## Scope
+This table defines the precise boundaries of this specification set.
 
-This specification covers **participant onboarding up to activation**.
+| ID | Feature / Capability | In/Out | Rationale / Reference | Trace |
+| :--- | :--- | :--- | :--- | :--- |
+| **SCP-ONB-01** | **Lifecycle Management** | **IN** | Management of onboarding states from `DRAFT` to `ACTIVE`. | `RULE-OPS-01` |
+| **SCP-ONB-02** | **Mandatory Validations** | **IN** | Execution of checks required for eligibility and certification. | `RULE-ONB-01` |
+| **SCP-ONB-03** | **Suspension/Termination** | **OUT** | Explicitly excluded from this version of the spec. | -- |
+| **SCP-ONB-04** | **Re-certification** | **OUT** | Renewal processes are out of scope. | -- |
+| **SCP-ONB-05** | **Fraud/Sanctions** | **OUT** | Investigations are handled by separate AML/CFT processes. | `RULE-AML-01` |
+| **SCP-ONB-06** | **End-User Onboarding** | **OUT** | Wallet holder onboarding is defined in `TS-PSP-001`. | -- |
+| **SCP-ONB-07** | **Vendor Integration** | **OUT** | Platform-specific integration details are left to the PSP. | -- |
 
-Specifically, it defines:
+## 2. Architectural Context & Assumptions
 
-- onboarding lifecycle states  
-- mandatory validations and checks  
-- responsibilities of participating system components  
-- traceability to rulebook rules and architectural components  
+The specifications in this set are written against the following architectural constraints (`30-architecture`).
 
+| ID | Constraint / Assumption | Description | Trace |
+| :--- | :--- | :--- | :--- |
+| **CTX-ONB-01** | **Intermediated Model** | PSPs operate their own internal integration layers. This spec does not prescribe PSP internal architecture. | `ARCH-MOD-01` |
+| **CTX-ONB-02** | **Central Authority** | All authoritative onboarding state is maintained within the **Digital Euro Service Platform (DESP)**. | `COMP-EUR-04` |
+| **CTX-ONB-03** | **Canonical Access** | All platform interactions MUST occur via the **Digital Euro Access Gateway**. | `COMP-EUR-05` |
 
-## Out of scope
+## 3. Document Map (The Specification Set)
 
-This specification explicitly does **not** cover:
+This feature is defined across three specialised documents.
 
-- suspension or termination of participants  
-- re-certification or renewal processes  
-- sanctions or fraud investigations  
-- end-user (wallet holder) onboarding  
-- platform-specific or vendor-specific integration details  
+| Spec ID | Document Title | Role | Audience |
+| :--- | :--- | :--- | :--- |
+| **[SPEC-FUNC]** | [`onboarding-functional-spec.md`](./onboarding-functional-spec.md) | **Functional**<br>Defines the State Machine (`DRAFT` → `ACTIVE`) and business rules. | Product Owners, Testers |
+| **[SPEC-INT]** | [`onboarding-interfaces-spec.md`](./onboarding-interfaces-spec.md) | **Interfaces**<br>Defines the interaction flows between PSP Gateway and DESP Access Gateway. | Architects, Integrators |
+| **[SPEC-DATA]** | [`onboarding-data-model-spec.md`](./onboarding-data-model-spec.md) | **Data Model**<br>Defines the authoritative participant entity and privacy constraints. | DBAs, Data Officers |
 
-These topics may be addressed by separate specifications.
+## 4. Normative References
 
+The following rulebook artefacts provide the legal basis for this specification.
 
-## Normative references
+| Ref ID | Title | Location | Usage |
+| :--- | :--- | :--- | :--- |
+| **[REF-ACTORS]** | *Scheme Rulebook — Actors and Roles* | `20-rulebook/actors-and-roles.md` | Defines Participant eligibility. |
+| **[REF-RULES]** | *Scheme Rulebook — Functional Onboarding* | `20-rulebook/functional-onboarding.md` | Defines certification requirements. |
 
-This specification derives from the following rulebook artefacts:
+## 5. Traceability Strategy
 
-- *Scheme Rulebook — Actors and Roles*  
-- *Scheme Rulebook — Functional Onboarding Rules*  
+To ensure governance, every requirement in this specification set follows this chain of custody:
 
-All normative requirements in this specification are traceable to rulebook rules governing:
+1.  **Origin:** Traces back to a Rulebook Rule (`RULE-*`).
+2.  **Constraint:** Constrains a specific Architectural Component (`COMP-*`).
+3.  **Verification:** Is designed to be testable via Conformance Tests.
 
-- participant eligibility  
-- certification and verification  
-- lifecycle state transitions  
-- auditability and accountability  
-
-
-## Architectural context
-
-These specifications are written against the **Digital Euro Service Platform (DESP)** architecture and its canonical **Digital Euro Access Gateway**.
-
-They assume an intermediated model in which:
-
-- PSPs operate their own internal integration layers (implementation-specific and not standardised),
-- all authoritative onboarding state is maintained within DESP,
-- all platform interactions occur via the Access Gateway.
-
-This folder does not prescribe PSP internal architecture. It defines the contractual, behavioural, and data expectations at the boundary between intermediaries and the Eurosystem platform.
-
-## Traceability
-
-Each requirement defined in this specification:
-
-- traces back to a rulebook rule  
-- constrains one or more architectural components  
-- is designed to be testable and auditable  
-
-Downstream artefacts (code, tests, CI/CD pipelines) are expected to reference this specification explicitly.
-
-
-## Relationship to downstream artefacts
-
-This specification is intended to support the creation of:
-
-- functional interface specifications  
-- API definitions (e.g. OpenAPI)  
-- conformance tests  
-- audit evidence and reports  
-
-The presence of this specification enables automation and governance, but does not mandate specific technologies.
-
-
-## Disclaimer
-
-This document is **not an official ECB specification**.
-
-It uses publicly available information and reasonable architectural assumptions to demonstrate a **methodology**, not an institutional decision.
-
-Its purpose is educational and illustrative.
-
-
+Downstream artefacts (code, tests, CI/CD pipelines) **MUST** reference these Spec IDs explicitly.

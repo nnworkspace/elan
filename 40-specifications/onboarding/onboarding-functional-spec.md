@@ -12,197 +12,103 @@ owner: system-architecture
 
 ## Purpose
 
-This document defines the **normative functional requirements** governing participant onboarding.
-
-It specifies:
-
-- required system behaviour  
-- permitted and forbidden state transitions  
-- mandatory validations  
-- audit and traceability obligations  
-
-It does **not** define technical protocols or data formats.  
-Those are addressed by interface and API specifications.
-
-
-## Normative language
-
-The keywords **MUST**, **MUST NOT**, **SHALL**, **SHOULD**, and **MAY** are to be interpreted as described in RFC 2119.
-
-
-## Lifecycle states
-
-The onboarding lifecycle consists of four states:
-
-`DRAFT → SUBMITTED → VERIFIED → ACTIVE`
-
-
-No other states are permitted in this specification.
-
-
-## General principles
-
-### ONB-G-01 — Single participant record
-
-Each participant **MUST** be represented by exactly one participant record.
-
-Duplicate records for the same legal entity **MUST NOT** exist.
-
-
-### ONB-G-02 — State integrity
-
-A participant record **MUST** always be in exactly one lifecycle state.
-
-Concurrent or ambiguous states **MUST NOT** occur.
-
-
-### ONB-G-03 — Idempotency
-
-Repeated submission of identical onboarding data **MUST NOT** result in duplicate state transitions or side effects.
-
-
-## State-specific requirements
-
-### DRAFT state
-
-#### ONB-D-01 — Draft creation
-
-The system **MUST** allow the creation of a participant record in state `DRAFT`.
-
-Mandatory information **MAY** be incomplete in this state.
-
-
-#### ONB-D-02 — Draft mutability
-
-While in `DRAFT`, participant data **MAY** be modified freely by the submitting party.
-
-No external validation **SHALL** be triggered.
-
-
-### SUBMITTED state
-
-#### ONB-S-01 — Submission
-
-Transition from `DRAFT` to `SUBMITTED` **MUST** require an explicit submission action.
-
-Implicit or automatic submission **MUST NOT** occur.
-
-#### ONB-S-02 — Submission immutability
-
-Once a participant record enters `SUBMITTED`, submitted data **MUST NOT** be modified except through an explicit correction process.
-
-#### ONB-S-03 — Submission validation
-
-Upon transition to `SUBMITTED`, the system **MUST** perform completeness checks on mandatory data elements.
-
-Failure **MUST** prevent further progression.
-
-### VERIFIED state
-
-#### ONB-V-01 — Verification checks
-
-Transition from `SUBMITTED` to `VERIFIED` **MUST** require successful completion of:
-
-- eligibility verification  
-- certification validation  
-- identity and role checks  
-
-The exact checks are defined by the rulebook and certification authorities.
-
-#### ONB-V-02 — Verification authority
-
-Only authorised verification processes or actors **MAY** initiate the transition to `VERIFIED`.
-
-#### ONB-V-03 — Verification traceability
-
-Each verification decision **MUST** generate an auditable record, including:
-
-- verifier identity  
-- timestamp  
-- outcome  
-
-### ACTIVE state
-
-#### ONB-A-01 — Activation
-
-Transition from `VERIFIED` to `ACTIVE` **MUST** require an explicit activation action.
-
-Activation **MUST NOT** occur automatically upon verification.
-
-
-#### ONB-A-02 — Operational eligibility
-
-Only participants in state `ACTIVE` **MAY**:
-
-- access operational APIs  
-- participate in settlement or liquidity processes  
-- interact with other active participants  
-
-#### ONB-A-03 — Irreversibility (within scope)
-
-This specification defines no backward transitions from `ACTIVE`.
-
-Deactivation, suspension, or termination are **out of scope**
-
-## Invalid transitions
-
-The following transitions are **explicitly forbidden**:
-
-- `DRAFT → VERIFIED`  
-- `DRAFT → ACTIVE`  
-- `SUBMITTED → ACTIVE`  
-- `ACTIVE → any other state`  
-
-Attempted invalid transitions **MUST** be rejected and logged.
-
-## Audit requirements
-
-### ONB-AUD-01 — State change logging
-
-Every lifecycle state transition **MUST** be logged with:
-
-- previous state  
-- new state  
-- triggering action  
-- timestamp  
-
-### ONB-AUD-02 — Decision provenance
-
-Verification and activation decisions **MUST** be attributable to a responsible actor or process.
-
-Anonymous or untraceable decisions **MUST NOT** occur.
-
-## Security requirements
-
-### ONB-SEC-01 — Access control
-
-Only authorised roles **MAY**:
-
-- submit participant records  
-- perform verification  
-- activate participants  
-
-Role definitions are derived from the scheme rulebook.
-
-
-### ONB-SEC-02 — Confidentiality
-
-Onboarding data **MUST** be protected according to its declared visibility and classification.
-
-
-## Relationship to downstream specifications
-
-This functional specification constrains:
-
-- interface behaviour specifications  
-- API definitions (e.g. OpenAPI)  
-- test cases and conformance suites  
-
-No downstream artefact may contradict the requirements defined herein.
-
-
-## Disclaimer
-
-This specification is illustrative.
-
-It demonstrates a method for translating rulebook obligations into functional technical requirements and does not represent an official ECB technical specification.
+This document defines the **functional behaviour** of the participant onboarding process.
+It specifies the **State Machine** (valid transitions) and the **Business Rules** that guard those transitions.
+
+## 1. General Principles
+
+Global invariants that apply to the entire lifecycle.
+
+| ID | Principle | Requirement Statement | Trace |
+| :--- | :--- | :--- | :--- |
+| **ONB-GEN-01** | **Single Identity** | Each legal entity (identified by BIC) MUST have exactly **one** participant record in the system. Duplicate BICs are forbidden. | `RULE-ONB-01` |
+| **ONB-GEN-02** | **State Integrity** | A participant record MUST always be in exactly one valid lifecycle state. "Floating" or null states are forbidden. | `ARCH-DESP` |
+| **ONB-GEN-03** | **Idempotency** | Repeated submission of identical commands (same Idempotency Key) MUST return the same result without side effects. | `INT-GEN-01` |
+
+## 2. Lifecycle States
+
+The valid states for a participant record (`DAT-PAR-005`).
+
+| State ID | State Name | Description | Authority |
+| :--- | :--- | :--- | :--- |
+| **ST-01** | `DRAFT` | Record created but not yet processing. Data is mutable. | PSP (Self) |
+| **ST-02** | `SUBMITTED` | Locked for validation. Awaiting Eurosystem verification. | System |
+| **ST-03** | `VERIFIED` | Validation passed. Ready for activation. | Eurosystem |
+| **ST-04** | `ACTIVE` | Fully operational. Keys are live. | System |
+
+## 3. State Transitions (The State Machine)
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    
+    %% States
+    state "DRAFT" as s1
+    state "SUBMITTED" as s2
+    state "VERIFIED" as s3
+    state "ACTIVE" as s4
+
+    %% Transitions
+    [*] --> s1 : create_participant
+    s1 --> s1 : update_details
+    s1 --> s2 : submit_application
+    s2 --> s3 : verify_decision
+    s2 --> s1 : reject_decision
+    s3 --> s4 : activate_participant
+    s4 --> [*]
+```
+
+This table defines the **only** permitted transitions. Any transition not listed here is implicitly **FORBIDDEN**.
+
+**Parsing Context:** `Scope: StateMachine`
+
+| ID | From State | To State | Trigger / Event | Guard Condition (Rule Ref) | Trace |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **TR-01** | `(null)` | `DRAFT` | `create_participant` | `ONB-VAL-01` (Valid BIC) | `INT-FLOW-01` |
+| **TR-02** | `DRAFT` | `DRAFT` | `update_details` | `ONB-GEN-01` (Uniqueness) | `INT-FLOW-02` |
+| **TR-03** | `DRAFT` | `SUBMITTED` | `submit_application` | `ONB-VAL-02` (Mandatory Fields) | `INT-FLOW-03` |
+| **TR-04** | `SUBMITTED` | `VERIFIED` | `verify_decision` | `ONB-SEC-01` (Admin Only) | `RULE-GOV-03` |
+| **TR-05** | `SUBMITTED` | `DRAFT` | `reject_decision` | `ONB-SEC-01` (Admin Only) | `RULE-GOV-03` |
+| **TR-06** | `VERIFIED` | `ACTIVE` | `activate_participant` | `ONB-SEC-02` (Tech Check) | `RULE-OPS-01` |
+
+## 4. Functional Business Rules
+
+Specific logic required to execute the transitions above.
+
+### 4.1 Validation Rules (Guards)
+
+| ID | Rule Name | Logic / Constraint | Trace |
+| :--- | :--- | :--- | :--- |
+| **ONB-VAL-01** | **BIC Format** | Input `bic` MUST match ISO 9362 regex. | `ISO-9362` |
+| **ONB-VAL-02** | **Completeness** | Transition to `SUBMITTED` requires: `legal_name`, `role`, `contact_email`, `jwks_url`. | `DM-PAR-03` |
+| **ONB-VAL-03** | **Key Accessibility** | Transition to `ACTIVE` requires the system to successfully fetch and validate the PSP's public keys from `jwks_url`. | `ARCH-SEC-04` |
+
+### 4.2 Security & Audit Rules
+
+| ID | Rule Name | Logic / Constraint | Trace |
+| :--- | :--- | :--- | :--- |
+| **ONB-SEC-01** | **Role Separation** | `verify_decision` MUST be performed by a user with role `EUROSYSTEM_OPERATOR`. PSPs cannot verify themselves. | `RULE-GOV-02` |
+| **ONB-AUD-01** | **Transition Log** | Every row in the Transition Table MUST trigger an insert into `OnboardingAuditLog` (`DAT-LOG`). | `ARCH-AUDIT` |
+| **ONB-AUD-02** | **Evidence Linking** | When moving to `VERIFIED`, the system MUST record the `evidence_hash` of the documents checked. | `DM-LOG-05` |
+
+---
+
+## Appendix: How to Parse This Specification
+
+**For Automation Engineers:**
+
+1.  **State Machine Generation:**
+    * Parse **Section 3 (State Transitions)**.
+    * Generate a Directed Acyclic Graph (DAG) or a Switch-Case block for your code.
+    * *Validation:* Ensure your code throws `InvalidTransitionError` for any pair not in this table.
+
+2.  **Test Case Generation:**
+    * For every row in **Section 3**, generate a Positive Test (should succeed).
+    * For every Guard Condition in **Section 4**, generate a Negative Test (should fail if condition met).
+
+3.  **Traceability:**
+    * `Trace` columns may refer to:
+        * `RULE-*` (Rulebook)
+        * `ARCH-*` (Architecture)
+        * `DM-*` (Data Model Spec)
+        * `INT-*` (Interface Spec)
