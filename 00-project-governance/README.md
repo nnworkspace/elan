@@ -39,14 +39,27 @@ The governance corpus currently includes:
 - **`artefact-classification.md`**  
   Defines the unified artefact metadata schema and the classification model applied across the project.
 
+- **`access-derivation-and-auditability.md`**  
+  Describes how declared artefact metadata is used to derive access rights and support audits without default access to confidential content.
+
 - **`logical-system-and-visibility.md`**  
   Explains how a single logical system is maintained despite physical distribution of artefacts due to visibility or contractual constraints.
 
 - **`communication-and-project-management.md`**  
   Defines how collaboration, coordination, and decision-making are conducted using the shared Git-based workbench.
 
-- **`access-derivation-and-auditability.md`**  
-  Describes how declared artefact metadata is used to derive access rights and support audits without default access to confidential content.
+- **`configuration-management.md`** 
+  Defines the strategy for maintaining auditable system states through atomic baselines (Sets), manifest-based versioning, and version-aware traceability.
+
+- **`glossary.md`**
+  Defines the authoritative terminology (e.g. "Digital Euro", "Issuance Component") used throughout the project to ensure semantic consistency.
+
+- **`linting-rules.md`**
+  Defines the automated governance rules (e.g. `LINT-C1`, `LINT-T2`) that enforce classification, traceability, and consistency via CI/CD pipelines.
+
+- **`issue-labels.md`**
+  Defines the controlled vocabulary of issue labels (Type, Status, Impact) to ensure that the issue tracker serves as a reliable governance instrument.
+
 
 Additional governance instruments (such as issue templates) may live in subfolders and are governed by the same principles.
 

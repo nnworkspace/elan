@@ -1,0 +1,37 @@
+# artefact_type: governance
+# visibility: public
+# audience: everyone
+# form: text
+# role: manifest
+# status: operative
+# owner: project-governance
+
+meta:
+  # Unique Identifier for the Governance Product
+  id: SET-GOV
+  
+  # Human-readable title
+  title: "Project Governance and Standards"
+  
+  # The Normative Version
+  version: "0.8.0"
+  
+  # The Lifecycle State (Educational context)
+  status: FICTIONAL-RELEASED
+  
+  # The Freeze Date
+  date: 2025-10-15
+
+# The explicit list of files that constitute this version
+contains:
+  - README.md
+  - access-derivation-and-auditability.md
+  - artefact-classification.md
+  - communication-and-project-management.md
+  - configuration-management.md
+  - glossary.md
+  - issue-labels.md
+  - linting-rules.md
+  - logical-system-and-visibility.md
+
+  
