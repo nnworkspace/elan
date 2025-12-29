@@ -25,37 +25,40 @@
 openapi: 3.0.3
 
 info:
-  title: Participant Onboarding API
-  version: "1.0.0"
+  title: User Onboarding API (Alias Service)
+  version: "0.1.0"
   description: |
-    **FICTIONAL SPECIFICATION** for the Digital Euro Service Platform (DESP) Onboarding Interface.
+    **FICTIONAL SPECIFICATION** for the Digital Euro Service Platform (DESP) User Onboarding.
     
-    This API defines the contract for PSPs to manage their lifecycle state within the Eurosystem platform.
+    This API defines the interface for PSPs to register anonymised User Identity Hashes with the Eurosystem
+    to enforce the "One Person / One Identity" rule without revealing PII.
     
-    **Traceability:**
-    - [SPEC-FUNC]: `onboarding-functional-spec.md` (Business Logic)
-    - [SPEC-INT]: `onboarding-interfaces-spec.md` (Protocol behavior)
-    - [SPEC-DATA]: `onboarding-data-model-spec.md` (Data Schemas)
+    **Traceability Dictionary:**
+    - **[SPEC-OB-FUNC]**: `onboarding-functional-spec.md` (State Machine & Logic)
+    - **[SPEC-OB-INT]**:  `onboarding-interfaces-spec.md` (Protocol & Headers)
+    - **[SPEC-OB-DATA]**: `onboarding-data-model-spec.md` (Data Schemas & Privacy)
     
   contact:
     name: System Architecture
     url: https://github.com/policy-to-production
 
-# Defined in SPEC-INT: Component Inventory
+# Defined in [SPEC-OB-INT] Section 3: Component Inventory
 servers:
   - url: https://api.access-gateway.eurosystem.eu/v1
     description: Digital Euro Access Gateway (COMP-EUR-05)
 
 components:
   securitySchemes:
-    # Trace: SEC-AUTH-01 (onboarding-interfaces-spec.md)
+    # Trace: [SPEC-OB-INT] INT-OB-02 (Signature Requirement)
     mTLS:
       type: http
       scheme: mutual
-      description: Mutual TLS using eIDAS Qualified Website Authentication Certificates (QWACs).
+      description: |
+        Mutual TLS using eIDAS Qualified Website Authentication Certificates (QWACs).
+        Requests must also be signed (JWS-Signature).
 
   parameters:
-    # Trace: INT-TEC-01 (onboarding-interfaces-spec.md)
+    # Trace: [SPEC-OB-INT] INT-OB-04 (Idempotency)
     IdempotencyKey:
       name: Idempotency-Key
       in: header
@@ -64,58 +67,58 @@ components:
         type: string
         format: uuid
       description: |
-        Unique key to ensure safe retries. 
+        Unique key (UUIDv4) to ensure safe retries. 
         Replayed requests with the same key MUST return the same result.
 
   schemas:
-    # Trace: Section 2.1 Entity: Participant (onboarding-data-model-spec.md)
-    Participant:
+    # Trace: [SPEC-OB-DATA] Section 5.3 Entity: OnboardingRequest
+    OnboardingRequest:
       type: object
-      description: The authoritative participant record stored in DESP.
+      description: The payload for registering a new identity hash.
       required:
-        - participant_id
-        - bic
-        - legal_name
-        - role
-        - lifecycle_state
+        - identity_hash
+        - psp_id
       properties:
-        participant_id:
+        identity_hash:
           type: string
-          format: uuid
+          pattern: '^[a-f0-9]{64}$'
           description: |
-            Primary Key. Internal platform identifier.
-            Trace: DAT-PAR-001
-        bic:
+            Hex-encoded SHA-256 hash of the Salted National ID.
+            MUST NOT contain clear-text PII.
+            Trace: [SPEC-OB-DATA] DAT-MSG-01, [SPEC-OB-FUNC] REQ-OB-FUNC-01
+        psp_id:
           type: string
           pattern: '^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$'
           description: |
-            Business Identifier Code. Natural Key.
-            Trace: DAT-PAR-002, ONB-VAL-01
-        legal_name:
+            BIC of the requesting PSP.
+            Trace: [SPEC-OB-DATA] DAT-MSG-02
+
+    # Trace: [SPEC-OB-DATA] Section 5.2 Entity: GlobalAliasRecord
+    AliasRecord:
+      type: object
+      description: The authoritative record stored in the Eurosystem Registry.
+      required:
+        - alias_id
+        - status
+        - created_at
+      properties:
+        alias_id:
           type: string
-          maxLength: 120
           description: |
-            Registered legal name.
-            Trace: DAT-PAR-003
-        role:
+            The unique identifier (Hash) stored in Zone B.
+            Trace: [SPEC-OB-DATA] DAT-ALS-01
+        status:
           type: string
-          enum: [PSP, NCB, DISTRIBUTOR]
+          enum: [ACTIVE, SUSPENDED]
           description: |
-            Operational role.
-            Trace: DAT-PAR-004
-        lifecycle_state:
-          type: string
-          enum: [DRAFT, SUBMITTED, VERIFIED, ACTIVE]
-          description: |
-            Current state in the onboarding workflow.
-            Trace: DAT-PAR-005, SPEC-FUNC Section 2
+            Current lifecycle state.
+            Trace: [SPEC-OB-DATA] DAT-ALS-03, [SPEC-OB-FUNC] Section 4
         created_at:
           type: string
           format: date-time
-          description: |
-            Trace: DAT-PAR-006
+          description: UTC timestamp of registration.
 
-    # Trace: Section 4.4 Error Format (onboarding-interfaces-spec.md)
+    # Trace: [SPEC-OB-INT] Section 6 Error Format
     ProblemDetails:
       type: object
       properties:
@@ -129,20 +132,24 @@ components:
           type: string
         instance: 
           type: string
+        error_code:
+          type: string
+          description: Machine-readable error code (e.g., DUPLICATE_IDENTITY).
 
 security:
   - mTLS: []
 
 paths:
-  /participants:
+  /aliases:
     post:
-      summary: Create Draft Participant
-      operationId: createParticipant
+      summary: Register User Hash
+      operationId: registerUserHash
       description: |
-        Creates a new participant record in DRAFT state.
+        Registers a new User Identity Hash to enforce uniqueness.
         
-        **Functional Trace:** Executes Transition `TR-01` ((null) -> DRAFT).
-        **Interface Trace:** Corresponds to `STEP-SUB-01`.
+        **Functional Trace:** Executes Transition `TR-OB-03` (KYC_CLEARED -> CHECKING_ALIAS).
+        **Interface Trace:** Corresponds to `OP-OB-01` and `Flow 5.1`.
+        **Privacy:** Payload MUST NOT contain PII (Trace [SPEC-OB-DATA] DM-OB-03).
       parameters:
         - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
@@ -150,121 +157,62 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [bic]
-              properties:
-                bic:
-                  type: string
-                  example: "DEUTDEFFXXX"
+              $ref: '#/components/schemas/OnboardingRequest'
       responses:
         '201':
-          description: Draft created successfully.
+          description: |
+            Identity Hash registered successfully. 
+            User is now potentially in `ACTIVE` state at PSP.
+            Trace: [SPEC-OB-INT] STEP-REG-09.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Participant'
+                $ref: '#/components/schemas/AliasRecord'
         '400':
-          description: Invalid BIC format (Trace ONB-VAL-01).
+          description: |
+            Bad Request. Payload contains invalid hash format or extraneous fields.
+            Trace: [SPEC-OB-INT] INT-OB-01 (Privacy Payload).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: |
+            Conflict. The Identity Hash already exists in the Global Registry.
+            Trace: [SPEC-OB-FUNC] REQ-OB-FUNC-05, [SPEC-OB-INT] STEP-DUP-05.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
 
-  /participants/{participant_id}:
+  /aliases/{identity_hash}:
     get:
-      summary: Get Participant Status
-      operationId: getParticipant
+      summary: Check User Status
+      operationId: checkUserStatus
       description: |
-        Retrieves the current state of a participant.
+        Queries the current status of an Identity Hash. 
+        Used for idempotency checks or to verify existence before onboarding.
         
-        **Interface Trace:** `OP-ONB-02` (GetParticipantStatus).
+        **Interface Trace:** `OP-OB-02`.
       parameters:
-        - name: participant_id
+        - name: identity_hash
           in: path
           required: true
           schema:
             type: string
-            format: uuid
+            pattern: '^[a-f0-9]{64}$'
+          description: The SHA-256 hash to query.
       responses:
         '200':
-          description: Participant details.
+          description: Record found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Participant'
-
-  /participants/{participant_id}/submit:
-    post:
-      summary: Submit Application
-      operationId: submitParticipant
-      description: |
-        Locks the draft and submits it for Eurosystem verification.
-        
-        **Functional Trace:** Executes Transition `TR-03` (DRAFT -> SUBMITTED).
-        **Interface Trace:** `OP-ONB-01` (SubmitParticipant).
-        **Logic:** Validates mandatory fields (ONB-VAL-02) before transition.
-      parameters:
-        - $ref: '#/components/parameters/IdempotencyKey'
-        - name: participant_id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [legal_name, role, contact_email, jwks_url]
-              properties:
-                legal_name: 
-                  type: string
-                role: 
-                  type: string
-                  enum: [PSP, NCB]
-                contact_email:
-                  type: string
-                  format: email
-                jwks_url:
-                  type: string
-                  format: uri
-      responses:
-        '200':
-          description: Application submitted. State is now SUBMITTED.
+                $ref: '#/components/schemas/AliasRecord'
+        '404':
+          description: Identity Hash not found (User is new).
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Participant'
-        '409':
-          description: Conflict. Participant is not in DRAFT state (Trace ONB-GEN-02).
-
-  /participants/{participant_id}/activate:
-    post:
-      summary: Activate Participant
-      operationId: activateParticipant
-      description: |
-        Activates a verified participant, enabling access to operational APIs.
-        
-        **Functional Trace:** Executes Transition `TR-06` (VERIFIED -> ACTIVE).
-        **Interface Trace:** `OP-ONB-03` (ActivateParticipant).
-        **Logic:** Performs Key Exchange check (ONB-VAL-03).
-      parameters:
-        - $ref: '#/components/parameters/IdempotencyKey'
-        - name: participant_id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Activation successful. State is now ACTIVE.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Participant'
-        '403':
-          description: Forbidden. Participant is not in VERIFIED state (Trace TR-06).
+                $ref: '#/components/schemas/ProblemDetails'
 

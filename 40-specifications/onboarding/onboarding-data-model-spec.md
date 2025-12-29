@@ -5,89 +5,124 @@ audience: everyone
 form: text
 role: specification
 status: normative
-owner: system-architecture
+owner: system-design
 ---
 
-# Participant Onboarding — Data Model Specification
+# User Onboarding — Data Model Specification
 
-## Purpose
+## 1. Identification
+- **Global ID:** `SPEC-OB-DATA`
+- **Part of Set:** `SPEC-SET-ONB`
+- **Traceability:**
+    - **Upstream Spec:** `SPEC-OB-FUNC` (Implements `REQ-OB-FUNC-01` and `02`)
+    - **Upstream Arch:** `@arch=SET-ARCH:0.1.0` (Implements `COMP-EUR-02` Data Schema)
 
-This document defines the **logical data model** for participant onboarding used by the Digital Euro Service Platform (DESP).
+## 2. Purpose and Scope
 
-It serves two purposes:
-1.  **Human Reference:** A clear definition of what data exists and why.
-2.  **Machine Contract:** A structured definition that can be parsed to validate API schemas (OpenAPI) and database definitions.
+This document defines the **Logical Data Model** for User Onboarding.
 
-## 1. Design Principles
+It strictly classifies data entities based on the **Security & Privacy Zones** to ensure that Personally Identifiable Information (PII) never crosses into the Eurosystem Domain (Zone B).
 
-The following principles apply globally to the data model.
+## 3. The Privacy Strategy (Narrative)
+
+### 3.1 The "Privacy Firewall" Concept
+In accordance with **`security-and-privacy-zones.md`**, the Digital Euro architecture enforces a strict separation of data knowledge:
+
+1.  **Zone A (PSP Domain):** The PSP *must* know the user's real identity to perform KYC/AML checks mandated by law (`Rule ONB-02`).
+2.  **Zone B (Eurosystem Domain):** The Central Infrastructure *must* enforce the "One Person, One Identity" rule (`Rule ONB-01`) to prevent holding limit breaches.
+
+**The Conflict:** The Eurosystem needs to verify uniqueness (requiring identity) but is legally forbidden from processing PII (requiring anonymity).
+
+### 3.2 The Data Solution
+To resolve this, this specification splits the User Identity into two disjoint entities:
+- **`UserIdentitySource` (Private):** The clear-text data. This never leaves the PSP's internal system.
+- **`GlobalAliasRecord` (Shared):** A cryptographic derivative (`SHA-256`) that acts as a unique pointer without revealing the source.
+
+The **Access Gateway** (`SYS-GWY`) acts as the physical firewall, rejecting any payload that contains fields from the "Private" set.
+
+## 4. General Principles
 
 | ID | Principle | Requirement Statement | Trace |
 | :--- | :--- | :--- | :--- |
-| **DM-GEN-01** | **Minimal Authority** | DESP MUST store **only authoritative platform data**. It MUST NOT store real-world identities, customer KYC documents, or personal identifiers. | `RULE-PRIV-01` |
-| **DM-GEN-02** | **Lifecycle-First** | All participant data MUST be attributable to a **well-defined lifecycle state** as defined in the Functional Spec. | `ONB-FUNC-02` |
-| **DM-GEN-03** | **Immutability** | Once assigned, `participant_id` and `bic` MUST NOT be changed. | `ARCH-SEC-01` |
+| **DM-OB-01** | **Data Minimisation** | The Central Infrastructure (`COMP-EUR-02`) MUST store only the cryptographic hash of the user identity, never the clear-text source data. | `Rule ONB-01` |
+| **DM-OB-02** | **Deterministic Derivation** | The `identity_hash` MUST be reproducible by any PSP given the same National ID and Scheme Salt. | `REQ-OB-FUNC-03` |
+| **DM-OB-03** | **Zone Containment** | Entities classified as **Zone A** MUST NOT appear in API payloads sent to the Access Gateway (`SYS-GWY`). | `ARCH-SEC-01` |
 
-## 2. Data Dictionary
+## 5. Data Dictionary
 
-### 2.1 Entity: Participant
-The `Participant` entity represents a legal institution (e.g., a PSP) interacting with the platform.
+### 5.1 Entity: UserIdentitySource (Private PII)
+**Classification:** `ZONE A ONLY` (PSP Internal)
+**Description:** The source documents collected during KYC. Used solely to compute the hash.
 
-**Parsing Context:** `Scope: Participant`
+**Parsing Context:** `Scope: ZoneA_Storage`
+
+| ID | Attribute | Type | Description / Constraint | Trace |
+| :--- | :--- | :--- | :--- | :--- |
+| **DAT-SRC-01** | `national_id_type` | `Enum` | The type of document used.<br>Values: `PASSPORT`, `ID_CARD`, `TAX_ID`. | `Rule ONB-02` |
+| **DAT-SRC-02** | `national_id_value` | `String` | The unique number on the document.<br>Format: Normalised (Upper case, no spaces). | `REQ-OB-FUNC-02` |
+| **DAT-SRC-03** | `issuing_country` | `ISO-3166` | The country code of the issuer (e.g., `DE`, `FR`). | `ISO-3166-1` |
+| **DAT-SRC-04** | `full_name` | `String` | Legal name (for internal PSP KYC logs only). | `AMLD5` |
+
+### 5.2 Entity: GlobalAliasRecord (The Registry)
+**Classification:** `ZONE B` (Eurosystem Shared)
+**Description:** The authoritative record stored in the Alias Service (`COMP-EUR-02`).
+
+**Parsing Context:** `Scope: ZoneB_Registry`
+
+| ID | Attribute | Type | Description / Constraint | Trace |
+| :--- | :--- | :--- | :--- | :--- |
+| **DAT-ALS-01** | `identity_hash` | `SHA-256` | **Primary Key.** The anonymised unique identifier.<br>Derived from `SHA256(Salt + ID_Type + ID_Value)`. | `Rule ONB-01` |
+| **DAT-ALS-02** | `creation_date` | `Timestamp` | UTC timestamp of first registration. | `AUD-OB-01` |
+| **DAT-ALS-03** | `status` | `Enum` | Lifecycle state.<br>Values: `ACTIVE`, `SUSPENDED`. | `ONB-FUNC-States` |
+| **DAT-ALS-04** | `holding_limit_usage`| `Decimal` | The current aggregate holdings across all PSPs.<br>(Technical field for Limit Enforcement). | `Rule LIQ-04` |
+
+### 5.3 Entity: OnboardingRequest (The Payload)
+**Classification:** `INTERFACE` (Zone A $\to$ Zone B)
+**Description:** The data structure transmitted over the wire during `OP-OB-01`.
+
+**Parsing Context:** `Scope: API_Payload`
 
 | ID | Attribute | Type | Card. | Description / Constraint | Trace |
 | :--- | :--- | :--- | :---: | :--- | :--- |
-| `DAT-PAR-001` | **`participant_id`** | `UUID` | 1..1 | **Primary Key.** Internal platform identifier.<br>Format: UUIDv4. | `ARCH-ID-01` |
-| `DAT-PAR-002` | **`bic`** | `String` | 1..1 | **Natural Key.** Business Identifier Code.<br>Regex: `^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$` | `ISO-9362` |
-| `DAT-PAR-003` | **`legal_name`** | `String` | 1..1 | Registered legal name of the entity.<br>Max Length: 120 chars. | `RULE-ONB-01` |
-| `DAT-PAR-004` | **`role`** | `Enum` | 1..1 | The operational role.<br>Values: `PSP`, `NCB`, `DISTRIBUTOR`. | `RULE-ACT-02` |
-| `DAT-PAR-005` | **`lifecycle_state`** | `Enum` | 1..1 | Current state in the onboarding workflow.<br>Values: `DRAFT`, `SUBMITTED`, `VERIFIED`, `ACTIVE`, `SUSPENDED`. | `ONB-FUNC-01` |
-| `DAT-PAR-006` | **`created_at`** | `Timestamp` | 1..1 | UTC timestamp of record creation.<br>Format: ISO-8601. | `AUDIT-01` |
-| `DAT-PAR-007` | **`updated_at`** | `Timestamp` | 1..1 | UTC timestamp of last state change. | `AUDIT-01` |
+| **DAT-MSG-01** | `identity_hash` | `String` | 1..1 | Hex-encoded SHA-256 hash.<br>Regex: `^[a-f0-9]{64}$` | `INT-OB-01` |
+| **DAT-MSG-02** | `psp_id` | `BIC` | 1..1 | The BIC of the requesting PSP. | `DAT-PAR-002` |
+| **DAT-MSG-03** | `signature` | `JWS` | 1..1 | Cryptographic signature of the payload. | `INT-OB-02` |
+| **DAT-MSG-04** | `idempotency_key` | `UUID` | 1..1 | Unique request ID for retry safety. | `INT-OB-04` |
 
-### 2.2 Entity: OnboardingAuditLog
-An append-only log of all state transitions for a participant.
+## 6. Mapping Rules (Transformation Logic)
 
-**Parsing Context:** `Scope: AuditLog`
+This section defines how to transform **Source** (Zone A) into **Alias** (Zone B).
 
-| ID | Attribute | Type | Card. | Description / Constraint | Trace |
-| :--- | :--- | :--- | :---: | :--- | :--- |
-| `DAT-LOG-001` | **`event_id`** | `UUID` | 1..1 | Unique event identifier. | `AUDIT-01` |
-| `DAT-LOG-002` | **`participant_ref`** | `UUID` | 1..1 | Foreign Key to `Participant`. | `DAT-PAR-001` |
-| `DAT-LOG-003` | **`transition`** | `String` | 1..1 | The transition executed.<br>Format: `OLD_STATE:NEW_STATE`. | `ONB-FUNC-03` |
-| `DAT-LOG-004` | **`actor_ref`** | `String` | 1..1 | The system or user ID performing the action.<br>Must not be null. | `SEC-AUTH-01` |
-| `DAT-LOG-005` | **`evidence_hash`** | `String` | 0..1 | SHA-256 hash of the supporting verification documents (not the docs themselves). | `DM-GEN-01` |
+### 6.1 The Hashing Algorithm
+To ensure `REQ-OB-FUNC-01` (Determinism), all PSPs MUST implement the following logic:
 
-## 3. Data Mapping & Validation
-
-This section provides normative mapping for implementers.
-
-### 3.1 JSON Schema Mapping
-For the purpose of API validation (OpenAPI), the Types defined above map as follows:
-
-| Spec Type | JSON Type | Format / Pattern |
-| :--- | :--- | :--- |
-| `UUID` | `string` | `uuid` |
-| `Timestamp` | `string` | `date-time` |
-| `Enum` | `string` | (Restricted to allowed values) |
-
-### 3.2 Confidentiality Rules
-
-| Data Classification | Attributes | Handling Requirement |
-| :--- | :--- | :--- |
-| **Public** | `legal_name`, `role`, `bic` | May be exposed in Public Directories. |
-| **Internal** | `participant_id`, `lifecycle_state` | Exposed only to authenticated PSPs. |
-| **Restricted** | `actor_ref` | Visible only to Audit/Security teams. |
+1.  **Normalisation:**
+    - `Input = UpperCase(Trim(national_id_value))`
+    - `Type = UpperCase(national_id_type)`
+    - `Country = UpperCase(issuing_country)`
+2.  **Concatenation:**
+    - `RawString = Country + ":" + Type + ":" + Input`
+    - *Example:* `DE:PASSPORT:123456789`
+3.  **Salting:**
+    - `SaltedString = SCHEME_IDENTITY_SALT + RawString`
+4.  **Hashing:**
+    - `IdentityHash = SHA256(SaltedString)`
 
 ---
 
 ## Appendix: How to Parse This Specification
 
 **For Automation Engineers:**
-This document is structured to be parsed by the project's CI/CD `spec-linter`.
 
-1.  **Extractor:** Look for Markdown tables immediately following an H3 header (`###`).
-2.  **Identifier:** The first column `ID` is the primary key for the requirement.
-3.  **Traceability:** The `Trace` column MUST resolve to a valid ID in the `20-rulebook`, `30-architecture` or `40-specifications` layer.
-4.  **Validation:** The `Constraint` column contains machine-testable regex or value sets where applicable.
+1.  **Schema Validation (OpenAPI):**
+    - Use **Section 5.3 (OnboardingRequest)** to generate or validate the `components/schemas` in your OpenAPI definition.
+    - *Constraint Check:* Ensure the `identity_hash` field in OpenAPI has the `pattern: ^[a-f0-9]{64}$` derived from `DAT-MSG-01`.
+
+2.  **Privacy Audit Script:**
+    - Write a linter that scans the `50-code` layer.
+    - **Rule:** If a variable name matches attributes from **Section 5.1 (Zone A)** (e.g., `national_id_value`), it **MUST NOT** appear in any log file or outbound HTTP request to `SYS-GWY`.
+
+3.  **Test Data Generation:**
+    - Use the Algorithm in **Section 6.1** to generate consistent test vectors.
+    - *Example:* Create a "Golden Dataset" of {Input, Expected Hash} to verify that different PSP implementations produce identical hashes.
 

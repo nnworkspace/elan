@@ -5,124 +5,176 @@ audience: everyone
 form: text
 role: specification
 status: normative
-owner: system-architecture
+owner: system-design
 ---
 
-# Participant Onboarding — Interface Behaviour Specification
+# User Onboarding — Interface Behaviour Specification
 
-## Purpose
+## 1. Identification
+- **Global ID:** `SPEC-OB-INT`
+- **Part of Set:** `SPEC-SET-ONB`
+- **Traceability:**
+    - **Upstream Spec:** `SPEC-OB-FUNC` (Implements `TR-OB-03` and `TR-OB-04`)
+    - **Upstream Arch:** `@arch=SET-ARCH:0.1.0` (Implements `COMP-EUR-05` and `COMP-EUR-04`)
 
-This document defines the **component interactions** required to execute the onboarding lifecycle.
-It maps the abstract **State Transitions** (defined in the Functional Spec) to concrete **Interface Operations**.
+## 2. Purpose and Scope
 
-## 1. Component Inventory (Actors)
+This document defines the **component interactions** required to register a User Identity Hash with the Eurosystem.
+
+It details the protocols, message flows, and security constraints for the interface between the **PSP's Adapter Service** and the **Digital Euro Service Platform (DESP)** via the Access Gateway.
+
+## 3. Component Inventory (Actors)
 
 The specific architectural components participating in these flows.
 
 | ID | Component Name | Role | Responsibility | Trace |
 | :--- | :--- | :--- | :--- | :--- |
-| **SYS-PSP** | **PSP Gateway** | Client | Initiates requests; handles retries and idempotency keys. | `COMP-PSP-01` |
-| **SYS-GWY** | **Access Gateway** | Interface | Termination point for TLS; validates mTLS and Idempotency. | `COMP-EUR-05` |
-| **SYS-CORE** | **DESP Core** | Server | The System of Record. Executes the state change. | `COMP-EUR-04` |
+| **SYS-PSP** | **PSP Adapter Service** | Client | The PSP's proprietary integration layer. Computes Hash, manages keys, and calls the Access Gateway. | `COMP-PSP-01` |
+| **SYS-GWY** | **Access Gateway** | Interface | The Border Control. Terminates mTLS, validates QWACs, and routes sanitised requests to DESP. | `COMP-EUR-05` |
+| **SYS-DESP** | **DESP Core** | Orchestrator | The Central Platform. Enforces business logic, audit logging, and coordinates sub-services. | `COMP-EUR-04` |
+| **SYS-ALIAS** | **Alias Service** | Registry | The System of Record. Pure storage engine for unique Identity Hashes. | `COMP-EUR-02` |
 
-## 2. Interface Operation Catalog
+## 4. Interface Operation Catalog
 
-The list of logical operations exposed by the Access Gateway (`SYS-GWY`) to support onboarding.
+The list of logical operations exposed by the Access Gateway (`SYS-GWY`) to support user onboarding.
 
 | Op ID | Operation Name | Direction | Functional Trace |
 | :--- | :--- | :--- | :--- |
-| **OP-ONB-01** | `SubmitParticipant` | `PSP` $\to$ `EUR` | Executes `TR-03` (Draft $\to$ Submitted) |
-| **OP-ONB-02** | `GetParticipantStatus` | `PSP` $\to$ `EUR` | Queries `DAT-PAR-005` (Lifecycle State) |
-| **OP-ONB-03** | `ActivateParticipant` | `PSP` $\to$ `EUR` | Executes `TR-06` (Verified $\to$ Active) |
+| **OP-OB-01** | `RegisterUserHash` | `PSP` -> `EUR` | Executes `TR-OB-03` (KYC_CLEARED -> CHECKING_ALIAS) |
+| **OP-OB-02** | `CheckUserStatus` | `PSP` -> `EUR` | Queries current status of a Hash (Idempotency check). |
 
-## 3. Interaction Flows
+## 5. Interaction Flows
 
-### 3.1 Flow: Submission (Happy Path)
+### 5.1 Flow: User Registration (Happy Path)
 
-This flow covers the transition from `DRAFT` to `SUBMITTED`.
-
-**Visualisation (Normative)**
-
-```mermaid
-sequenceDiagram
-    autonumber
-    participant PSP as PSP Gateway (SYS-PSP)
-    participant GWY as Access Gateway (SYS-GWY)
-    participant CORE as DESP Core (SYS-CORE)
-
-    Note over PSP, CORE: Context: User wants to submit application (TR-03)
-
-    PSP->>GWY: POST /participants (Idempotency-Key: UUID)
-    
-    activate GWY
-    GWY->>GWY: Validate mTLS & QWAC
-    
-    GWY->>CORE: Forward Request
-    activate CORE
-    CORE->>CORE: Validate Mandatory Fields (ONB-VAL-02)
-    CORE->>CORE: Check Uniqueness (ONB-GEN-01)
-    CORE->>CORE: Write State: SUBMITTED
-    CORE-->>GWY: 201 Created (ParticipantID)
-    deactivate CORE
-
-    GWY-->>PSP: 201 Created (ParticipantID)
-    deactivate GWY
-```
-
-**Step-by-Step Definition**
-
-| Step ID | Sender | Receiver | Message / Action | Constraints / Rules | Trace |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **STEP-SUB-01** | `SYS-PSP` | `SYS-GWY` | `POST /participants` | Must include `Idempotency-Key` header. | `INT-TEC-01` |
-| **STEP-SUB-02** | `SYS-GWY` | `SYS-GWY` | *Authenticate* | Must validate eIDAS QWAC certificate. | `SEC-AUTH-01` |
-| **STEP-SUB-03** | `SYS-GWY` | `SYS-CORE` | *Forward* | Internal secure channel (mTLS). | `ARCH-SEC-02` |
-| **STEP-SUB-04** | `SYS-CORE` | `SYS-CORE` | *Validate* | Execute Rule `ONB-VAL-02` (Completeness). | `TR-03` |
-| **STEP-SUB-05** | `SYS-CORE` | `SYS-PSP` | `201 Created` | Body must contain `participant_id` and `state=SUBMITTED`. | `DAT-PAR-005` |
-
-### 3.2 Flow: Activation (Key Exchange)
-
-This flow covers the transition from `VERIFIED` to `ACTIVE`.
+This flow covers the successful registration of a new User Identity Hash.
 
 **Visualisation (Normative)**
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant PSP as PSP Gateway
-    participant GWY as Access Gateway
-    participant CORE as DESP Core
+    
+    participant PSP as SYS-PSP<br/>(PSP Adapter)
+    participant GWY as SYS-GWY<br/>(Access Gateway)
+    participant DESP as SYS-DESP<br/>(DESP Core)
+    participant ALIAS as SYS-ALIAS<br/>(Alias Service)
 
-    PSP->>GWY: POST /participants/{id}/activate
-    GWY->>CORE: Forward Command
-    
-    CORE->>CORE: Verify State == VERIFIED (Guard)
-    CORE->>PSP: Fetch JWKS (Public Keys)
-    PSP-->>CORE: Return JWK Set
-    
-    CORE->>CORE: Validate Keys
-    CORE->>CORE: Write State: ACTIVE
-    
-    CORE-->>PSP: 200 OK (Status: ACTIVE)
+    Note over PSP, ALIAS: Flow: User Registration (Happy Path)
+
+    %% STEP-REG-01
+    PSP->>GWY: POST /aliases
+    Note right of PSP: Body: identity_hash<br/>Signed: QWAC + JWS
+
+    %% STEP-REG-02
+    GWY->>GWY: Authenticate (mTLS)<br/>& Validate Signature
+
+    %% STEP-REG-03
+    GWY->>DESP: Route Request
+    activate DESP
+
+    %% STEP-REG-04
+    DESP->>DESP: Validate Business Rules<br/>(Status, Limits, Schema)
+
+    %% STEP-REG-05
+    DESP->>ALIAS: Query Uniqueness(hash)
+    activate ALIAS
+
+    %% STEP-REG-06
+    ALIAS-->>DESP: Result: Not Found
+    deactivate ALIAS
+
+    %% STEP-REG-07
+    DESP->>ALIAS: Commit(hash)
+    activate ALIAS
+    ALIAS-->>DESP: Stored (OK)
+    deactivate ALIAS
+
+    %% STEP-REG-08
+    DESP-->>GWY: 201 Created (alias_id)
+    deactivate DESP
+
+    %% STEP-REG-09
+    GWY-->>PSP: 201 Created
 ```
 
 **Step-by-Step Definition**
 
 | Step ID | Sender | Receiver | Message / Action | Constraints / Rules | Trace |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **STEP-ACT-01** | `SYS-PSP` | `SYS-GWY` | `POST .../activate` | Only permitted if current state is `VERIFIED`. | `TR-06` |
-| **STEP-ACT-02** | `SYS-CORE` | `SYS-PSP` | `GET {jwks_url}` | System must verify the PSP's signing keys are reachable. | `ONB-VAL-03` |
-| **STEP-ACT-03** | `SYS-CORE` | `SYS-CORE` | *State Transition* | Audit log must record `TR-06`. | `ONB-AUD-01` |
+| **STEP-REG-01** | `SYS-PSP` | `SYS-GWY` | `POST /aliases` | Body MUST contain `identity_hash`. Signed by PSP. | `REQ-OB-002` |
+| **STEP-REG-02** | `SYS-GWY` | `SYS-GWY` | *Authenticate* | Validate PSP mTLS & JWS Signature. | `ARCH-SEC-02` |
+| **STEP-REG-03** | `SYS-GWY` | `SYS-DESP` | *Route Request* | Pass authenticated context to Core Platform. | `COMP-EUR-04` |
+| **STEP-REG-04** | `SYS-DESP` | `SYS-DESP` | *Validate Business Rules* | Check PSP status, Rate Limits, and Schema. | `Rule ONB-02` |
+| **STEP-REG-05** | `SYS-DESP` | `SYS-ALIAS` | *Query Uniqueness* | Internal call: "Does Hash X exist?" | `REQ-OB-FUNC-04` |
+| **STEP-REG-06** | `SYS-ALIAS` | `SYS-DESP` | *Result: Not Found* | Confirm hash is new. | `REQ-OB-FUNC-06` |
+| **STEP-REG-07** | `SYS-DESP` | `SYS-ALIAS` | *Commit* | Write Hash to Registry. | `Rule ONB-01` |
+| **STEP-REG-08** | `SYS-DESP` | `SYS-GWY` | `201 Created` | Return `alias_id` and `timestamp`. | `TR-OB-04` |
+| **STEP-REG-09** | `SYS-GWY` | `SYS-PSP` | `201 Created` | Forward response to PSP. | `INT-OB-03` |
 
+### 5.2 Flow: Duplicate Identity (Conflict)
 
-## 4. Technical Constraints
+This flow covers the scenario where the user already exists (Violation of Single Identity).
 
-Cross-cutting technical rules for all interfaces.
+**Visualisation (Normative)**
+
+```mermaid
+sequenceDiagram
+    autonumber
+    
+    participant PSP as SYS-PSP<br/>(PSP Adapter)
+    participant GWY as SYS-GWY<br/>(Access Gateway)
+    participant DESP as SYS-DESP<br/>(DESP Core)
+    participant ALIAS as SYS-ALIAS<br/>(Alias Service)
+
+    Note over PSP, ALIAS: Flow: Duplicate Identity (Conflict)
+
+    %% Context: Request Arrival (Reusing Happy Path Entry)
+    PSP->>GWY: POST /aliases (identity_hash)
+    GWY->>DESP: Route Request
+    activate DESP
+    DESP->>DESP: Validate Business Rules
+
+    %% STEP-DUP-01
+    DESP->>ALIAS: Query Uniqueness(hash)
+    activate ALIAS
+
+    %% STEP-DUP-02
+    Note right of ALIAS: Hash already exists
+    ALIAS-->>DESP: Result: Found (Match)
+    deactivate ALIAS
+
+    %% STEP-DUP-03
+    DESP->>DESP: Log Violation<br/>(SEC-WARN-DUPLICATE)
+
+    %% STEP-DUP-04
+    DESP-->>GWY: 409 Conflict<br/>(Error: DUPLICATE_IDENTITY)
+    deactivate DESP
+
+    %% STEP-DUP-05
+    GWY-->>PSP: 409 Conflict
+```
+
+**Step-by-Step Definition**
+
+| Step ID | Sender | Receiver | Message / Action | Constraints / Rules | Trace |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **STEP-DUP-01** | `SYS-DESP` | `SYS-ALIAS` | *Query Uniqueness* | (Triggered after Validation) | `REQ-OB-FUNC-04` |
+| **STEP-DUP-02** | `SYS-ALIAS` | `SYS-DESP` | *Result: Found* | Hash already exists. | `REQ-OB-FUNC-05` |
+| **STEP-DUP-03** | `SYS-DESP` | `SYS-DESP` | *Log Violation* | Record audit event `SEC-WARN-DUPLICATE`. | `AUD-OB-01` |
+| **STEP-DUP-04** | `SYS-DESP` | `SYS-GWY` | `409 Conflict` | Error: `DUPLICATE_IDENTITY`. | `TR-OB-05` |
+| **STEP-DUP-05** | `SYS-GWY` | `SYS-PSP` | `409 Conflict` | Forward error to PSP. | `INT-OB-03` |
+
+## 6. Technical Constraints
 
 | ID | Constraint | Requirement Description | Trace |
 | :--- | :--- | :--- | :--- |
-| **INT-TEC-01** | **Idempotency** | All state-changing verbs (`POST`, `PUT`, `PATCH`) MUST require an `Idempotency-Key` HTTP header (UUID v4). | `ONB-GEN-03` |
-| **INT-TEC-02** | **Sync/Async** | Onboarding operations defined here are **Synchronous**. The system MUST respond within 30 seconds or return `504 Gateway Timeout`. | `NFR-PERF-01` |
-| **INT-TEC-03** | **Error Format** | All 4xx/5xx responses MUST return a JSON `Problem Details` object (RFC 7807). | `RFC-7807` |
+| **INT-OB-01** | **Privacy Payload** | The payload MUST NOT contain any fields other than `identity_hash` and `psp_id`. Any other field triggers a `400 Bad Request`. | `Zone B` |
+| **INT-OB-02** | **Signature Requirement** | Every request MUST carry a `JWS-Signature` header signed by the PSP's registered QWAC key. | `Rule ONB-02` |
+| **INT-OB-03** | **Performance** | The `RegisterUserHash` operation MUST complete within 200ms (p99) to ensure smooth UX at the bank counter. | `NFR-PERF-02` |
+| **INT-OB-04** | **Idempotency** | All state-changing operations (`POST`) MUST require an `Idempotency-Key` HTTP header (UUID v4) to allow safe retries. | `NFR-REL-01` |
+
+---
 
 ## Appendix: How to Parse This Specification
 
@@ -131,9 +183,14 @@ Cross-cutting technical rules for all interfaces.
 1.  **Sequence Parsing:**
     * The `mermaid` blocks contain standard Mermaid syntax.
     * You can extract these blocks to generate live documentation images during the build process.
-    * *Validation:* Ensure the `participant` names in Mermaid match the IDs in **Section 1**.
+    * *Validation:* Ensure the `participant` names in Mermaid match the IDs in **Section 3**.
 
 2.  **Contract Testing:**
-    * Iterate through **Section 3 (Step-by-Step Definitions)**.
-    * For every step where `Receiver` is `SYS-CORE`, assert that a corresponding API Endpoint exists in the OpenAPI definition.
-    * If `Constraints` mentions `Idempotency-Key`, assert that the API Schema requires that header.
+    * Iterate through **Section 5 (Step-by-Step Definitions)**.
+    * For every step where `Receiver` is `SYS-GWY` (incoming) or `SYS-DESP` (processing), assert that a corresponding API Endpoint exists in the `openapi.yaml`.
+    * If `Constraints` mentions `JWS-Signature`, assert that the API Schema requires that header.
+
+3.  **Simulation Configuration:**
+    * Use the **Step IDs** (e.g., `STEP-REG-05`) to configure the Mock Server behavior.
+    * *Example:* "If Test Case = `TC-DUP-01`, Mock `SYS-ALIAS` to return `Result: Found` at `STEP-DUP-02`."
+
