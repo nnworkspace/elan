@@ -1,0 +1,68 @@
+{
+  "_header": {
+    "artefact_type": "evidence",
+    "visibility": "public",
+    "audience": "everyone",
+    "form": "text",
+    "role": "data-vector",
+    "status": "operative",
+    "owner": "system-quality"
+  },
+  "metadata": {
+    "vector_id": "TV-ONB-03",
+    "description": "Invalid formats, missing mandatory fields, and logical errors.",
+    "upstream_spec": "SPEC-SET-ONB v0.1.0",
+    "case_type": "negative"
+  },
+  "vectors": [
+    {
+      "id": "vec-020",
+      "description": "Missing mandatory field (LEI Code)",
+      "input": {
+        "legal_name": "Incomplete Data Corp",
+        "lei_code": null,
+        "bic_code": "INCXXX22",
+        "incorporation_country": "US",
+        "regulatory_status": "LICENSED_CREDIT_INSTITUTION"
+      },
+      "expected_result": {
+        "validation": "FAIL",
+        "error_code": "ERR_MISSING_FIELD",
+        "error_field": "lei_code"
+      }
+    },
+    {
+      "id": "vec-021",
+      "description": "Invalid LEI Checksum format",
+      "input": {
+        "legal_name": "Bad Checksum Ltd",
+        "lei_code": "549300L5678901234000",
+        "bic_code": "BADCLT22",
+        "incorporation_country": "IE",
+        "regulatory_status": "LICENSED_CREDIT_INSTITUTION"
+      },
+      "expected_result": {
+        "validation": "FAIL",
+        "error_code": "ERR_INVALID_FORMAT",
+        "error_message": "LEI checksum validation failed"
+      }
+    },
+    {
+      "id": "vec-022",
+      "description": "Injection attempt in text field",
+      "input": {
+        "legal_name": "Hacker <script>alert('xss')</script> Ltd",
+        "lei_code": "724500X9Y8Z7A6B5C433",
+        "bic_code": "HACKXX22",
+        "incorporation_country": "GB",
+        "regulatory_status": "AUTHORIZED_PSP"
+      },
+      "expected_result": {
+        "validation": "FAIL",
+        "error_code": "ERR_INVALID_CHARACTERS",
+        "note": "Input sanitization must trigger."
+      }
+    }
+  ]
+}
+

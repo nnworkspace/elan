@@ -1,0 +1,37 @@
+# artefact_type: evidence
+# visibility: public
+# audience: everyone
+# form: text
+# role: manifest
+# status: operative
+# owner: system-quality
+
+meta:
+  # Unique Identifier for this Vector Set
+  id: VEC-SET-ONB
+  
+  # Human-readable title
+  title: "Participant Onboarding Test Vectors"
+  
+  # The Version of the *Vectors* (Data definitions)
+  # Example: Added new edge cases for 'invalid IBAN'
+  version: "0.1.0"
+  
+  # Lifecycle State
+  status: FICTIONAL-RELEASED
+  
+  date: 2025-12-29
+
+# Dependency Declaration:
+# These vectors are derived from the data types defined in the Spec
+targets:
+  specification_id: SPEC-SET-ONB
+  specification_version: "0.1.0"
+
+# The data contents (Machine-readable test inputs/outputs)
+contains:
+  - tv-onb-01-valid-profiles.json
+  - tv-onb-02-boundary-values.json
+  - tv-onb-03-malformed-payloads.json
+
+  

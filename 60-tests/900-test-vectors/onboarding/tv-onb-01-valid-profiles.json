@@ -1,0 +1,63 @@
+{
+  "_header": {
+    "artefact_type": "evidence",
+    "visibility": "public",
+    "audience": "everyone",
+    "form": "text",
+    "role": "data-vector",
+    "status": "operative",
+    "owner": "system-quality"
+  },
+  "metadata": {
+    "vector_id": "TV-ONB-01",
+    "description": "Standard valid participant profiles for successful onboarding.",
+    "upstream_spec": "SPEC-SET-ONB v0.1.0",
+    "case_type": "positive"
+  },
+  "vectors": [
+    {
+      "id": "vec-001",
+      "description": "Standard EU Banking Institution",
+      "input": {
+        "legal_name": "Nordic Trust Bank AB",
+        "lei_code": "549300L5678901234567",
+        "bic_code": "NORDSEKK",
+        "incorporation_country": "SE",
+        "regulatory_status": "LICENSED_CREDIT_INSTITUTION",
+        "contacts": [
+          {
+            "role": "technical_admin",
+            "email": "api-admin@nordictrust.se",
+            "phone": "+46-8-123-4567"
+          }
+        ]
+      },
+      "expected_result": {
+        "validation": "PASS",
+        "risk_score_category": "LOW"
+      }
+    },
+    {
+      "id": "vec-002",
+      "description": "Payment Service Provider (PSP) with minimal optional fields",
+      "input": {
+        "legal_name": "FastPay Systems GmbH",
+        "lei_code": "984500A1B2C3D4E5F678",
+        "bic_code": "FSTPDDEE",
+        "incorporation_country": "DE",
+        "regulatory_status": "AUTHORIZED_PSP",
+        "contacts": [
+          {
+            "role": "technical_admin",
+            "email": "ops@fastpay.de"
+          }
+        ]
+      },
+      "expected_result": {
+        "validation": "PASS",
+        "risk_score_category": "LOW"
+      }
+    }
+  ]
+}
+

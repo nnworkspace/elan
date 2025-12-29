@@ -24,7 +24,7 @@ upstream:
       version: 0.9
 
 contains:
-  - SYS-OPT-deploy-readiness.yaml
+  - SYS-OPT-01-deploy-readiness.yaml
   
 governance:
   owner: system-quality

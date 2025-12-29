@@ -30,5 +30,5 @@ targets:
 
 # The executable contents
 contains:
-  - ONB-TS-01-submission.feature
-  - ONB-TS-02-activation.feature
+  - ONB-TS-01-registration.feature
+  - ONB-TS-02-status-query.feature
