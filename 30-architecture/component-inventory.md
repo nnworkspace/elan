@@ -71,7 +71,7 @@ These components are operated by private sector banks/fintechs. They are the **o
 
 | ID | Component Name | Responsibility | Upstream Rule |
 | :--- | :--- | :--- | :--- |
-| **COMP-PSP-01** | **Digital Euro Gateway** | The main API gateway. Authenticates users, performs KYC, and acts as the secure connector to the Eurosystem Settlement Engine. | `actors-and-roles.md` |
+| **COMP-PSP-01** | **PSP Adapter Service** | The proprietary integration layer. Adapts the PSP's internal systems (Core Banking, Channels) to the standard Digital Euro API exposed by `COMP-EUR-05`. | `actors-and-roles.md` |
 | **COMP-PSP-02** | **Waterfall Engine** | Automates liquidity. Monitors wallet balance; triggers debits/credits to the commercial bank core when limits are breached (funding/defunding). | `liquidity-and-waterfall.md` |
 | **COMP-PSP-03** | **Key Management System (KMS)** | Securely manages the cryptographic keys required to sign transactions on behalf of the user (if using a custodial model). | `security-and-privacy-zones.md` |
 
@@ -110,7 +110,7 @@ The following interfaces are expected to be specified downstream:
 - I_Onboarding → Alias Service
 - I_Settlement → Settlement Engine
 - I_Liquidity → Waterfall Engine
-- I_Wallet → PSP Gateway
+- I_Wallet → PSP Adapter Service
 
 These interfaces are illustrative and non-authoritative.
 

@@ -28,11 +28,12 @@ C4Context
     }
 
     System_Boundary(IntermediarySphere, "Intermediary Domain (PSP)") {
-        System(PSP_Gateway, "PSP Infrastructure", "Manages User Identity, KYC, and connection to Eurosystem")
+        System(PSP_Backend, "PSP Backend / Adapter", "Proprietary integration layer. Connects Core Banking to Eurosystem.")
         System(ComBank, "Commercial Bank Core", "Source of liquidity (Waterfall / Reverse Waterfall)")
     }
 
     System_Boundary(EurosystemSphere, "Eurosystem Domain") {
+        System(AccessGateway, "Access Gateway", "Central API Entry Point. Authenticates PSPs and routes traffic.")
         System(SettlementEngine, "Settlement Infrastructure", "Validates and settles transactions pseudonymously")
         System(AliasService, "Alias / Identity Service", "Ensures 'One Person / One Identity' without revealing PII")
     }
@@ -40,13 +41,13 @@ C4Context
     %% Relationships
     Rel(User, WalletApp, "Initiates Payment / Views Balance")
     
-    Rel(WalletApp, PSP_Gateway, "Authenticated Requests")
+    Rel(WalletApp, PSP_Backend, "Authenticated Requests")
     
-    Rel(PSP_Gateway, ComBank, "Funding / Defunding (Commercial Bank Money)")
-    Rel(PSP_Gateway, SettlementEngine, "Settlement Instruction (Anonymised)")
+    Rel(PSP_Backend, ComBank, "Funding / Defunding (Commercial Bank Money)")
+    Rel(PSP_Backend, AccessGateway, "API Calls (mTLS)")
     
-    Rel(PSP_Gateway, AliasService, "Identity Hash Check")
-    Rel(SettlementEngine, AliasService, "Holding Limit Validation")
+    Rel(AccessGateway, AliasService, "Routes Identity Checks")
+    Rel(AccessGateway, SettlementEngine, "Routes Instructions")
 ```
 
 ## Domain Responsibilities
@@ -88,7 +89,7 @@ The architecture is divided into three distinct spheres of responsibility.
 
 ### B. Payment & Settlement
 1.  User initiates payment via **Wallet App**.
-2.  **PSP** validates the request and forwards a settlement instruction to the **Settlement Engine**.
+2.  PSP validates the request and forwards a settlement instruction to the **Access Gateway**.
 3.  **Settlement Engine** moves funds pseudonymously.
 4.  **Settlement Engine** confirms success to Payer PSP and Payee PSP.
 
