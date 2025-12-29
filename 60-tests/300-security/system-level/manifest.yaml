@@ -1,0 +1,44 @@
+artefact_type: assurance-set
+form: manifest
+role: security-assurance
+visibility: public
+audience: everyone
+status: FICTIONAL-RELEASED
+
+set:
+  id: SEC-SYS
+  name: System-level Security Assurance
+  version: 0.1.0
+  description: >
+    Security assurance set covering system-wide security guarantees
+    that apply across all features and components. This includes
+    authentication enforcement, transport security, abuse prevention,
+    and audit integrity rules that MUST hold uniformly.
+
+upstream:
+  specifications:
+    - id: SPEC-SEC-GLOBAL
+      version: 0.1
+  rulebooks:
+    - id: RULEBOOK-DE
+      version: 0.9
+
+contains:
+  - SEC-SYS-01-network-integrity.feature
+    
+governance:
+  owner: system-quality
+  review_cycle: per-release
+  change_policy: versioned-set-only
+
+notes:
+  - >
+    This manifest defines an atomic system-level security assurance baseline.
+    All contained artefacts inherit the version and lifecycle state
+    declared here and MUST NOT declare their own.
+  - >
+    System-level security scenarios apply across all features and
+    MUST be satisfied regardless of feature-specific behaviour.
+  - >
+    Traceability to upstream artefacts is version-aware by design
+    to ensure auditability over time.

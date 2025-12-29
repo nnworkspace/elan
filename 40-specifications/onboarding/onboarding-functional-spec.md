@@ -15,7 +15,7 @@ owner: system-design
 - **Part of Set:** `SPEC-SET-ONB`
 - **Traceability:**
     - **Upstream Rulebook:** `@rule=SET-RULEBOOK:0.9.0`
-    - **Upstream Architecture:** `@arch=SET-ARCH:0.1.0`
+    - **Upstream Arch:** `@arch=SET-ARCH:0.1.0`
 
 ## 2. Purpose and Scope
 
@@ -39,7 +39,7 @@ The lifecycle of a User Identity record within the **PSP System** (`COMP-PSP-01`
 | :--- | :--- | :--- |
 | `PENDING_KYC` | User has applied, but PSP has not yet verified documents. | PSP |
 | `KYC_CLEARED` | PSP has verified identity. Identity Hash is calculated. Ready for uniqueness check. | PSP |
-| `CHECKING_ALIAS` | Request sent to Eurosystem Alias Service (`COMP-EUR-02`). Awaiting response. | Eurosystem |
+| `CHECKING_ALIAS` | Request transmitted to Access Gateway (`COMP-EUR-05`). Awaiting response. | Eurosystem |
 | `ACTIVE` | Uniqueness confirmed. Wallet created. Limits active. | System |
 | `REJECTED` | Failed KYC or Duplicate Identity found. | System |
 
@@ -49,15 +49,33 @@ The lifecycle of a User Identity record within the **PSP System** (`COMP-PSP-01`
 stateDiagram-v2
     direction LR
     
+    %% Initial Application
     [*] --> PENDING_KYC : User Applies
+    
+    %% KYC Phase (Zone A)
+    state PENDING_KYC {
+        [*] --> Awaiting_Docs
+    }
+    
     PENDING_KYC --> REJECTED : KYC Fail
-    PENDING_KYC --> KYC_CLEARED : KYC Pass
+    PENDING_KYC --> KYC_CLEARED : TR-OB-02\n(verify_identity)
     
-    KYC_CLEARED --> CHECKING_ALIAS : Request Registration
+    %% Registration Phase (Crossing Zone A -> Zone B)
+    KYC_CLEARED --> CHECKING_ALIAS : TR-OB-03\n(register_alias)
+    note right of KYC_CLEARED
+        Action: Transmit Hash
+        Target: COMP-EUR-05
+    end note
     
-    CHECKING_ALIAS --> ACTIVE : Uniqueness Confirmed (200 OK)
-    CHECKING_ALIAS --> REJECTED : Duplicate Found (409 Conflict)
+    %% Resolution Phase (Zone B Response)
+    state CHECKING_ALIAS {
+        [*] --> Awaiting_Gateway
+    }
     
+    CHECKING_ALIAS --> ACTIVE : TR-OB-04\n(alias_confirmed)
+    CHECKING_ALIAS --> REJECTED : TR-OB-05\n(alias_conflict)
+    
+    %% Final State
     ACTIVE --> [*] : Offboard
 ```
 
@@ -69,7 +87,7 @@ stateDiagram-v2
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **TR-OB-01** | `(null)` | `PENDING_KYC` | `submit_application` | Validate input formats (Name, ID). | `INT-OB-01` |
 | **TR-OB-02** | `PENDING_KYC` | `KYC_CLEARED` | `verify_identity` | **Manual/Auto KYC**: Verify physical ID document. <br>**Hash Gen**: Compute `SHA256(Salt + NationalID)`. | `Rule ONB-02` |
-| **TR-OB-03** | `KYC_CLEARED` | `CHECKING_ALIAS` | `register_alias` | **Zone Crossing**: Send *only* the Hash to `COMP-EUR-02`. Do NOT send PII. | `Rule ONB-01`<br>`COMP-EUR-05` |
+| **TR-OB-03** | `KYC_CLEARED` | `CHECKING_ALIAS` | `register_alias` | **Action**: Transmit sanitized Hash to **Access Gateway** (`COMP-EUR-05`). | `Rule ONB-01` |
 | **TR-OB-04** | `CHECKING_ALIAS` | `ACTIVE` | `alias_confirmed` | **Provisioning**: Create Wallet Address.<br>**Link**: Bind Wallet Address to User ID in PSP DB. | `Rule ONB-03` |
 | **TR-OB-05** | `CHECKING_ALIAS` | `REJECTED` | `alias_conflict` | **Error Handling**: Inform user they already have a Digital Euro identity (potentially at another PSP). | `Rule ONB-01` |
 
@@ -83,9 +101,9 @@ stateDiagram-v2
 - **REQ-OB-FUNC-03:** The hash MUST be salted with a scheme-wide static salt to prevent rainbow table attacks, but ensure deterministic output across different PSPs.
 
 ### 6.2 Uniqueness Check (The "Registry" Logic)
-**Target:** `COMP-EUR-02` (Alias Service)
+**Target:** `COMP-EUR-02` (Alias Service) via `COMP-EUR-04` (DESP)
 
-- **REQ-OB-FUNC-04:** Upon receiving a `register_alias` request, the Alias Service MUST check if the hash exists in the **Global Alias Registry**.
+- **REQ-OB-FUNC-04:** Upon receiving a `register_alias` request (routed via Gateway and Platform), the Alias Service MUST check if the hash exists in the **Global Alias Registry**.
 - **REQ-OB-FUNC-05:** If the hash exists:
     - Return `409 Conflict`.
     - Do NOT register a new record.

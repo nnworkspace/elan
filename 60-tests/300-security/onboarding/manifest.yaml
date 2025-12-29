@@ -1,0 +1,47 @@
+artefact_type: assurance-set
+form: manifest
+role: security-assurance
+visibility: public
+audience: everyone
+status: FICTIONAL-RELEASED
+
+set:
+  id: SEC-ONB
+  name: Onboarding – Security Assurance
+  version: 0.1.0
+  description: >
+    Security assurance set covering onboarding-related security guarantees,
+    including authorisation, role separation, abuse prevention,
+    and audit integrity. This set defines the security behaviour
+    that MUST be preserved across all onboarding implementations.
+
+upstream:
+  specifications:
+    - id: SPEC-ONB-FUNC
+      version: 0.1
+    - id: SPEC-ONB-INT
+      version: 0.1
+    - id: SPEC-ONB-DM
+      version: 0.1
+  rulebooks:
+    - id: RULEBOOK-DE
+      version: 0.9
+
+contains:
+  - ONB-SEC-01-controls.feature
+    
+governance:
+  owner: system-quality
+  review_cycle: per-release
+  change_policy: versioned-set-only
+
+notes:
+  - >
+    This manifest defines an atomic security assurance baseline.
+    Individual files within this folder inherit the version and
+    lifecycle state declared here and MUST NOT declare their own.
+  - >
+    Security scenarios reference upstream artefacts using both
+    identifier and version to ensure auditability over time.
+
+

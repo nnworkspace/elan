@@ -15,7 +15,7 @@ owner: system-design
 - **Part of Set:** `SPEC-SET-ONB`
 - **Traceability:**
     - **Upstream Spec:** `SPEC-OB-FUNC` (Implements `REQ-OB-FUNC-01` and `02`)
-    - **Upstream Arch:** `@arch=SET-ARCH:0.1.0` (Implements `COMP-EUR-02` Data Schema)
+    - **Upstream Arch:** `@arch=SET-ARCH:0.1.0` (Implements Data Schemas for `COMP-EUR-02` and `COMP-EUR-04`)
 
 ## 2. Purpose and Scope
 
@@ -38,13 +38,61 @@ To resolve this, this specification splits the User Identity into two disjoint e
 - **`UserIdentitySource` (Private):** The clear-text data. This never leaves the PSP's internal system.
 - **`GlobalAliasRecord` (Shared):** A cryptographic derivative (`SHA-256`) that acts as a unique pointer without revealing the source.
 
-The **Access Gateway** (`SYS-GWY`) acts as the physical firewall, rejecting any payload that contains fields from the "Private" set.
+**Visualisation (Normative)**
+
+```mermaid
+classDiagram
+    direction TB
+
+    %% Zone A: Private Data
+    namespace Zone_A_PSP_Domain {
+        class UserIdentitySource {
+            <<Private PII>>
+            +String full_name
+            +Enum national_id_type
+            +String national_id_value
+            +ISO3166 issuing_country
+        }
+        
+        class PSP_Adapter {
+            <<Service>>
+            +computeHash(source, salt)
+        }
+    }
+
+    %% Interface Layer
+    class OnboardingRequest {
+        <<Interface Payload>>
+        +String identity_hash
+        +BIC psp_id
+        +JWS signature
+    }
+
+    %% Zone B: Shared Data
+    namespace Zone_B_Eurosystem {
+        class GlobalAliasRecord {
+            <<Shared Registry>>
+            +SHA256 identity_hash
+            +Timestamp creation_date
+            +Enum status
+            +Decimal holding_limit_usage
+        }
+    }
+
+    %% Relationships
+    UserIdentitySource "1" -- "1" PSP_Adapter : Inputs
+    PSP_Adapter "1" ..> "1" OnboardingRequest : Generates
+    OnboardingRequest "1" ..> "1" GlobalAliasRecord : Creates/Verifies
+
+    %% Firewall Note
+    note for OnboardingRequest "Firewall Rule:\nMust NOT contain fields\nfrom UserIdentitySource"
+```
 
 ## 4. General Principles
 
 | ID | Principle | Requirement Statement | Trace |
 | :--- | :--- | :--- | :--- |
-| **DM-OB-01** | **Data Minimisation** | The Central Infrastructure (`COMP-EUR-02`) MUST store only the cryptographic hash of the user identity, never the clear-text source data. | `Rule ONB-01` |
+| **DM-OB-01** | **Data Minimisation** | The Central Infrastructure (`COMP-EUR-02` via `04`) MUST store only the cryptographic hash of the user identity, never the clear-text source data. | `Rule ONB-01` |
 | **DM-OB-02** | **Deterministic Derivation** | The `identity_hash` MUST be reproducible by any PSP given the same National ID and Scheme Salt. | `REQ-OB-FUNC-03` |
 | **DM-OB-03** | **Zone Containment** | Entities classified as **Zone A** MUST NOT appear in API payloads sent to the Access Gateway (`SYS-GWY`). | `ARCH-SEC-01` |
 
@@ -65,7 +113,8 @@ The **Access Gateway** (`SYS-GWY`) acts as the physical firewall, rejecting any 
 
 ### 5.2 Entity: GlobalAliasRecord (The Registry)
 **Classification:** `ZONE B` (Eurosystem Shared)
-**Description:** The authoritative record stored in the Alias Service (`COMP-EUR-02`).
+**Owner:** Alias Service (`COMP-EUR-02`)
+**Description:** The authoritative record stored in the Registry, queried by the DESP Platform.
 
 **Parsing Context:** `Scope: ZoneB_Registry`
 
@@ -74,10 +123,11 @@ The **Access Gateway** (`SYS-GWY`) acts as the physical firewall, rejecting any 
 | **DAT-ALS-01** | `identity_hash` | `SHA-256` | **Primary Key.** The anonymised unique identifier.<br>Derived from `SHA256(Salt + ID_Type + ID_Value)`. | `Rule ONB-01` |
 | **DAT-ALS-02** | `creation_date` | `Timestamp` | UTC timestamp of first registration. | `AUD-OB-01` |
 | **DAT-ALS-03** | `status` | `Enum` | Lifecycle state.<br>Values: `ACTIVE`, `SUSPENDED`. | `ONB-FUNC-States` |
-| **DAT-ALS-04** | `holding_limit_usage`| `Decimal` | The current aggregate holdings across all PSPs.<br>(Technical field for Limit Enforcement). | `Rule LIQ-04` |
+| **DAT-ALS-04** | `holding_limit_usage`| `Decimal` | The current aggregate holdings across all PSPs.<br>(Technical field for Limit Enforcement by `COMP-EUR-04`). | `Rule LIQ-04` |
 
 ### 5.3 Entity: OnboardingRequest (The Payload)
 **Classification:** `INTERFACE` (Zone A $\to$ Zone B)
+**Consumer:** Access Gateway (`COMP-EUR-05`) & DESP Platform (`COMP-EUR-04`)
 **Description:** The data structure transmitted over the wire during `OP-OB-01`.
 
 **Parsing Context:** `Scope: API_Payload`

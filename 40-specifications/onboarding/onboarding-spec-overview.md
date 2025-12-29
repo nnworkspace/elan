@@ -18,10 +18,10 @@ owner: system-design
 ## 2. Purpose and Scope
 This document defines the **technical scope** for onboarding Users and Payment Service Providers (PSPs) into the Digital Euro ecosystem.
 
-It translates the high-level policy rules defined in the **Scheme Rulebook** into concrete technical requirements, data models, and interface definitions, strictly adhering to the privacy boundaries defined in the **System Architecture**.
+It translates the high-level policy rules defined in the **Scheme Rulebook** into concrete technical requirements, strictly adhering to the privacy boundaries defined in the **System Architecture**.
 
 ### 2.1 In Scope
-- **User Identity Resolution:** The mechanism to enforce "One Person / One Identity" (`Rule ONB-01`) via the **Alias Service** (`COMP-EUR-02`).
+- **User Identity Resolution:** The mechanism to enforce "One Person / One Identity" (`Rule ONB-01`) via the **Alias Service** (`COMP-EUR-02`), orchestrated by the **DESP** (`COMP-EUR-04`).
 - **Wallet Provisioning:** The technical lifecycle of creating a Digital Euro Account (`Rule ONB-03`) via the **Access Gateway** (`COMP-EUR-05`).
 - **Intermediary Checks:** Interfaces for PSPs to signal KYC/AML compliance (`Rule ONB-02`) from their local **PSP Adapter** (`COMP-PSP-01`).
 - **Portability Checks:** Logic to verify holding limits when a user opens an account at a second PSP (`Rule ONB-04`).
@@ -49,10 +49,10 @@ This specification adheres to the components and security zones defined in **Arc
 
 | Component ID | Name | Role in Onboarding |
 | :--- | :--- | :--- |
-| **COMP-EUR-02** | Alias Service | System of Record for uniqueness checks (Zone B). |
-| **COMP-EUR-05** | Access Gateway | The API surface for PSPs to submit onboarding requests. |
-| **COMP-PSP-01** | PSP Adapter | The actor performing KYC and calculating the Identity Hash (Zone A). |
-| **N/A** | Zone A/B Boundary | Strictly enforced: No PII crosses to `COMP-EUR-02`. |
+| **COMP-EUR-05** | **Access Gateway** | The **only** API entry point. Authenticates PSPs and validates schema. |
+| **COMP-EUR-04** | **DESP Platform** | The orchestrator. Executes business logic (Rate Limits, Status Checks). |
+| **COMP-EUR-02** | **Alias Service** | The System of Record. Stores unique Identity Hashes (Zone B). |
+| **COMP-PSP-01** | **PSP Adapter** | The client. Performs KYC and computes Identity Hash (Zone A). |
 
 ## 4. Document Map (The Set)
 
@@ -69,7 +69,7 @@ The specification is split into three orthogonal views to ensure clarity and lin
 ### 5.1 Privacy by Design (The Firewall)
 In accordance with `security-and-privacy-zones.md`, the Eurosystem (`Zone B`) **MUST NOT** receive clear-text identity data.
 - **Mechanism:** The PSP Adapter (`Zone A`) computes a one-way hash of the user's national ID.
-- **Constraint:** The **Alias Service** (`COMP-EUR-02`) operates exclusively on these hashes.
+- **Constraint:** The **Alias Service** (`COMP-EUR-02`) operates exclusively on these hashes. The **Access Gateway** (`COMP-EUR-05`) strictly filters payloads to ensure no PII enters.
 
 ### 5.2 Intermediary Autonomy
 In accordance with `Rule ONB-02`, the Eurosystem does not perform KYC. The system accepts a cryptographic attestation from the PSP via `COMP-EUR-05` that KYC has been performed.
@@ -96,3 +96,5 @@ In accordance with `Rule ONB-02`, the Eurosystem does not perform KYC. The syste
     - Extract all **Rule IDs** (e.g., `ONB-01`) listed in the table in Section 3.1.
     - Scan `SPEC-OB-FUNC` and `SPEC-OB-INT`.
     - *Validation:* Warn if any Rule listed here is **not** referenced in the child specifications (indicating a missing requirement).
+
+    

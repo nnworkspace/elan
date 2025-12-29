@@ -31,7 +31,7 @@ The specific architectural components participating in these flows.
 | :--- | :--- | :--- | :--- | :--- |
 | **SYS-PSP** | **PSP Adapter Service** | Client | The PSP's proprietary integration layer. Computes Hash, manages keys, and calls the Access Gateway. | `COMP-PSP-01` |
 | **SYS-GWY** | **Access Gateway** | Interface | The Border Control. Terminates mTLS, validates QWACs, and routes sanitised requests to DESP. | `COMP-EUR-05` |
-| **SYS-DESP** | **DESP Core** | Orchestrator | The Central Platform. Enforces business logic, audit logging, and coordinates sub-services. | `COMP-EUR-04` |
+| **SYS-DESP** | **DESP Platform** | Orchestrator | The Central Platform. Enforces business logic, audit logging, and coordinates sub-services. | `COMP-EUR-04` |
 | **SYS-ALIAS** | **Alias Service** | Registry | The System of Record. Pure storage engine for unique Identity Hashes. | `COMP-EUR-02` |
 
 ## 4. Interface Operation Catalog
@@ -57,7 +57,7 @@ sequenceDiagram
     
     participant PSP as SYS-PSP<br/>(PSP Adapter)
     participant GWY as SYS-GWY<br/>(Access Gateway)
-    participant DESP as SYS-DESP<br/>(DESP Core)
+    participant DESP as SYS-DESP<br/>(DESP Platform)
     participant ALIAS as SYS-ALIAS<br/>(Alias Service)
 
     Note over PSP, ALIAS: Flow: User Registration (Happy Path)
@@ -104,7 +104,7 @@ sequenceDiagram
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **STEP-REG-01** | `SYS-PSP` | `SYS-GWY` | `POST /aliases` | Body MUST contain `identity_hash`. Signed by PSP. | `REQ-OB-002` |
 | **STEP-REG-02** | `SYS-GWY` | `SYS-GWY` | *Authenticate* | Validate PSP mTLS & JWS Signature. | `ARCH-SEC-02` |
-| **STEP-REG-03** | `SYS-GWY` | `SYS-DESP` | *Route Request* | Pass authenticated context to Core Platform. | `COMP-EUR-04` |
+| **STEP-REG-03** | `SYS-GWY` | `SYS-DESP` | *Route Request* | Pass authenticated context to DESP Platform. | `COMP-EUR-04` |
 | **STEP-REG-04** | `SYS-DESP` | `SYS-DESP` | *Validate Business Rules* | Check PSP status, Rate Limits, and Schema. | `Rule ONB-02` |
 | **STEP-REG-05** | `SYS-DESP` | `SYS-ALIAS` | *Query Uniqueness* | Internal call: "Does Hash X exist?" | `REQ-OB-FUNC-04` |
 | **STEP-REG-06** | `SYS-ALIAS` | `SYS-DESP` | *Result: Not Found* | Confirm hash is new. | `REQ-OB-FUNC-06` |
@@ -124,7 +124,7 @@ sequenceDiagram
     
     participant PSP as SYS-PSP<br/>(PSP Adapter)
     participant GWY as SYS-GWY<br/>(Access Gateway)
-    participant DESP as SYS-DESP<br/>(DESP Core)
+    participant DESP as SYS-DESP<br/>(DESP Platform)
     participant ALIAS as SYS-ALIAS<br/>(Alias Service)
 
     Note over PSP, ALIAS: Flow: Duplicate Identity (Conflict)
@@ -174,7 +174,6 @@ sequenceDiagram
 | **INT-OB-03** | **Performance** | The `RegisterUserHash` operation MUST complete within 200ms (p99) to ensure smooth UX at the bank counter. | `NFR-PERF-02` |
 | **INT-OB-04** | **Idempotency** | All state-changing operations (`POST`) MUST require an `Idempotency-Key` HTTP header (UUID v4) to allow safe retries. | `NFR-REL-01` |
 
----
 
 ## Appendix: How to Parse This Specification
 
