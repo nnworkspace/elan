@@ -1,0 +1,99 @@
+# ------------------------------------------------------------------------------
+# CLASSIFICATION: UNCLASSIFIED // ILLUSTRATIVE
+# ------------------------------------------------------------------------------
+# DISCLAIMER:
+# This file is an ILLUSTRATIVE EXAMPLE of a CI/CD pipeline definition.
+# It demonstrates the LOGICAL FLOW of governance enforcement and automation.
+# It is NOT an executable pipeline configuration for any specific CI platform
+# (e.g., Jenkins, GitLab CI, GitHub Actions) and contains NO functional logic.
+# ------------------------------------------------------------------------------
+
+pipeline:
+  name: "01-governance-policy-enforcer"
+  description: >
+    The "Constitutional Guardrail". This pipeline runs pre-merge to ensure
+    that all changes adhere to the Project Rulebook (20-rulebook) via
+    static analysis and Policy-as-Code (OPA).
+
+  trigger:
+    - event: "pull_request"
+      branches: ["main", "release/*"]
+
+  # ----------------------------------------------------------------------------
+  # STAGE 1: IDENTITY & TRUST BOOTSTRAP
+  # ----------------------------------------------------------------------------
+  stage_identity:
+    steps:
+      - name: "Workload Identity Federation (WIF)"
+        id: "auth"
+        uses: "actions/auth@v2" # Illustrative Action
+        with:
+          workload_identity_provider: "projects/123456789/locations/global/workloadIdentityPools/eurosystem-pool/providers/github-provider"
+          service_account: "governance-enforcer@eurosystem-ci.iam.gserviceaccount.com"
+          token_format: "access_token"
+        comment: >
+          No long-lived keys. We exchange the OIDC token from the CI runner
+          for a short-lived Access Token with limited governance-read privileges.
+
+  # ----------------------------------------------------------------------------
+  # STAGE 2: COMMIT & AUTHORSHIP VERIFICATION
+  # ----------------------------------------------------------------------------
+  stage_provenance:
+    needs: ["stage_identity"]
+    steps:
+      - name: "Verify GPG Signatures"
+        run: |
+          # Institutional Rule: All commits must be cryptographically signed by a
+          # key registered in the Eurosystem Web of Trust.
+          for commit in $(git rev-list --no-merges origin/main..HEAD); do
+            git verify-commit $commit --verbose || exit 1
+          done
+
+      - name: "Conventional Commits Enforcement"
+        run: "npm run commitlint -- --from origin/main --to HEAD"
+        comment: "Ensures trace-id (Refs: #...) is present in every commit message."
+
+  # ----------------------------------------------------------------------------
+  # STAGE 3: POLICY AS CODE (OPA)
+  # ----------------------------------------------------------------------------
+  stage_policy_check:
+    needs: ["stage_provenance"]
+    steps:
+      - name: "Download Policy Bundle"
+        run: |
+          # Fetch the latest operative and security rules compiled to Rego (OPA)
+          oci pull registry.eurosystem.int/governance/opt-rules-bundle:latest --output ./policies
+
+      - name: "Validate Metadata Compliance"
+        uses: "open-policy-agent/conftest-action"
+        with:
+          files: "60-code/**/*"
+          policy: "./policies"
+        comment: >
+          Checks strict headers:
+          - CLASSIFICATION: ...
+          - DISCLAIMER: ...
+          Checks manifest integrity:
+          - manifest.yaml exists in every component root.
+          - Owner field maps to a valid LDAP group.
+
+      - name: "Detect Unmanaged Code (Drift)"
+        run: |
+          # Fails if code exists that is NOT linked to a Spec via @SpecLink
+          # Exception: Files listed in .governanceignore
+          ./tooling/governance-cli scan-drift --strict --fail-on-error
+
+  # ----------------------------------------------------------------------------
+  # STAGE 4: BLOCKING
+  # ----------------------------------------------------------------------------
+  stage_result:
+    needs: ["stage_policy_check"]
+    if: failure()
+    steps:
+      - name: "Block PR Merge"
+        run: |
+          # If any policy fails, we explicitly block the merge capability in the repo.
+          # Governance is not a suggestion.
+          gh pr review --request-changes --body "GOVERNANCE VIOLATION: See log."
+
+          

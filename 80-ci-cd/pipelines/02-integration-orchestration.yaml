@@ -1,0 +1,148 @@
+# ------------------------------------------------------------------------------
+# CLASSIFICATION: UNCLASSIFIED // ILLUSTRATIVE
+# ------------------------------------------------------------------------------
+# DISCLAIMER:
+# This file is an ILLUSTRATIVE EXAMPLE of a CI/CD pipeline definition.
+# It demonstrates the LOGICAL FLOW of governance enforcement and automation.
+# It is NOT an executable pipeline configuration for any specific CI platform
+# (e.g., Jenkins, GitLab CI, GitHub Actions) and contains NO functional logic.
+# ------------------------------------------------------------------------------
+
+pipeline:
+  name: "02-integration-orchestration"
+  description: >
+    The "Master Orchestrator". This pipeline does NOT build code.
+    It provisions an ephemeral "League Environment" (TestNet), deploys
+    signed vendor artifacts, and executes the Central Conformance Suite.
+
+  trigger:
+    - event: "workflow_dispatch" # Manual/API Trigger (e.g., "Nightly Run")
+    - event: "schedule"
+      cron: "0 2 * * *" # 2 AM CET
+
+  variables:
+    ENVIRONMENT_ID: "ephemeral-ci-${{ github.run_id }}"
+    TARGET_REGION: "europe-west3" # Frankfurt
+
+  # ----------------------------------------------------------------------------
+  # STAGE 1: SUPPLY CHAIN ACQUISITION
+  # ----------------------------------------------------------------------------
+  stage_acquire_artifacts:
+    steps:
+      - name: "Authenticate to Eurosystem Artifact Registry"
+        uses: "docker/login-action"
+        with:
+          registry: "registry.eurosystem.int"
+          method: "wif" # Workload Identity
+
+      - name: "Pull & Verify Vendor Images"
+        run: |
+          # We pull binary artifacts provided by the separate vendor pipelines
+          # CRITICAL: Verification of Cosign signatures is mandatory.
+          
+          cosign verify \
+            --key gcpkms://projects/eurosystem-kms/locations/global/keyRings/supply-chain/cryptoKeys/signing-key \
+            registry.eurosystem.int/components/desp:sha-latest
+            
+          cosign verify \
+            --key gcpkms://... \
+            registry.eurosystem.int/components/access-gateway:sha-latest
+
+          # Note: We do NOT have access to the source code of the vendors here.
+          # We trust the cryptography.
+
+  # ----------------------------------------------------------------------------
+  # STAGE 2: EPHEMERAL PROVISIONING (INFRA-AS-CODE)
+  # ----------------------------------------------------------------------------
+  stage_provision_env:
+    needs: ["stage_acquire_artifacts"]
+    steps:
+      - name: "Terraform Init & Apply"
+        working_directory: "90-infra/terraform/ephemeral-testnet"
+        run: |
+          terraform init -backend-config="bucket=eurosystem-tf-state"
+          
+          # Spin up a completely isolated Kubernetes Cluster (or Namespace)
+          terraform apply -auto-approve \
+            -var="env_id=${{ env.ENVIRONMENT_ID }}" \
+            -var="vpc_peering=true" # Connect to shared services (Vault, IAM)
+
+      - name: "Fetch Cluster Credentials"
+        run: |
+          gcloud container clusters get-credentials ${{ env.ENVIRONMENT_ID }} \
+            --region ${{ env.TARGET_REGION }}
+
+  # ----------------------------------------------------------------------------
+  # STAGE 3: DEPLOYMENT (GIT-OPS SYNC)
+  # ----------------------------------------------------------------------------
+  stage_deploy:
+    needs: ["stage_provision_env"]
+    steps:
+      - name: "Hydrate Manifests"
+        run: |
+          # Inject the specific verified image SHA digests into the K8s manifests
+          kustomize edit set image desp=${{ env.VERIFIED_DESP_SHA }}
+          kustomize build ./overlays/integration-test | kubectl apply -f -
+
+      - name: "Wait for Health Checks"
+        run: |
+          kubectl wait --for=condition=ready pod -l app=desp --timeout=300s
+          kubectl wait --for=condition=ready pod -l app=access-gateway --timeout=300s
+
+  # ----------------------------------------------------------------------------
+  # STAGE 4: CENTRAL CONFORMANCE VERIFICATION
+  # ----------------------------------------------------------------------------
+  stage_verify:
+    needs: ["stage_deploy"]
+    steps:
+      - name: "Inject Test Vectors"
+        run: |
+          # Load the "Machine-Readable Standard" (900-test-vectors) into the environment
+          kubectl create configmap test-vectors --from-file=900-test-vectors/
+
+      - name: "Execute 50-tests Suite (Cucumber/Gherkin)"
+        run: |
+          # This runs the behaviour tests against the REAL running API
+          # Not mocks. Real HTTP calls to the deployed services.
+          npm run test:integration -- \
+            --target=https://api.${{ env.ENVIRONMENT_ID }}.eurosystem.int \
+            --tags="@critical or @assurance" \
+            --reporter=json:assurance-results.json
+
+      - name: "Security Scanning (DAST)"
+        run: |
+          # Dynamic Application Security Testing against the live endpoint
+          owasp-zap-cli active-scan --url https://api.${{ env.ENVIRONMENT_ID }}...
+
+  # ----------------------------------------------------------------------------
+  # STAGE 5: TEARDOWN (COST & HYGIENE)
+  # ----------------------------------------------------------------------------
+  stage_teardown:
+    if: always() # Run even if tests fail
+    needs: ["stage_verify"]
+    steps:
+      - name: "Destroy Ephemeral Environment"
+        run: |
+          terraform destroy -auto-approve \
+            -var="env_id=${{ env.ENVIRONMENT_ID }}"
+          
+          # We do not leave digital trash.
+
+  # ----------------------------------------------------------------------------
+  # STAGE 6: EVIDENCE ARCHIVING
+  # ----------------------------------------------------------------------------
+  stage_evidence:
+    if: always()
+    needs: ["stage_verify"]
+    steps:
+      - name: "Upload Assurance Artifacts"
+        uses: "actions/upload-artifact"
+        with:
+          name: "assurance-evidence-${{ github.run_id }}"
+          path: |
+            assurance-results.json
+            zap-report.html
+            terraform-state.log
+        comment: "These files are ingested by the Report Generation pipeline."
+
+        
