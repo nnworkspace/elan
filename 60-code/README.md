@@ -92,7 +92,7 @@ In a real institutional programme, each component shown here would **almost alwa
 
 It reflects organisational reality and enables clear ownership.
 
-This repository deliberately uses **subfolders under `50-code/`** to illustrate those components **side by side**, for pedagogical purposes.
+This repository deliberately uses **subfolders under `60-code/`** to illustrate those components **side by side**, for pedagogical purposes.
 
 The goal is to allow readers to:
 
@@ -102,6 +102,55 @@ The goal is to allow readers to:
 
 The folder structure here represents **logical structure**, not deployment topology.
 
+
+## Component structure and invariants
+
+Each component under `60-code/` represents an independently owned institutional component.
+
+While implementation details are free to vary by technology stack, each component MUST provide the following invariant elements:
+
+1. **A human contract**  
+   A `README.md` at the component root describing:
+        - the component’s purpose and responsibility,
+        - its institutional owner,
+        - its scope and explicit non-scope,
+        - the specification identifiers it implements (with versions),
+        - and its interactions with other components.
+
+   This file is the primary point of orientation for humans.
+
+2. **A machine contract**  
+   A `manifest.yaml` at the component root declaring:
+        - the component identifier and role,
+        - ownership,
+        - implemented specifications (IDs and versions),
+        - exposed and consumed interfaces,
+        - and referenced assurance artefacts.
+
+   This file is the authoritative, machine-readable declaration used by automation and audit tooling.
+
+3. **Component-local documentation (`docs/`)**  
+   A `docs/` folder providing explanations that are **local to the component**, such as:
+        - component-specific architectural notes,
+        - sequence diagrams,
+        - protocol or data ownership clarifications,
+        - implementation rationale that does not belong in global documentation.
+
+   This folder MUST NOT duplicate:
+        - global architecture (`30-architecture/`),
+        - specifications (`40-specifications/`),
+        - or governance documents (`00-project-governance/`).
+
+   Its purpose is to explain the component *in its own terms*, not to restate system-wide intent.
+
+4. **An implementation surface**  
+   A clearly identifiable location containing the implementation.
+
+   The structure and naming of this surface are intentionally **not prescribed**: they are dictated by the chosen technology stack.
+
+   Tests may be colocated with implementation where the stack dictates. The only universal requirement is that implementation artefacts reference the specifications they realise (with versions).
+
+The invariants above enforce **accountability and traceability** without constraining legitimate engineering choices.
 
 ## Technology stacks
 
