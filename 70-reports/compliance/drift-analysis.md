@@ -33,7 +33,7 @@ This report is a **derived artefact**, generated automatically from upstream pro
 **Automation pipeline:**
 - Pipeline ID: PIPELINE-REP-COMPLIANCE-01
 - Pipeline purpose: Verify "What is running is what was specified"
-- Pipeline location: `80-ci-cd/reports/compliance`
+- Pipeline location: `80-automation/reports/compliance`
 - Execution mode: Scheduled (Daily)
 
 **Derivation method:**

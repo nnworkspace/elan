@@ -9,7 +9,7 @@ This report is a **derived artefact**, generated automatically from upstream pro
 **Automation pipeline:**
 - Pipeline ID: PIPELINE-REP-WEEKLY-01
 - Pipeline purpose: Weekly project progress summarisation
-- Pipeline location: `80-ci-cd/reports/weekly-progress`
+- Pipeline location: `80-automation/reports/weekly-progress`
 - Execution mode: Scheduled (illustrative)
 
 **Derivation method:**

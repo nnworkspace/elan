@@ -33,7 +33,7 @@ This report is a **derived artefact**, generated automatically from upstream pro
 **Automation pipeline:**
 - Pipeline ID: PIPELINE-REP-RISK-01
 - Pipeline purpose: Continuous Risk Assessment visibility
-- Pipeline location: `80-ci-cd/reports/assurance`
+- Pipeline location: `80-automation/reports/assurance`
 - Execution mode: Nightly & Pre-Release
 
 **Derivation method:**

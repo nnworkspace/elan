@@ -197,7 +197,7 @@ policy-to-production/
 ├── 50-tests/                     # Acceptance criteria and evidence
 ├── 60-code/                      # Illustrative implementations
 ├── 70-reports/                   # Automatically generated reports (e.g. progress summaries, compliance views)
-├── 80-ci-cd/                     # Pipeline, automation, and deployment concepts
+├── 80-automation/                # Active Governance: Pipelines, Analysis, and AI Oracle
 ├── README.md
 └── LICENSE
 

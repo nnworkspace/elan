@@ -18,7 +18,7 @@ owner: ci-cd-automation
 # ------------------------------------------------------------------------------
 -->
 
-# 80-ci-cd: The Automation Workstream
+# 80-automation: The Automation Workstream
 
 ## "Automation is Governance in Motion"
 
