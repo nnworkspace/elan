@@ -92,11 +92,13 @@ This folder contains **results**, not mechanisms.
 
 ## Traceability and auditability
 
-Each report SHOULD clearly state:
+All reports—regardless of their subfolder or type—**MUST** include a **Provenance Section** at the beginning.
 
-- what inputs it was derived from,
+This section should follow the template defined in `70-reports/_partials/_provenance.md` and explicitly state:
+- what inputs the report was derived from,
 - the point in time or version it represents,
-- and the automation or process that produced it.
+- the automation or process that produced it (Pipeline ID, generation method),
+- and any AI systems or algorithms used for synthesis.
 
 Because reports are derived, they remain auditable even if underlying artefacts are restricted or distributed across repositories.
 
