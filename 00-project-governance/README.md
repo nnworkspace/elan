@@ -48,6 +48,9 @@ The governance corpus currently includes:
 - **`communication-and-project-management.md`**  
   Defines how collaboration, coordination, and decision-making are conducted using the shared Git-based workbench.
 
+- **`commit-message-conventions.md`**
+  Defines the strict formatting and traceability rules for commit messages, enforced mechanically by `commitlint`.
+
 - **`configuration-management.md`** 
   Defines the strategy for maintaining auditable system states through atomic baselines (Sets), manifest-based versioning, and version-aware traceability.
 

@@ -28,6 +28,7 @@ contains:
   - access-derivation-and-auditability.md
   - artefact-classification.md
   - communication-and-project-management.md
+  - commit-message-conventions.md
   - configuration-management.md
   - glossary.md
   - issue-labels.md

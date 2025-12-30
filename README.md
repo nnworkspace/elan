@@ -260,8 +260,6 @@ Its premise is simple:
 
 The repository is therefore designed to be intelligible across disciplines, without diluting technical precision or institutional responsibility.
 
-
-
 ## How to read this repository
 
 This repository is not meant to be consumed linearly.
@@ -277,6 +275,26 @@ Readers are encouraged to:
 The repository is organised so that abstraction gradually gives way to implementation, but no layer stands alone. Understanding arises from **co-presence**, not sequence.
 
 This mirrors the reality of institutional projects: progress depends less on perfect documents than on a shared, versioned environment in which intent can survive contact with reality.
+
+
+### Why does this look like a Node.js project?
+
+You may notice a `package.json` file and a `node_modules` folder in this repository.
+
+These do **not** imply that the project itself is a Node.js application, nor that the Digital Euro is built on JavaScript.
+
+This infrastructure exists solely to support **mechanical governance**. We use standard engineering tools (`commitlint`, `husky`) to enforce the [Commit Message Conventions](00-project-governance/commit-message-conventions.md) defined in our governance corpus. This ensures that even the act of saving a change is subject to the same rigour as the change itself.
+
+#### How to enable the governance tools
+
+To enable these checks on your local machine, run:
+
+```bash
+npm install
+```
+
+(Or `pnpm install` / `yarn install` if you prefer).
+This installs the pre-commit hooks. Once installed, any attempt to commit will be automatically checked against the governance rules.
 
 
 
