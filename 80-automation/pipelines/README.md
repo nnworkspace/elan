@@ -1,5 +1,14 @@
-# ------------------------------------------------------------------------------
-# CLASSIFICATION: UNCLASSIFIED // ILLUSTRATIVE
+---
+artefact_type: documentation
+visibility: public
+audience: everyone
+form: text
+role: governance
+status: illustrative
+owner: ci-cd-automation
+---
+
+<!--
 # ------------------------------------------------------------------------------
 # DISCLAIMER:
 # This file is an ILLUSTRATIVE EXAMPLE of a CI/CD pipeline definition.
@@ -7,6 +16,7 @@
 # It is NOT an executable pipeline configuration for any specific CI platform
 # (e.g., Jenkins, GitLab CI, GitHub Actions) and contains NO functional logic.
 # ------------------------------------------------------------------------------
+-->
 
 # 80-ci-cd: The Automation Workstream
 

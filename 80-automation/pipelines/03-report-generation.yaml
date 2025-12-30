@@ -1,6 +1,10 @@
-# ------------------------------------------------------------------------------
-# CLASSIFICATION: UNCLASSIFIED // ILLUSTRATIVE
-# ------------------------------------------------------------------------------
+# artefact_type: pipeline
+# visibility: public
+# audience: engineering
+# form: binary
+# role: automation
+# status: illustrative
+# owner: ci-cd-automation
 # DISCLAIMER:
 # This file is an ILLUSTRATIVE EXAMPLE of a CI/CD pipeline definition.
 # It demonstrates the LOGICAL FLOW of governance enforcement and automation.

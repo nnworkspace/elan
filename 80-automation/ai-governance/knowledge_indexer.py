@@ -21,7 +21,7 @@ KNOWLEDGE_PATHS = [
     "40-specifications/**/*.md"
 ]
 
-OUTPUT_FILE = "80-ci-cd/ai-governance/knowledge_base.json"
+OUTPUT_FILE = "80-automation/ai-governance/knowledge_base.json"
 
 def scan_repository():
     """

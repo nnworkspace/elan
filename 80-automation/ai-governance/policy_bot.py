@@ -15,7 +15,7 @@ import json
 import sys
 import argparse
 
-KNOWLEDGE_FILE = "80-ci-cd/ai-governance/knowledge_base.json"
+KNOWLEDGE_FILE = "80-automation/ai-governance/knowledge_base.json"
 
 def load_knowledge():
     try:
