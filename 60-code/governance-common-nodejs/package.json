@@ -1,0 +1,21 @@
+{
+  "name": "governance-common",
+  "version": "1.0.0",
+  "description": "Governance instrumentation for Digital Euro components",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "governance",
+    "traceability",
+    "eurosystem"
+  ],
+  "author": "Eurosystem",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
