@@ -183,6 +183,7 @@ See:
 - [`00-project-governance/linting-rules.md`](00-project-governance/linting-rules.md)
 
 
+CI/CD is the quiet authority of the system — the continuous translation of intention into discipline, and of discipline into trust.
 
 ## Repository structure (conceptual)
 
