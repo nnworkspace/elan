@@ -1,0 +1,33 @@
+{#
+   artefact_type: implementation
+   visibility: public
+   audience: everyone
+   form: source
+   role: evidence
+   status: normative
+   owner: project-governance
+#}
+{#
+   ------------------------------------------------------------------------------
+   DISCLAIMER:
+   This file is an ILLUSTRATIVE EXAMPLE of a Report Template.
+   It demonstrates how evidence is derived from data.
+   ------------------------------------------------------------------------------
+#}
+# Traceability Matrix
+
+**Generated on:** {{ date }}
+**Scope:** {{ scope }}
+
+| Spec ID | Requirement | Component | File | Status |
+|:---|:---|:---|:---|:---|
+{% for item in traceability_items %}
+| `{{ item.spec_id }}` | {{ item.requirement_summary }} | `{{ item.component_id }}` | [`{{ item.file_name }}`]({{ item.file_url }}) | {{ item.status }} |
+{% endfor %}
+
+## Uncovered Requirements
+{% for gap in gaps %}
+- [ ] **{{ gap.spec_id }}**: {{ gap.description }}
+{% else %}
+*All requirements covered.*
+{% endfor %}

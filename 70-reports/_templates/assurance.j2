@@ -1,0 +1,41 @@
+{#
+   artefact_type: implementation
+   visibility: public
+   audience: everyone
+   form: source
+   role: evidence
+   status: normative
+   owner: project-governance
+#}
+{#
+   ------------------------------------------------------------------------------
+   DISCLAIMER:
+   This file is an ILLUSTRATIVE EXAMPLE of a Report Template.
+   It demonstrates how evidence is derived from data.
+   ------------------------------------------------------------------------------
+#}
+# Security Assurance Statement
+
+**Date:** {{ date }}
+**Run ID:** `{{ run_id }}`
+
+## Executive Summary
+| Metric | Value | Status |
+|:---|:---|:---|
+| Total Controls | {{ stats.total }} | - |
+| Passing | {{ stats.passed }} | :white_check_mark: |
+| Failing | {{ stats.failed }} | :x: |
+| Coverage | {{ stats.coverage }}% | {{ stats.coverage_status }} |
+
+## Critical Risks (Failures)
+{% for failure in failures %}
+### :warning: {{ failure.control_id }}
+- **Description:** {{ failure.description }}
+- **Component:** `{{ failure.component }}`
+- **Remediation:** {{ failure.remediation }}
+{% else %}
+*No critical risks detected.*
+{% endfor %}
+
+## Sign-off
+**Automated Sign-off:** pipeline-auth-{{ run_id }}
