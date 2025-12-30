@@ -1,0 +1,15 @@
+---
+artefact_type: governance
+visibility: public
+audience: everyone
+form: source
+role: governance-instrument
+status: normative
+owner: programme-governance
+
+meta:
+  id: COMP-GOV-COMMON-RUST
+  name: "Governance Common SDK (Rust)"
+  description: "Procedural macros for declarative specification traceability in Rust."
+
+  

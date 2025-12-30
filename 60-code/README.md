@@ -175,6 +175,29 @@ Every meaningful piece of source code SHOULD be traceable to:
 
 This folder does not define behaviour; it **realises behaviour defined elsewhere**.
 
+
+## Governance instrumentation components
+
+In addition to domain and integration components, this folder may contain **governance instrumentation components**, such as:
+
+- `governance-common-java`
+- `governance-common-<other-stack>`
+
+These components do not implement business behaviour. They provide **shared primitives** that allow other components to declare:
+
+- traceability to specifications (with versions),
+- accountability for implemented obligations,
+- and alignment with governance and audit expectations.
+
+Such components are intentionally:
+
+- lightweight,
+- non-invasive,
+- and reused across multiple implementation components.
+
+They enable the workbench to function as a **single governed system**, even when implementation components differ in ownership, technology stack, or organisational boundary.
+
+
 ## What belongs in this folder
 
 This folder may contain:

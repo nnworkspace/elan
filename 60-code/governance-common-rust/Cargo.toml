@@ -1,0 +1,19 @@
+# artefact_type: implementation
+# visibility: public
+# audience: everyone
+# form: source
+# role: governance
+# status: normative
+# owner: eurosystem
+
+[package]
+name = "governance-common"
+version = "0.1.0"
+edition = "2025"
+description = "Governance instrumentation primitives for Rust"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+# No external dependencies required for the illustrative pass-through implementation.

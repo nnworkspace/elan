@@ -2,10 +2,8 @@
  * artefact_type: implementation
  * visibility: public
  * audience: everyone
- *   - ECB
- *   - VENDOR
  * form: source
- * role: implementation
+ * role: governance
  * status: normative
  * owner: eurosystem
  *
