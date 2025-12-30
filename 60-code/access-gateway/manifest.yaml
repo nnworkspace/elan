@@ -1,0 +1,52 @@
+artefact_type: code
+visibility: restricted
+audience:
+  - ECB
+  - PSP
+form: text
+role: implementation
+status: normative
+owner: NCB
+
+# DISCLAIMER:
+# The code in this folder is **illustrative and educational**.
+# It does not represent official implementations, production-ready components,
+# or endorsed technical approaches for the Digital Euro or any other real-world system.
+#
+# PURPOSE:
+# This component serves as a reference implementation to demonstrate how technical
+# specifications are refined into code while maintaining strict auditability,
+# traceability, and mechanical governance across distinct institutional boundaries.
+# This structure enables automated compliance verification and live impact analysis.
+
+component:
+  id: COMP-EUR-05
+  name: Digital Euro Access Gateway
+  description: >
+    The canonical API surface of the DESP. Authenticates PSPs,
+    validates schemas, and serves as the firewall for the core platform.
+  role: integration-gateway
+  ownership: national-central-banks
+
+implementation:
+  technology_stack:
+    language: go
+    version: "1.21"
+    framework: stdlib-http
+
+upstream:
+  specifications:
+    - id: SPEC-API-GW
+      version: 0.1
+    - id: SPEC-SEC-OPS
+      version: 0.1
+
+interfaces:
+  exposed:
+    - id: I_PSP_Gateway
+      protocol: REST
+      role: server
+  consumed:
+    - id: I_Settlement
+      protocol: gRPC
+      role: client
