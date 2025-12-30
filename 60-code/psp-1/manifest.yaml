@@ -1,0 +1,49 @@
+artefact_type: code
+visibility: public
+audience:
+  - PSP
+  - NCB
+form: text
+role: implementation
+status: normative
+owner: External PSP
+
+# DISCLAIMER:
+# The code in this folder is **illustrative and educational**.
+# It does not represent official implementations, production-ready components,
+# or endorsed technical approaches for the Digital Euro or any other real-world system.
+#
+# PURPOSE:
+# This component serves as a reference implementation to demonstrate how technical
+# specifications are refined into code while maintaining strict auditability,
+# traceability, and mechanical governance across distinct institutional boundaries.
+# This structure enables automated compliance verification and live impact analysis.
+
+component:
+  id: COMP-PSP-01
+  name: Payment Service Provider Mock 1
+  description: >
+    A reference implementation of a generic Payment Service Provider (PSP)
+    connecting to the Digital Euro scheme.
+  role: payment-service-provider
+  ownership: external-psp
+  
+implementation:
+  technology_stack:
+    language: typescript
+    framework: express
+    runtime: nodejs
+
+upstream:
+  specifications:
+    - id: SPEC-ONBOARDING
+      version: 0.1
+    - id: SPEC-PAYMENT-INIT
+      version: 0.1
+
+interfaces:
+  consumed:
+    - id: API_SpecLink
+      protocol: library
+    - id: I_Access_Gateway
+      protocol: REST
