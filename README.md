@@ -11,10 +11,10 @@ owner: project-governance
 # Élan
 
 ## The disciplined momentum of a system that knows why it moves
-
-**Élan** is a demonstrative workbench for **Institutional Governance Engineering**.
-
-Its purpose is not merely to deliver software, but to demonstrate how valid, auditable systems can be built in **high-stakes environments**.
+ 
+ **Élan** (derived from the imperative to **Enable Automation**) is a demonstrative workbench for **institutional governance engineering**.
+ 
+ It begins with a simple engineering directive: **enable the automation of rules**. In doing so, it reveals something more enduring — a system that moves with confidence, because its constraints are visible, its intent explicit, and its decisions traceable.
 
 While the structure handles the entropy of **large, complex, multi-stakeholder projects**, its principles apply wherever **integrity** is more critical than raw velocity.
 
@@ -37,7 +37,7 @@ Institutional IT projects often struggle not because of a lack of expertise, but
 
 This repository demonstrates an alternative approach:
 
-> **Every artefact — from policy text to source code and delivery — is explicit, versioned, classified, and traceable.**
+> **Every artefact — from policy text to source code, delivery, and reports — is explicit, versioned, classified, and traceable.**
 
 Governance is enforced mechanically through automation, not informally through process documents.
 
