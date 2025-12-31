@@ -8,13 +8,17 @@ status: informative
 owner: project-governance
 ---
 
-# policy-to-production
+# Élan
 
-## From policy intent to running systems — with discipline
+## The disciplined momentum of a system that knows why it moves
 
-This repository is a **demonstrative reference project**.
+**Élan** is a demonstrative workbench for **Institutional Governance Engineering**.
 
-Its purpose is not to deliver a runnable system, but to show **how large, complex, multi-stakeholder institutional IT projects can be organised end-to-end** in a way that is auditable, comprehensible, and sustainable.
+Its purpose is not merely to deliver software, but to demonstrate how valid, auditable systems can be built in **high-stakes environments**.
+
+While the structure handles the entropy of **large, complex, multi-stakeholder projects**, its principles apply wherever **integrity** is more critical than raw velocity.
+
+It bridges the gap between **Policy Intent** and **Technical Production** by treating governance not as an external constraint, but as the foundational dependency of the codebase.
 
 The Digital Euro project is used throughout this repository to **bring the workflow and methodology to life**. However, the structure and principles presented here are **domain-agnostic** and applicable to any large-scale project involving regulation, governance, multiple institutions, and long-lived systems.
 
@@ -83,7 +87,11 @@ This is not documentation theatre. It is an attempt to show how a unified workbe
 
 This repository is designed to be **used**, not merely read.
 
-You are encouraged to **clone or fork it as a template**, and to adapt the structure to the needs of your own project. The folder layout, classification model, and automation rules are intentionally explicit so that they can be reshaped without losing coherence.
+You are encouraged to **clone or fork it as a template**, and to adapt the structure to the needs of your own project.
+
+> **Tip:** The intended way to start is via GitHub’s **"Use this template"** feature, which generates a clean repository history for your new project.
+
+The folder layout, classification model, and automation rules are intentionally explicit so that they can be reshaped without losing coherence.
 
 In practice, this means:
 
@@ -225,25 +233,17 @@ The actual content would live in separate repositories or registries with approp
 This makes constraints visible **without violating them**.
 
 
-
-## Relationship to `policy-to-production-doorstop`
-
-This repository represents the **flexible, tool-light** approach.
-
-For teams at an earlier stage of maturity, see:
-
-👉 [**`policy-to-production-doorstop`**](https://github.com/nnworkspace/policy-to-production-doorstop)
-
-That repository uses an opinionated requirements framework to reduce degrees of freedom and provide additional guidance.
-
-A typical progression is:
-
-1. Start with DoorStop (guided discipline)
-2. Graduate to this repository (earned flexibility)
-
-
-
 ## Intended audience
+
+### A note on risk profile
+
+**Élan is not defined by the size of the project, but by the cost of failure.**
+
+It is designed for projects that **cannot afford to lack confidence**.
+
+Whether you are a team of 5 building a medical device, or a consortium of 500 building a currency, the requirement is the same: you must be able to prove that what you built matches what you intended. If "move fast and break things" is not an option for you, then Élan is your workbench.
+
+### Roles
 
 This repository is written for **builders**.
 
@@ -304,6 +304,11 @@ This repository is a **living educational reference**.
 
 Its value lies in structure, clarity, and discipline — not completeness.
 
+## Community & Discussion
+
+Governance is a conversation, not a monologue. We invite you to share your ideas, challenges, and adaptations.
+
+👉 **[Join the Discussion on GitHub](https://github.com/nnworkspace/elan/discussions)**
 
 
 ## Licence
