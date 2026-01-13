@@ -46,8 +46,11 @@ This implementation uses a standard Hexagonal (Ports & Adapters) architecture:
 *   `infrastructure`: Outbound adapters (Database, Messaging).
 
 ## Traceability
-This code realizes requirements defined in:
+
+This code realises requirements defined in:
 *   `SPEC-SET-CORE`: Settlement Logic
 *   `SPEC-LIQ-FUNC`: Liquidity/Waterfall Logic
 
 See `manifest.yaml` for the complete machine-readable contract.
+
+All normative code — specifically methods and class fields — must bear the governance annotations specified in the `governance-common-java` library.

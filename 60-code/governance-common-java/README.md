@@ -63,6 +63,32 @@ Each annotated code element can explicitly state:
 
 This allows governance tooling to reason about the system **without inspecting business logic**.
 
+## Usage Example
+
+The following example illustrates how to apply the `@SpecLink` annotation to fields and methods to establish traceability:
+
+```java
+import eu.digitaleuro.governance.tracing.SpecLink;
+import org.springframework.context.annotation.Bean;
+
+public class DespApplication {
+
+    @SpecLink(specId = "SPEC-SET-CORE", refId = "REQ-SET-CONF-01", version = "0.1")
+    private final String settlementConfig = "STUB_CONFIG";
+
+    /**
+     * Initializes the Settlement Engine.
+     * Implements the core requirement for immutable ledger startup.
+     */
+    @Bean
+    @SpecLink(specId = "SPEC-SET-CORE", refId = "REQ-SET-INIT-001", version = "0.1")
+    public Object settlementEngine() {
+        // Implementation details...
+        return new Object();
+    }
+}
+```
+
 ## Why this matters in institutional projects
 
 In institutional and multi-stakeholder programmes:
