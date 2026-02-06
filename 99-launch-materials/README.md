@@ -7,5 +7,5 @@
 5. Twitter posts:
     - https://x.com/ning_work/status/2006703422305874069?s=20
     - https://x.com/ning_work/status/2006705184899215388?s=20
-
+6. [Introduction Presentation](https://presentations-nn.vercel.app/elan_intro/)
     
