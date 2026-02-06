@@ -54,10 +54,14 @@ The top-level folders under `50-code/` represent **technical components**,
 not business features.
 
 ```text
-50-code/
+60-code/
 ├── access-gateway/
 ├── alias-service/
 ├── desp/
+├── governance-common-go/
+├── governance-common-java/
+├── governance-common-nodejs/
+├── governance-common-rust/
 ├── psp-1/
 └── README.md
 ```
