@@ -14,7 +14,7 @@ meta:
   id: TEST-SET-LIQ
   
   # Human-readable title
-  title: "Liquidity Reservation (Waterfall) Conformance Suite"
+  title: "Liquidity Reservation (Reverse Waterfall & Waterfall) Conformance Suite"
   
   # The Version of the *Tests* (Not the specs!)
   version: "0.1.0"
@@ -32,5 +32,5 @@ targets:
 
 # The executable contents
 contains:
-  - LIQ-TS-01-waterfall-funding.feature
-  - LIQ-TS-02-reverse-waterfall.feature
+  - LIQ-TS-01-reverse-waterfall-funding.feature
+  - LIQ-TS-02-waterfall-defunding.feature

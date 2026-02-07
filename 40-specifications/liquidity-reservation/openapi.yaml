@@ -25,7 +25,7 @@
 openapi: 3.0.3
 
 info:
-  title: Liquidity Reservation API (Waterfall)
+  title: Liquidity Reservation API
   version: "1.0.0"
   description: |
     **FICTIONAL SPECIFICATION** for the Digital Euro Liquidity Management.
@@ -174,7 +174,7 @@ security:
 paths:
   /fund:
     post:
-      summary: Request Liquidity Funding (Waterfall)
+      summary: Request Liquidity Funding (Reverse Waterfall)
       operationId: fundDigitalEuro
       description: |
         Instructs the Eurosystem to issue (mint) Digital Euro. 
@@ -194,7 +194,7 @@ paths:
         '200':
           description: |
             Funding Successful. Liability created.
-            Trace: [SPEC-LIQ-INT] STEP-WAT-05, [SPEC-LIQ-FUNC] TR-LIQ-05.
+            Trace: [SPEC-LIQ-INT] STEP-FUND-05, [SPEC-LIQ-FUNC] TR-LIQ-05.
           content:
             application/json:
               schema:
@@ -224,7 +224,7 @@ paths:
 
   /defund:
     post:
-      summary: Request Liquidity Defunding (Reverse Waterfall)
+      summary: Request Liquidity Defunding (Waterfall)
       operationId: defundDigitalEuro
       description: |
         Instructs the Eurosystem to destroy (burn) Digital Euro to reduce holding balance.
@@ -243,7 +243,7 @@ paths:
         '200':
           description: |
             Defunding Successful. Liability reduced.
-            Trace: [SPEC-LIQ-INT] STEP-REV-04.
+            Trace: [SPEC-LIQ-INT] STEP-WAT-04.
           content:
             application/json:
               schema:

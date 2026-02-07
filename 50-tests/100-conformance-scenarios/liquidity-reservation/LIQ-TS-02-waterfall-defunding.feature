@@ -9,16 +9,16 @@
 # It demonstrates a methodology for structure and traceability.
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 @spec=SPEC-LIQ-FUNC @spec=SPEC-LIQ-INT @component=COMP-PSP-02
-Feature: Reverse Waterfall (Automated Defunding)
-  As a PSP Waterfall Engine (Zone A)
+Feature: Liquidity Waterfall (Automated Defunding)
+  As a PSP Liquidity Engine (Zone A)
   I want to automatically defund Digital Euro holdings that exceed the user's limit
-  So that I stay compliant with "Rule LIQ-02" (Reverse Waterfall)
+  So that I stay compliant with "Rule LIQ-02" (Waterfall)
 
   Background:
     Given the Access Gateway (COMP-EUR-05) is operational
     And I have a valid QWAC certificate
 
-  @trace=REQ-LIQ-03 @trace=OP-LIQ-02 @trace=STEP-REV-01
+  @trace=REQ-LIQ-03 @trace=OP-LIQ-02 @trace=STEP-WAT-01
   Scenario: Automated defunding on Limit Breach
     Given a user has a Holding Limit of 3000.00 EUR
     And an incoming payment brings the balance to 3500.00 EUR

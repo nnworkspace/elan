@@ -21,15 +21,15 @@ This document defines the **technical scope** for the automated liquidity manage
 It translates the high-level policy rules defined in the **Scheme Rulebook** into concrete technical requirements, ensuring that the bridge between Commercial Bank Money and Central Bank Money functions atomically and securely.
 
 ### 2.1 In Scope
-- **Waterfall (Funding):** The logic to detect a payment shortfall, reserve funds in the Commercial Bank Core (`COMP-PSP-02`), and instruct the Eurosystem to **fund** the difference (`Rule LIQ-01`).
-- **Reverse Waterfall (Defunding):** The logic to detect a Holding Limit breach, **defund** the excess Digital Euro, and credit the Commercial Bank Core (`Rule LIQ-02`).
+- **Reverse Waterfall (Funding):** The logic to detect a payment shortfall, reserve funds in the Commercial Bank Core (`COMP-PSP-02`), and instruct the Eurosystem to **fund** the difference (`Rule LIQ-01`).
+- **Waterfall (Defunding):** The logic to detect a Holding Limit breach, **defund** the excess Digital Euro, and credit the Commercial Bank Core (`Rule LIQ-02`).
 - **Zero-Holding Logic:** The specific configuration for Merchants who opt to automatically defund all incoming payments immediately (`Rule LIQ-03`).
 - **Double-Spending Prevention (Liquidity Side):** Ensuring that commercial funds reserved for a Digital Euro funding cannot be spent elsewhere during the transition.
 
 ### 2.2 Out of Scope
 - **Inter-PSP Settlement:** The actual movement of Digital Euro between wallets (covered in `SPEC-SET-STL`).
 - **Offline Limits:** Management of offline secure element limits (covered in `SPEC-SET-OFF`).
-- **Manual Top-Ups:** User-initiated funding via the mobile app UI (treated as a standard Waterfall event, but triggered differently).
+- **Manual Top-Ups:** User-initiated funding via the mobile app UI (treated as a standard Reverse Waterfall event, but triggered differently).
 
 ## 3. Normative References (Upstream Traceability)
 
@@ -40,8 +40,8 @@ This specification satisfies the mandates of **Rulebook Set v0.9.0** (`@rule=SET
 
 | Rule ID | Rule Name | Upstream Source |
 | :--- | :--- | :--- |
-| **LIQ-01** | **Waterfall (Auto-Funding)** | [`liquidity-and-waterfall.md`](../../20-rulebook/liquidity-and-waterfall.md) |
-| **LIQ-02** | **Reverse Waterfall (Defunding)** | [`liquidity-and-waterfall.md`](../../20-rulebook/liquidity-and-waterfall.md) |
+| **LIQ-01** | **Reverse Waterfall (Auto-Funding)** | [`liquidity-and-waterfall.md`](../../20-rulebook/liquidity-and-waterfall.md) |
+| **LIQ-02** | **Waterfall (Defunding)** | [`liquidity-and-waterfall.md`](../../20-rulebook/liquidity-and-waterfall.md) |
 | **LIQ-03** | **Zero-Holding Option** | [`liquidity-and-waterfall.md`](../../20-rulebook/liquidity-and-waterfall.md) |
 | **LIQ-04** | **Holding Limits** | [`functional-onboarding.md`](../../20-rulebook/functional-onboarding.md) |
 
@@ -50,7 +50,7 @@ This specification adheres to the components and security zones defined in **Arc
 
 | Component ID | Name | Role in Liquidity |
 | :--- | :--- | :--- |
-| **COMP-PSP-02** | **Waterfall Engine** | The orchestrator of the "Two-Phase Commit" between Commercial and Central systems. |
+| **COMP-PSP-02** | **Liquidity Engine** | The orchestrator of the \"Two-Phase Commit\" between Commercial and Central systems. |
 | **COMP-PSP-01** | **PSP Adapter** | The interface layer sending the Funding/Defunding instructions to the Gateway. |
 | **COMP-EUR-01** | **Settlement Engine** | The target system executing the funding/defunding (Zone B). |
 | **COMP-EUR-05** | **Access Gateway** | The API entry point for all Eurosystem services. |
@@ -74,7 +74,7 @@ In accordance with `Rule LIQ-01`, the conversion between Commercial Money and Di
 
 ### 5.2 Priority of Defunding
 In accordance with `Rule LIQ-02`, Holding Limits are hard constraints.
-- **Mechanism:** If an incoming payment causes a limit breach, the system MUST accept the payment and *immediately* trigger a Reverse Waterfall for the excess amount.
+- **Mechanism:** If an incoming payment causes a limit breach, the system MUST accept the payment and *immediately* trigger a Waterfall for the excess amount.
 - **Constraint:** User balances must never exceed the holding limit at the end of a transaction processing cycle.
 
 ---

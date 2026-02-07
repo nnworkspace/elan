@@ -14,7 +14,7 @@ set:
   name: Liquidity Reservation – Security Assurance
   version: 0.1.0
   description: >
-    Security assurance set for the Liquidity ("Waterfall") domain.
+    Security assurance set for the Liquidity domain.
     Focuses on financial integrity (Double-Spend prevention),
     privacy enforcement (Internal Data Minimization), and
     role-based authorization.

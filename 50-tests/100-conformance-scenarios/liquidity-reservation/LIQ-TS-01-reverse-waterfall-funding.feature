@@ -9,8 +9,8 @@
 # It demonstrates a methodology for structure and traceability.
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 @spec=SPEC-LIQ-FUNC @spec=SPEC-LIQ-INT @component=COMP-PSP-02
-Feature: Liquidity Waterfall (Automated Funding)
-  As a PSP Waterfall Engine (Zone A)
+Feature: Liquidity Reverse Waterfall (Automated Funding)
+  As a PSP Liquidity Engine (Zone A)
   I want to atomically fund a Digital Euro wallet using a Commercial Bank Money reservation
   So that the user can make payments without pre-funding
   And the scheme guarantees solvency ("No Funding at Risk")
@@ -20,8 +20,8 @@ Feature: Liquidity Waterfall (Automated Funding)
     And I have a valid QWAC certificate
     And I have established a secure session
 
-  @trace=TR-LIQ-04 @trace=TR-LIQ-05 @trace=OP-LIQ-01 @trace=STEP-WAT-02
-  Scenario: Successful Atomic Waterfall
+  @trace=TR-LIQ-04 @trace=TR-LIQ-05 @trace=OP-LIQ-01 @trace=STEP-FUND-02
+  Scenario: Successful Atomic Reverse Waterfall
     # Happy Path: Lock -> Fund -> Capture
     Given a user initiates a payment requiring 10.00 EUR
     And I have successfully locked 10.00 EUR in the Core Banking System

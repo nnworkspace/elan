@@ -54,10 +54,9 @@ public class DespApplication {
      * Ensures that Waterfall and Reverse Waterfall limits are enforced.
      */
     @Bean
-    @SpecLink(specId = "SPEC-LIQ-FUNC", refId = "REQ-LIQ-RULES-002", version = "0.1")
-    public Object liquidityRuleEngine() {
+    public LiquidityManager liquidityRuleEngine() {
         System.out.println("Loading Liquidity Rules...");
-        return new Object(); // Stub
+        return new LiquidityManager();
     }
 
 }

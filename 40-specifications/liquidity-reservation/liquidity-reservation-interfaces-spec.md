@@ -19,7 +19,7 @@ owner: system-design
 
 ## 2. Purpose and Scope
 
-This document defines the **component interactions** required to execute atomic Waterfall operations.
+This document defines the **component interactions** required to execute atomic Liquidity operations.
 
 It focuses on the normative interface between the **PSP** and the **Digital Euro Service Platform (DESP)**. Interactions between the PSP and its own Core Banking System are described logically but are implementation-specific (proprietary).
 
@@ -27,7 +27,7 @@ It focuses on the normative interface between the **PSP** and the **Digital Euro
 
 | ID | Component Name | Role | Responsibility | Trace |
 | :--- | :--- | :--- | :--- | :--- |
-| **SYS-PSP** | **PSP Waterfall Engine** | Client | Orchestrates the atomic swap. Managing component: `COMP-PSP-02`. | `COMP-PSP-02` |
+| **SYS-PSP** | **PSP Liquidity Engine** | Client | Orchestrates the atomic swap. Managing component: `COMP-PSP-02`. | `COMP-PSP-02` |
 | **SYS-GWY** | **Access Gateway** | Interface | The Border Control. Authenticates PSPs and routes to DESP services. | `COMP-EUR-05` |
 | **SYS-EUR** | **Settlement Engine** | Target | The DESP Core Service. Executes the actual funding/defunding. | `COMP-EUR-01` |
 
@@ -51,7 +51,7 @@ It focuses on the normative interface between the **PSP** and the **Digital Euro
 
 ## 5. Interaction Flows
 
-### 5.1 Flow: Atomic Waterfall (Funding)
+### 5.1 Flow: Atomic Funding (Reverse Waterfall)
 This flow details the interaction between the PSP's engine and the Eurosystem.
 
 **Visualisation (Normative)**
@@ -60,11 +60,11 @@ This flow details the interaction between the PSP's engine and the Eurosystem.
 sequenceDiagram
     autonumber
     
-    participant PSP as SYS-PSP<br/>(Waterfall Engine)
+    participant PSP as SYS-PSP<br/>(Liquidity Engine)
     participant GWY as SYS-GWY<br/>(Access Gateway)
     participant EUR as SYS-EUR<br/>(Settlement Engine)
 
-    Note over PSP, EUR: Flow: Atomic Waterfall (Funding)
+    Note over PSP, EUR: Flow: Atomic Funding (Reverse Waterfall)
 
     %% Step 1: Internal Phase (Proprietary)
     rect rgb(240, 240, 240)
@@ -97,15 +97,15 @@ sequenceDiagram
 
 | Step ID | Sender | Receiver | Message / Action | Constraints / Rules | Trace |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **STEP-WAT-01** | `SYS-PSP` | `SYS-PSP` | *Internal Lock* | **Action:** Reserve funds in Core Banking. | `REQ-LIQ-FUNC-01` |
-| **STEP-WAT-02** | `SYS-PSP` | `SYS-GWY` | `POST /fund` | **Body:** `amount`, `reservation_ref`. | `TR-LIQ-04` |
-| **STEP-WAT-03** | `SYS-GWY` | `SYS-EUR` | *Route Request* | Forward to Settlement Engine (`COMP-EUR-01`). | `COMP-EUR-04` |
-| **STEP-WAT-04** | `SYS-EUR` | `SYS-EUR` | *Issue* | Create new liability. | `COMP-EUR-01` |
-| **STEP-WAT-05** | `SYS-EUR` | `SYS-GWY` | `200 OK` | Return success. | `LIQ-01` |
-| **STEP-WAT-06** | `SYS-GWY` | `SYS-PSP` | `200 OK` | Forward success. | `TR-LIQ-05` |
-| **STEP-WAT-07** | `SYS-PSP` | `SYS-PSP` | *Internal Capture* | **Action:** Debit Core Banking account. | `REQ-LIQ-FUNC-03` |
+| **STEP-FUND-01** | `SYS-PSP` | `SYS-PSP` | *Internal Lock* | **Action:** Reserve funds in Core Banking. | `REQ-LIQ-FUNC-01` |
+| **STEP-FUND-02** | `SYS-PSP` | `SYS-GWY` | `POST /fund` | **Body:** `amount`, `reservation_ref`. | `TR-LIQ-04` |
+| **STEP-FUND-03** | `SYS-GWY` | `SYS-EUR` | *Route Request* | Forward to Settlement Engine (`COMP-EUR-01`). | `COMP-EUR-04` |
+| **STEP-FUND-04** | `SYS-EUR` | `SYS-EUR` | *Issue* | Create new liability. | `COMP-EUR-01` |
+| **STEP-FUND-05** | `SYS-EUR` | `SYS-GWY` | `200 OK` | Return success. | `LIQ-01` |
+| **STEP-FUND-06** | `SYS-GWY` | `SYS-PSP` | `200 OK` | Forward success. | `TR-LIQ-05` |
+| **STEP-FUND-07** | `SYS-PSP` | `SYS-PSP` | *Internal Capture* | **Action:** Debit Core Banking account. | `REQ-LIQ-FUNC-03` |
 
-### 5.2 Flow: Reverse Waterfall (Defunding)
+### 5.2 Flow: Waterfall (Defunding)
 
 **Visualisation (Normative)**
 
@@ -113,11 +113,11 @@ sequenceDiagram
 sequenceDiagram
     autonumber
     
-    participant PSP as SYS-PSP<br/>(Waterfall Engine)
+    participant PSP as SYS-PSP<br/>(Liquidity Engine)
     participant GWY as SYS-GWY<br/>(Access Gateway)
     participant EUR as SYS-EUR<br/>(Settlement Engine)
 
-    Note over PSP, EUR: Flow: Reverse Waterfall (Defunding)
+    Note over PSP, EUR: Flow: Waterfall (Defunding)
 
     %% Trigger
     Note right of PSP: Trigger: Holding Limit Breach<br/>(Excess > 0)
@@ -146,18 +146,18 @@ sequenceDiagram
 
 | Step ID | Sender | Receiver | Message / Action | Constraints / Rules | Trace |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **STEP-REV-01** | `SYS-PSP` | `SYS-GWY` | `POST /defund` | **Trigger:** Holding Limit Breach. | `REQ-LIQ-FUNC-04` |
-| **STEP-REV-02** | `SYS-GWY` | `SYS-EUR` | *Route Request* | Forward to Settlement Engine. | `COMP-EUR-04` |
-| **STEP-REV-03** | `SYS-EUR` | `SYS-EUR` | *Defund* | Destroy/Reduce liability. | `COMP-EUR-01` |
-| **STEP-REV-04** | `SYS-EUR` | `SYS-GWY` | `200 OK` | Confirm reduction. | `LIQ-02` |
-| **STEP-REV-05** | `SYS-GWY` | `SYS-PSP` | `200 OK` | Forward success. | `TR-LIQ-06` |
-| **STEP-REV-06** | `SYS-PSP` | `SYS-PSP` | *Internal Credit* | **Action:** Credit Core Banking account. | `REQ-LIQ-FUNC-06` |
+| **STEP-WAT-01** | `SYS-PSP` | `SYS-GWY` | `POST /defund` | **Trigger:** Holding Limit Breach. | `REQ-LIQ-FUNC-04` |
+| **STEP-WAT-02** | `SYS-GWY` | `SYS-EUR` | *Route Request* | Forward to Settlement Engine. | `COMP-EUR-04` |
+| **STEP-WAT-03** | `SYS-EUR` | `SYS-EUR` | *Defund* | Destroy/Reduce liability. | `COMP-EUR-01` |
+| **STEP-WAT-04** | `SYS-EUR` | `SYS-GWY` | `200 OK` | Confirm reduction. | `LIQ-02` |
+| **STEP-WAT-05** | `SYS-GWY` | `SYS-PSP` | `200 OK` | Forward success. | `TR-LIQ-06` |
+| **STEP-WAT-06** | `SYS-PSP` | `SYS-PSP` | *Internal Credit* | **Action:** Credit Core Banking account. | `REQ-LIQ-FUNC-06` |
 
 ## 6. Technical Constraints
 
 | ID | Constraint | Requirement Description | Trace |
 | :--- | :--- | :--- | :--- |
-| **INT-LIQ-01** | **Performance** | The `fund` operation MUST complete within 200ms (p99) to ensure the total Waterfall duration (Lock+Fund+Capture) remains acceptable for POS payments. | `NFR-PERF-01` |
+| **INT-LIQ-01** | **Performance** | The `fund` operation MUST complete within 200ms (p99) to ensure the total Funding duration (Lock+Fund+Capture) remains acceptable for POS payments. | `NFR-PERF-01` |
 | **INT-LIQ-02** | **Idempotency** | The `POST /fund` request MUST carry a `Idempotency-Key` (UUID) to prevent accidental double-funding on network retry. | `INT-OB-04` |
 
 ## Appendix: How to Parse This Specification
@@ -170,7 +170,7 @@ sequenceDiagram
     - *Validation:* Ensure that `OP-LIQ-01` (`POST /fund`) and `OP-LIQ-02` (`POST /defund`) exist and require the mandatory headers defined in `INT-LIQ-02` (`Idempotency-Key`).
 
 2.  **Protocol Compliance (Ordering Check):**
-    - Parse **Section 5.1 (Atomic Waterfall Sequence)**.
+    - Parse **Section 5.1 (Atomic Funding Sequence)**.
     - **Logic Check:** Verify that the External call (`POST /fund`) is strictly **sandwiched** between two Internal actions:
         - *Pre-Condition:* Must be preceded by `LockFunds` (or equivalent internal locking step).
         - *Post-Condition:* Must be followed by `CaptureFunds` (or equivalent internal debit step).

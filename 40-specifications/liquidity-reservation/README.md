@@ -14,7 +14,7 @@ owner: system-design
 
 This folder contains the **Liquidity Reservation Specification Set** (`SPEC-SET-LIQ`).
 
-It defines the technical requirements, state machines, and interface protocols required to implement the **Waterfall** (Funding) and **Reverse Waterfall** (Defunding) mechanisms. These mechanisms ensure that every Digital Euro issuance is atomically backed by a reservation of Commercial Bank Money.
+It defines the technical requirements, state machines, and interface protocols required to implement the **Reverse Waterfall** (Funding) and **Waterfall** (Defunding) mechanisms. These mechanisms ensure that every Digital Euro issuance is atomically backed by a reservation of Commercial Bank Money.
 
 ### Versioning Strategy
 **This folder is versioned as an atomic unit.**
@@ -57,7 +57,7 @@ Every requirement must trace back to a specific **Rule ID**. This anchors techni
 Every requirement must apply to a specific **Component ID**. This prevents "Architecture Drift" by ensuring specifications respect the system boundaries and security zones.
 
 - **Constraint:** We adhere to the *System Context* and *Security Zones* defined in:
-    - `@arch=SET-ARCH:0.1.0` (specifically mapping to `COMP-PSP-02` Waterfall Engine and `COMP-PSP-01` PSP Adapter)
+    - `@arch=SET-ARCH:0.1.0` (specifically mapping to `COMP-PSP-02` Liquidity Engine and `COMP-PSP-01` PSP Adapter)
 - **Enforcement:** **LINT-T1** (Validation of implementation traces) and architectural review.
 
 ### 4.3 Verification (Downstream Consumers)

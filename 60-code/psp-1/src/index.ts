@@ -23,6 +23,7 @@
 
 import express, { Request, Response } from 'express';
 import { SpecLink } from 'governance-common';
+import { LiquidityService } from './LiquidityService';
 
 const app = express();
 const port = 3000;
@@ -31,19 +32,41 @@ app.use(express.json());
 
 @SpecLink({ spec_id: "SPEC-PSP-CORE", ref_id: "REQ-PSP-APP-01", version: "0.1" })
 class PspApplication {
-  
-  /**
-   * @SpecLink { spec_id: "SPEC-ONBOARDING", ref_id: "REQ-PSP-ONB-01", version: "0.1" }
-   */
-  static handleOnboarding(req: Request, res: Response) {
-    console.log('Received onboarding request:', req.body);
-    // Logic to call Access Gateway would go here
-    res.json({ status: 'INITIATED', user_id: 'USER-123' });
-  }
+
+    /**
+     * @SpecLink { spec_id: "SPEC-ONBOARDING", ref_id: "REQ-PSP-ONB-01", version: "0.1" }
+     */
+    static handleOnboarding(req: Request, res: Response) {
+        console.log('Received onboarding request:', req.body);
+        // Logic to call Access Gateway would go here
+        res.json({ status: 'INITIATED', user_id: 'USER-123' });
+    }
+
+    static async handlePayment(req: Request, res: Response) {
+        const amount = req.body.amount || 1000;
+        console.log(`Processing payment of ${amount}...`);
+
+        // Simulate shortfall detection
+        await LiquidityService.performReverseWaterfall(amount);
+
+        res.json({ status: 'PAID', amount });
+    }
+
+    static async handleLimitCheck(req: Request, res: Response) {
+        const excess = req.body.excess || 500;
+        console.log(`Checking holding limit... Excess: ${excess}`);
+
+        // Simulate limit breach
+        await LiquidityService.performWaterfall(excess);
+
+        res.json({ status: 'LIMIT_ENFORCED', defunded: excess });
+    }
 }
 
 app.post('/onboard', PspApplication.handleOnboarding);
+app.post('/pay', PspApplication.handlePayment);
+app.post('/check-limit', PspApplication.handleLimitCheck);
 
 app.listen(port, () => {
-  console.log(`PSP Mock listening at http://localhost:${port}`);
+    console.log(`PSP Mock listening at http://localhost:${port}`);
 });

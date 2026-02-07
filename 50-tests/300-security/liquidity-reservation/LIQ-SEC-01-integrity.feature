@@ -11,7 +11,7 @@
 @spec=SPEC-LIQ-FUNC @spec=SPEC-LIQ-DATA @component=COMP-PSP-02
 Feature: Liquidity Integrity & Security Controls
   As a Security Auditor
-  I want to verify that the Waterfall Engine enforces strict financial integrity and privacy boundaries
+  I want to verify that the Liquidity Engine enforces strict financial integrity and privacy boundaries
   So that double-spending is impossible and internal banking IDs are never exposed
 
   Background:

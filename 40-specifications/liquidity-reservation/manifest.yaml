@@ -31,7 +31,7 @@ traceability:
     architecture:
       - id: ARCH-SET:0.1.0
         components:
-          - COMP-PSP-02  # Waterfall Engine
+          - COMP-PSP-02  # Liquidity Engine
           - COMP-PSP-01  # PSP Adapter
           - COMP-EUR-01  # Settlement Engine (Target)
 

@@ -38,16 +38,42 @@ func main() {
 
 	// Initialize Routes
 	http.HandleFunc("/fund", handleFunding)
+	http.HandleFunc("/defund", handleDefunding)
 
 	// Start Server
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-// Handles Funding Requests.
+func checkIdempotency(w http.ResponseWriter, r *http.Request) bool {
+	if r.Header.Get("Idempotency-Key") == "" {
+		http.Error(w, "Missing Idempotency-Key header", http.StatusBadRequest)
+		return false
+	}
+	return true
+}
+
+// Handles Funding Requests (Reverse Waterfall).
 // Implements the specific requirement for validating funding payloads coming from PSPs.
 func handleFunding(w http.ResponseWriter, r *http.Request) {
+	if !checkIdempotency(w, r) {
+		return
+	}
+
 	// Granular Traceability Link
 	gov.SpecLink("SPEC-API-GW", "REQ-API-FUND-01", "0.1")
 
 	fmt.Fprintf(w, "Funding Endpoint Reached via %s", r.Method)
+}
+
+// Handles Defunding Requests (Waterfall).
+// Implements the specific requirement for validating defunding payloads.
+func handleDefunding(w http.ResponseWriter, r *http.Request) {
+	if !checkIdempotency(w, r) {
+		return
+	}
+
+	// Granular Traceability Link
+	gov.SpecLink("SPEC-API-GW", "REQ-API-DEFUND-01", "0.1")
+
+	fmt.Fprintf(w, "Defunding Endpoint Reached via %s", r.Method)
 }

@@ -19,14 +19,14 @@ owner: system-design
 
 ## 2. Purpose and Scope
 
-This document defines the **functional behaviour** of the **Waterfall Engine (`COMP-PSP-02`)**.
+This document defines the **functional behaviour** of the **Liquidity Engine (`COMP-PSP-02`)**.
 
 It specifies the **Reservation State Machine** required to bridge the PSP's internal **Commercial Bank Core** (Legacy) with the **Digital Euro Service Platform (DESP)**, ensuring atomic funding and defunding.
 
 ## 3. General Principles
 
 ### 3.1 Architectural Strategy: The Two-Phase Commit
-To satisfy the strict atomicity requirements of `Rule LIQ-01`, the Waterfall Engine implements a **Two-Phase Commit (2PC)** pattern.
+To satisfy the strict atomicity requirements of `Rule LIQ-01`, the Liquidity Engine implements a **Two-Phase Commit (2PC)** pattern.
 * **Internal Leg (Phase 1):** The engine instructs the PSP's own Core Banking System to **Lock** funds. This is a proprietary, internal action.
 * **External Leg (Phase 2):** The engine instructs the **DESP** (via `COMP-EUR-05`) to **Fund** (Issue) Digital Euro.
 * **Result:** The DESP is the authoritative issuer, but it relies on the PSP's guarantee that commercial funds have been reserved.
@@ -37,11 +37,11 @@ To satisfy the strict atomicity requirements of `Rule LIQ-01`, the Waterfall Eng
 | :--- | :--- | :--- | :--- |
 | **REQ-LIQ-01** | **Atomic Conservation** | The sum of Commercial Bank Money + Digital Euro MUST remain constant. Funds MUST NOT be double-spendable. | `Rule LIQ-01` |
 | **REQ-LIQ-02** | **Fail-Safe Rollback** | If the DESP (`COMP-EUR-04`) rejects the funding (e.g., limit breach), the internal commercial reservation MUST be released immediately. | `Rule LIQ-01` |
-| **REQ-LIQ-03** | **Limit Precedence** | Incoming payments breaching the Holding Limit MUST trigger an automatic "Reverse Waterfall" to offload excess funds to the Commercial Bank Core. | `Rule LIQ-02` |
+| **REQ-LIQ-03** | **Limit Precedence** | Incoming payments breaching the Holding Limit MUST trigger an automatic "Waterfall" to offload excess funds to the Commercial Bank Core. | `Rule LIQ-02` |
 
 ## 4. Reservation Lifecycle States
 
-The lifecycle of a single **Liquidity Operation** within the Waterfall Engine (`COMP-PSP-02`).
+The lifecycle of a single **Liquidity Operation** within the Liquidity Engine (`COMP-PSP-02`).
 
 | State | Description | Asset Status |
 | :--- | :--- | :--- |
@@ -96,7 +96,7 @@ stateDiagram-v2
 
 ### Transition Logic
 
-**Parsing Context:** `Scope: WaterfallStateMachine`
+**Parsing Context:** `Scope: LiquidityStateMachine`
 
 | Trans ID | From State | To State | Trigger | Guard / Logic | Trace |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -110,15 +110,15 @@ stateDiagram-v2
 
 ## 6. Functional Requirements (The Logic)
 
-### 6.1 Funding Logic (The Waterfall)
-**Target:** `COMP-PSP-02` (Waterfall Engine)
+### 6.1 Funding Logic (The Reverse Waterfall)
+**Target:** `COMP-PSP-02` (Liquidity Engine)
 
 - **REQ-LIQ-FUNC-01:** Upon detection of `shortfall`, the engine MUST initiate a **Synchronous Hold** on the user's linked Commercial Bank Account.
 - **REQ-LIQ-FUNC-02:** This interaction is **internal** to the PSP (Zone A) and outside the scope of Scheme Interfaces, but the *result* (Success/Failure) determines the next step.
 - **REQ-LIQ-FUNC-03:** Only upon successful internal lock, the engine SHALL transmit a `FundingInstruction` to the DESP (`COMP-EUR-04`).
 
-### 6.2 Defunding Logic (The Reverse Waterfall)
-**Target:** `COMP-PSP-02` (Waterfall Engine)
+### 6.2 Defunding Logic (The Waterfall)
+**Target:** `COMP-PSP-02` (Liquidity Engine)
 
 - **REQ-LIQ-FUNC-04:** Upon detecting a Holding Limit breach, the engine MUST immediately calculate `excess`.
 - **REQ-LIQ-FUNC-05:** The engine MUST instruct the DESP to **Defund** the `excess` amount.
@@ -140,7 +140,7 @@ stateDiagram-v2
 
 1.  **State Machine Generation:**
     - Parse **Section 5 (Transition Logic Table)**.
-    - Generate a State Pattern implementation for the `WaterfallService` class.
+    - Generate a State Pattern implementation for the `LiquidityService` class.
     - *Validation:* Ensure strict handling of `TR-LIQ-06` (Rollback) to prevent "Funding at Risk" (where money is locked but not funded).
 
 2.  **Test Case Generation:**

@@ -10,7 +10,7 @@
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 
 # ------------------------------------------------------------------------------
-# Operational Assurance Manifest: Liquidity Funding (Waterfall)
+# Operational Assurance Manifest: Liquidity Funding (Reverse Waterfall)
 # ------------------------------------------------------------------------------
 # Tracing: Validates 'liquidity' specific operational expectations.
 # ------------------------------------------------------------------------------

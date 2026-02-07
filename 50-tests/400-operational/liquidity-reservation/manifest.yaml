@@ -15,7 +15,7 @@ set:
   version: 0.1.0
   description: >
     Operational assurance set covering the runtime guarantees
-    of the Liquidity Reservation (Waterfall) mechanism, including
+    of the Liquidity Reservation (Reverse Waterfall & Waterfall) mechanism, including
     latency SLOs for critical funding paths.
 
 upstream:
