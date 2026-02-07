@@ -42,6 +42,7 @@ The list of logical operations exposed by the Access Gateway (`SYS-GWY`) to supp
 | :--- | :--- | :--- | :--- |
 | **OP-OB-01** | `RegisterUserHash` | `PSP` -> `EUR` | Executes `TR-OB-03` (KYC_CLEARED -> CHECKING_ALIAS) |
 | **OP-OB-02** | `CheckUserStatus` | `PSP` -> `EUR` | Queries current status of a Hash (Idempotency check). |
+| **OP-OB-03** | `SwitchUserPSP` | `PSP` -> `EUR` | Executes `TR-OB-06` (Switching Identity to new PSP). |
 
 ## 5. Interaction Flows
 
@@ -85,7 +86,7 @@ sequenceDiagram
     deactivate ALIAS
 
     %% STEP-REG-07
-    DESP->>ALIAS: Commit(hash)
+    DESP->>ALIAS: Commit(hash, psp_id)
     activate ALIAS
     ALIAS-->>DESP: Stored (OK)
     deactivate ALIAS
@@ -108,7 +109,7 @@ sequenceDiagram
 | **STEP-REG-04** | `SYS-DESP` | `SYS-DESP` | *Validate Business Rules* | Check PSP status, Rate Limits, and Schema. | `Rule ONB-02` |
 | **STEP-REG-05** | `SYS-DESP` | `SYS-ALIAS` | *Query Uniqueness* | Internal call: "Does Hash X exist?" | `REQ-OB-FUNC-04` |
 | **STEP-REG-06** | `SYS-ALIAS` | `SYS-DESP` | *Result: Not Found* | Confirm hash is new. | `REQ-OB-FUNC-06` |
-| **STEP-REG-07** | `SYS-DESP` | `SYS-ALIAS` | *Commit* | Write Hash to Registry. | `Rule ONB-01` |
+| **STEP-REG-07** | `SYS-DESP` | `SYS-ALIAS` | *Commit* | Write Hash to Registry with `active_psp_id`. | `Rule ONB-01` |
 | **STEP-REG-08** | `SYS-DESP` | `SYS-GWY` | `201 Created` | Return `alias_id` and `timestamp`. | `TR-OB-04` |
 | **STEP-REG-09** | `SYS-GWY` | `SYS-PSP` | `201 Created` | Forward response to PSP. | `INT-OB-03` |
 
@@ -164,6 +165,63 @@ sequenceDiagram
 | **STEP-DUP-03** | `SYS-DESP` | `SYS-DESP` | *Log Violation* | Record audit event `SEC-WARN-DUPLICATE`. | `AUD-OB-01` |
 | **STEP-DUP-04** | `SYS-DESP` | `SYS-GWY` | `409 Conflict` | Error: `DUPLICATE_IDENTITY`. | `TR-OB-05` |
 | **STEP-DUP-05** | `SYS-GWY` | `SYS-PSP` | `409 Conflict` | Forward error to PSP. | `INT-OB-03` |
+
+### 5.3 Flow: User Switching (Portability)
+
+This flow executes a Switch when the user consents to transfer their account (`Rule AM-011-004`).
+
+**Visualisation (Normative)**
+
+```mermaid
+sequenceDiagram
+    autonumber
+    
+    participant PSP2 as SYS-PSP (New)<br/>(PSP Adapter)
+    participant GWY as SYS-GWY<br/>(Access Gateway)
+    participant DESP as SYS-DESP<br/>(DESP Platform)
+    participant ALIAS as SYS-ALIAS<br/>(Alias Service)
+    participant PSP1 as SYS-PSP (Old)<br/>(PSP Adapter)
+
+    Note over PSP2, PSP1: Flow: User Switching
+
+    %% STEP-SW-01
+    PSP2->>GWY: POST /aliases
+    Note right of PSP2: Body: identity_hash<br/>switch_consent: true
+
+    %% STEP-SW-02
+    GWY->>DESP: Route Request
+    activate DESP
+    
+    DESP->>ALIAS: Query Uniqueness(hash)
+    activate ALIAS
+    ALIAS-->>DESP: Result: Found (at PSP1)
+    deactivate ALIAS
+
+    %% STEP-SW-03
+    DESP->>ALIAS: UpdateOwner(hash, new_psp_id)
+    activate ALIAS
+    ALIAS-->>DESP: Updated
+    deactivate ALIAS
+
+    %% STEP-SW-04
+    DESP-->>GWY: 200 OK (Switched)
+    deactivate DESP
+    GWY-->>PSP2: 200 OK
+
+    %% STEP-SW-05 (Async)
+    DESP->>PSP1: Event: USER_SWITCHED_OUT
+    Note right of DESP: Instruction to close local account
+```
+
+**Step-by-Step Definition**
+
+| Step ID | Sender | Receiver | Message / Action | Constraints / Rules | Trace |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **STEP-SW-01** | `SYS-PSP` (New) | `SYS-GWY` | `POST /aliases` | `switch_consent=true` | `REQ-OB-FUNC-09` |
+| **STEP-SW-02** | `SYS-DESP` | `SYS-ALIAS` | *Verify Existence* | Hash must exist to switch. | `REQ-OB-FUNC-04` |
+| **STEP-SW-03** | `SYS-DESP` | `SYS-ALIAS` | *Update Owner* | Change `active_psp_id` to New PSP. | `Rule ONB-04` |
+| **STEP-SW-04** | `SYS-DESP` | `SYS-PSP` (New) | `200 OK` | Confirm Switch. | `TR-OB-06` |
+| **STEP-SW-05** | `SYS-DESP` | `SYS-PSP` (Old) | *Event Notification* | Notify Old PSP to offboard. | `REQ-OB-FUNC-10` |
 
 ## 6. Technical Constraints
 

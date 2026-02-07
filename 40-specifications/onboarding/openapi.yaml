@@ -92,6 +92,12 @@ components:
           description: |
             BIC of the requesting PSP.
             Trace: [SPEC-OB-DATA] DAT-MSG-02
+        switch_consent:
+          type: boolean
+          description: |
+            Flag to indicate user consent for switching PSPs.
+            Overrides DUPLICATE_IDENTITY check.
+            Trace: [SPEC-OB-DATA] DAT-MSG-05, [SPEC-OB-FUNC] REQ-OB-FUNC-09
 
     # Trace: [SPEC-OB-DATA] Section 5.2 Entity: GlobalAliasRecord
     AliasRecord:
@@ -101,12 +107,18 @@ components:
         - alias_id
         - status
         - created_at
+        - active_psp_id
       properties:
         alias_id:
           type: string
           description: |
             The unique identifier (Hash) stored in Zone B.
             Trace: [SPEC-OB-DATA] DAT-ALS-01
+        active_psp_id:
+          type: string
+          description: |
+            BIC of the PSP currently holding the account.
+            Trace: [SPEC-OB-DATA] DAT-ALS-05
         status:
           type: string
           enum: [ACTIVE, SUSPENDED]
@@ -145,10 +157,10 @@ paths:
       summary: Register User Hash
       operationId: registerUserHash
       description: |
-        Registers a new User Identity Hash to enforce uniqueness.
+        Registers a new User Identity Hash to enforce uniqueness OR executes a Switch.
         
-        **Functional Trace:** Executes Transition `TR-OB-03` (KYC_CLEARED -> CHECKING_ALIAS).
-        **Interface Trace:** Corresponds to `OP-OB-01` and `Flow 5.1`.
+        **Functional Trace:** Executes Transition `TR-OB-03` (Register) or `TR-OB-06` (Switch).
+        **Interface Trace:** Corresponds to `OP-OB-01` (Register) and `OP-OB-03` (Switch).
         **Privacy:** Payload MUST NOT contain PII (Trace [SPEC-OB-DATA] DM-OB-03).
       parameters:
         - $ref: '#/components/parameters/IdempotencyKey'

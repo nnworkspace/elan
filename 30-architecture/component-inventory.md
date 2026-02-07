@@ -72,10 +72,10 @@ These components are operated by private sector banks/fintechs. They are the **o
 | ID | Component Name | Responsibility | Upstream Rule |
 | :--- | :--- | :--- | :--- |
 | **COMP-PSP-01** | **PSP Adapter Service** | The proprietary integration layer. Adapts the PSP's internal systems (Core Banking, Channels) to the standard Digital Euro API exposed by `COMP-EUR-05`. | `actors-and-roles.md` |
-| **COMP-PSP-02** | **Waterfall Engine** | Automates liquidity. Monitors wallet balance; triggers debits/credits to the commercial bank core when limits are breached (funding/defunding). | `liquidity-and-waterfall.md` |
+| **COMP-PSP-02** | **Liquidity Engine** | Automates liquidity management. Monitors wallet balance; triggers funding (Reverse Waterfall) or defunding (Waterfall) based on limits. | `liquidity-and-waterfall.md` |
 | **COMP-PSP-03** | **Key Management System (KMS)** | Securely manages the cryptographic keys required to sign transactions on behalf of the user (if using a custodial model). | `security-and-privacy-zones.md` |
 
-### Detailed Definition: Waterfall Engine (`COMP-PSP-02`)
+### Detailed Definition: Liquidity Engine (`COMP-PSP-02`)
 * **Trigger:** Incoming payment > Holding Limit OR Outgoing payment > Current Balance.
 * **Logic:**
     1.  Calculate shortfall or excess.

@@ -90,6 +90,7 @@ stateDiagram-v2
 | **TR-OB-03** | `KYC_CLEARED` | `CHECKING_ALIAS` | `register_alias` | **Action**: Transmit sanitized Hash to **Access Gateway** (`COMP-EUR-05`). | `Rule ONB-01` |
 | **TR-OB-04** | `CHECKING_ALIAS` | `ACTIVE` | `alias_confirmed` | **Provisioning**: Create Wallet Address.<br>**Link**: Bind Wallet Address to User ID in PSP DB. | `Rule ONB-03` |
 | **TR-OB-05** | `CHECKING_ALIAS` | `REJECTED` | `alias_conflict` | **Error Handling**: Inform user they already have a Digital Euro identity (potentially at another PSP). | `Rule ONB-01` |
+| **TR-OB-06** | `CHECKING_ALIAS` | `ACTIVE` | `switch_confirmed` | **Portability**: User consents to switch PSPs.<br>**Action**: DESP updates `active_psp_id` to new PSP. | `Rule ONB-04` |
 
 ## 6. Functional Requirements (The Logic)
 
@@ -105,10 +106,10 @@ stateDiagram-v2
 
 - **REQ-OB-FUNC-04:** Upon receiving a `register_alias` request (routed via Gateway and Platform), the Alias Service MUST check if the hash exists in the **Global Alias Registry**.
 - **REQ-OB-FUNC-05:** If the hash exists:
-    - Return `409 Conflict`.
-    - Do NOT register a new record.
+    - If `switch_consent` is `TRUE`: Execute **Portability Logic** (See 6.4).
+    - Else: Return `409 Conflict` (Duplicate Identity).
 - **REQ-OB-FUNC-06:** If the hash does not exist:
-    - Store the hash.
+    - Store the hash with `active_psp_id = requester_psp`.
     - Return `200 OK`.
     - **Trace:** This satisfies `Rule ONB-01` (Single Identity).
 
@@ -118,6 +119,16 @@ stateDiagram-v2
 - **REQ-OB-FUNC-07:** Upon transition to `ACTIVE`, the PSP MUST assign a **Wallet Address** (IBAN-like structure).
 - **REQ-OB-FUNC-08:** The PSP MUST initialize the user's **Holding Limit** counter to 0.00 EUR.
 - **Trace:** This satisfies `Rule ONB-03` (Account Creation) and `Rule LIQ-04` (Limits).
+
+### 6.4 Portability Logic (Switching)
+**Target:** `COMP-EUR-04` (DESP)
+
+- **REQ-OB-FUNC-09:** If `switch_consent` is TRUE and Hash exists:
+    - Update `active_psp_id` to the *new* PSP BIC.
+    - Return `200 OK`.
+    - **Trace:** Satisfies `Rule ONB-04`.
+- **REQ-OB-FUNC-10:** The DESP MUST asynchronously notify the *previous* PSP (via Webhook/Event) that the user has switched, instructing them to close the local account.
+- **Trace:** Satisfies `Rule AM-011-004`.
 
 ## 7. Security & Audit
 

@@ -124,20 +124,22 @@ classDiagram
 | **DAT-ALS-02** | `creation_date` | `Timestamp` | UTC timestamp of first registration. | `AUD-OB-01` |
 | **DAT-ALS-03** | `status` | `Enum` | Lifecycle state.<br>Values: `ACTIVE`, `SUSPENDED`. | `ONB-FUNC-States` |
 | **DAT-ALS-04** | `holding_limit_usage`| `Decimal` | The current aggregate holdings across all PSPs.<br>(Technical field for Limit Enforcement by `COMP-EUR-04`). | `Rule LIQ-04` |
+| **DAT-ALS-05** | `active_psp_id` | `BIC` | The BIC of the PSP currently holding the account.<br>Required for **Switching** (`Rule AM-011-004`). | `Rule ONB-04` |
 
 ### 5.3 Entity: OnboardingRequest (The Payload)
 **Classification:** `INTERFACE` (Zone A $\to$ Zone B)
 **Consumer:** Access Gateway (`COMP-EUR-05`) & DESP Platform (`COMP-EUR-04`)
-**Description:** The data structure transmitted over the wire during `OP-OB-01`.
+**Description:** The data structure transmitted over the wire during `OP-OB-01` (Register) or `OP-OB-03` (Switch).
 
 **Parsing Context:** `Scope: API_Payload`
 
 | ID | Attribute | Type | Card. | Description / Constraint | Trace |
 | :--- | :--- | :--- | :---: | :--- | :--- |
 | **DAT-MSG-01** | `identity_hash` | `String` | 1..1 | Hex-encoded SHA-256 hash.<br>Regex: `^[a-f0-9]{64}$` | `INT-OB-01` |
-| **DAT-MSG-02** | `psp_id` | `BIC` | 1..1 | The BIC of the requesting PSP. | `DAT-PAR-002` |
+| **DAT-MSG-02** | `psp_id` | `BIC` | 1..1 | The BIC of the requesting PSP (becomes `active_psp_id`). | `DAT-PAR-002` |
 | **DAT-MSG-03** | `signature` | `JWS` | 1..1 | Cryptographic signature of the payload. | `INT-OB-02` |
 | **DAT-MSG-04** | `idempotency_key` | `UUID` | 1..1 | Unique request ID for retry safety. | `INT-OB-04` |
+| **DAT-MSG-05** | `switch_consent` | `Boolean` | 0..1 | **Optional.** Set to `true` if this is a Switching Request.<br>Overrides `DUPLICATE_IDENTITY` check. | `Rule ONB-04` |
 
 ## 6. Mapping Rules (Transformation Logic)
 

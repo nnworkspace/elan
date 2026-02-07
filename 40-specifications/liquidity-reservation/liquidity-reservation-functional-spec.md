@@ -120,9 +120,11 @@ stateDiagram-v2
 ### 6.2 Defunding Logic (The Waterfall)
 **Target:** `COMP-PSP-02` (Liquidity Engine)
 
-- **REQ-LIQ-FUNC-04:** Upon detecting a Holding Limit breach, the engine MUST immediately calculate `excess`.
+- **REQ-LIQ-FUNC-04:** Upon detecting a Holding Limit breach, the engine MUST immediately calculate `excess`. 
+    - *Constraint:* For **Business Users**, the Holding Limit is **ZERO** (`LM-012-001`). Therefore, ALL incoming funds MUST be immediately waterfalled.
 - **REQ-LIQ-FUNC-05:** The engine MUST instruct the DESP to **Defund** the `excess` amount.
 - **REQ-LIQ-FUNC-06:** Upon receiving `200 OK` (Defunded) from DESP, the engine MUST credit the user's Commercial Bank Account.
+- **REQ-LIQ-FUNC-07 (Post-Settlement Check):** If a pending transaction settles and pushes the balance over the limit (due to race conditions), the engine MUST trigger a distinct **Post-Settlement Waterfall** operation to restore compliance.
 - **Trace:** This aligns with `COMP-EUR-01` responsibility to prevent double spending (money is gone from DE before appearing in CB).
 
 ## 7. Security & Audit

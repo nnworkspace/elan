@@ -51,11 +51,11 @@ The architecture is partitioned into three distinct zones with different securit
 The "Privacy Firewall" is not a physical box, but a set of cryptographic and architectural constraints that separate Zone A from Zone B.
 
 ### Mechanism 1: Identity Hashing (Alias Service)
-- **Requirement:** The Eurosystem needs to enforce holding limits across multiple PSPs.
+- **Requirement:** The Eurosystem needs to enforce the **Single Digital Euro Account** rule (`AM-011-001`).
 - **Implementation:**
     - The PSP computes a **One-Way Hash** of the user's stable national identifier (e.g., `SHA-256(Salt + TaxID)`).
     - This hash is sent to the Eurosystem's **Alias Service** (`COMP-EUR-02`).
-    - The Eurosystem sees only the hash `a1b2c3...`. It knows "Hash `a1b2c3` owns 2000 EUR," but not who `a1b2c3` is.
+    - The Alias Service rejects the registration if the hash already exists (preventing duplicate accounts) without knowing who the user is.
 
 ### Mechanism 2: Tokenisation of Settlement Instructions
 - **Requirement:** Settlement must occur without revealing the "Reason for Payment."

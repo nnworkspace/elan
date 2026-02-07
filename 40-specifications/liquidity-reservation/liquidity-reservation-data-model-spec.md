@@ -117,7 +117,7 @@ classDiagram
 | Field Name | Data Type | Format | Description | Trace |
 | :--- | :--- | :--- | :--- | :--- |
 | **amount** | `Integer` | `int64` | Amount to defund (burn). | `DAT-MSG-03` |
-| **reason_code** | `String` | `Enum` | `LIMIT_BREACH`, `ZERO_HOLDING_CONFIG`. | `DAT-MSG-04` |
+| **reason_code** | `String` | `Enum` | `LIMIT_BREACH`, `ZERO_HOLDING_CONFIG` (for Business Users). | `DAT-MSG-04` |
 
 ## 5. Data Integrity & Privacy Rules
 

@@ -29,13 +29,13 @@ C4Context
 
     System_Boundary(IntermediarySphere, "Intermediary Domain (PSP)") {
         System(PSP_Backend, "PSP Backend / Adapter", "Proprietary integration layer. Connects Core Banking to Eurosystem.")
-        System(ComBank, "Commercial Bank Core", "Source of liquidity (Waterfall / Reverse Waterfall)")
+        System(ComBank, "Commercial Bank Core", "Source of liquidity (Liquidity Engine)")
     }
 
     System_Boundary(EurosystemSphere, "Eurosystem Domain") {
         System(AccessGateway, "Access Gateway", "Central API Entry Point. Authenticates PSPs and routes traffic.")
         System(SettlementEngine, "Settlement Infrastructure", "Validates and settles transactions pseudonymously")
-        System(AliasService, "Alias / Identity Service", "Ensures 'One Person / One Identity' without revealing PII")
+        System(AliasService, "Alias / Identity Service", "Ensures 'One Person / One Account' without revealing PII")
     }
 
     %% Relationships
@@ -68,7 +68,7 @@ The architecture is divided into three distinct spheres of responsibility.
 * **Responsibility:**
     * **KYC/AML:** Verifying the identity of the user.
     * **User Management:** Mapping real-world identities to Digital Euro Aliases.
-    * **Liquidity Management:** Executing the **Waterfall** and **Reverse Waterfall** logic. This domain bridges the gap between Commercial Bank Money (in `ComBank`) and Central Bank Money.
+    * **Liquidity Management:** Executing the **Waterfall** and **Reverse Waterfall** logic via the **Liquidity Engine** (`COMP-PSP-02`). This domain bridges the gap between Commercial Bank Money (in `ComBank`) and Central Bank Money.
     * **Privacy Shield:** The Intermediary is the *only* entity that knows the link between the User's real identity (Name, IBAN) and their Digital Euro Wallet Address.
 
 ### 3. The Eurosystem Domain (The "Backbone")
@@ -85,7 +85,7 @@ The architecture is divided into three distinct spheres of responsibility.
 1.  User identifies themselves to the **PSP**.
 2.  PSP performs KYC.
 3.  PSP computes a **Unique Identity Hash** (based on national ID, etc.) and registers it with the **Alias Service**.
-4.  **Alias Service** confirms if the user already exists (enforcing *One Person/One Identity*) without storing the user's name.
+4.  **Alias Service** confirms if the user already exists (enforcing *One Person/One Account*) without storing the user's name.
 
 ### B. Payment & Settlement
 1.  User initiates payment via **Wallet App**.
@@ -93,7 +93,7 @@ The architecture is divided into three distinct spheres of responsibility.
 3.  **Settlement Engine** moves funds pseudonymously.
 4.  **Settlement Engine** confirms success to Payer PSP and Payee PSP.
 
-### C. The Waterfall (Funding)
+### C. The Reverse Waterfall (Funding)
 * **Upstream Rule Reference:** [`20-rulebook/liquidity-and-waterfall.md`](../20-rulebook/liquidity-and-waterfall.md)
 1.  If User balance is insufficient, **PSP** triggers a debit from **Commercial Bank Core**.
 2.  PSP instructs **Eurosystem DCA** to mint/transfer Digital Euro to User.

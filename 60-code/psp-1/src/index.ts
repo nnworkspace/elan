@@ -38,8 +38,20 @@ class PspApplication {
      */
     static handleOnboarding(req: Request, res: Response) {
         console.log('Received onboarding request:', req.body);
-        // Logic to call Access Gateway would go here
-        res.json({ status: 'INITIATED', user_id: 'USER-123' });
+        
+        const { switch_consent } = req.body;
+
+        if (switch_consent === true) {
+            // Rule AM-011-004: Switching Flow
+            console.log('Switching User Identity from remote PSP...');
+            // Logic to call OP-OB-03 (SwitchUserPSP) would go here
+            res.json({ status: 'SWITCH_INITIATED', user_id: 'USER-123', old_psp_notified: true });
+        } else {
+            // Rule ONB-03: New Registration
+            console.log('Registering New User Identity...');
+            // Logic to call OP-OB-01 (RegisterUserHash) would go here
+            res.json({ status: 'REGISTRATION_INITIATED', user_id: 'USER-123' });
+        }
     }
 
     static async handlePayment(req: Request, res: Response) {

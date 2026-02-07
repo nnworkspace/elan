@@ -14,17 +14,18 @@ owner: rulebook-development-group
 # User Onboarding and Identity Rules
 
 ## Source Reference
-**Draft Digital Euro Scheme Rulebook V0.9** — Section 5 (User Management).
+**Draft Digital Euro Scheme Rulebook V0.9** — Section 3.5.2 (Access Management).
 
 ## Purpose
 This document defines the rules for identifying users and establishing digital euro relationships. These rules determine the logic for the **Onboarding API** and **User Registry**.
 
 ---
 
-## 1. Single Identity Principle
-**Rule ONB-01:** One User, One Identity.
-- A user is identified uniquely across the ecosystem, regardless of which Intermediary they use.
-- The scheme ensures that the **Holding Limit** is enforced across all intermediaries held by the same natural person.
+## 1. Single Account Principle
+**Rule ONB-01:** One User, One Account.
+- **Rule AM-011-001:** An individual user can have only **one** digital euro account.
+- The scheme ensures that the **Holding Limit** is enforced on this single identity.
+- Users **CANNOT** hold active accounts with multiple Intermediaries simultaneously.
 
 ## 2. Onboarding Process
 **Rule ONB-02:** Intermediary Responsibility.
@@ -35,10 +36,11 @@ This document defines the rules for identifying users and establishing digital e
 - Upon successful verification, the Intermediary provisions a **Digital Euro Account** (wallet).
 - This account MUST be linked to the user's unique digital euro identifier.
 
-## 3. Account Switching & Portability
-**Rule ONB-04:** Portability.
-- Users MUST be able to switch Intermediaries or hold accounts with multiple Intermediaries (subject to the aggregate holding limit).
-- Onboarding a user at a new Intermediary triggers a check against the central limit repository to ensure compliance.
+## 3. Account Switching
+**Rule ONB-04:** Switching (Not Multi-homing).
+- Users have the right to **Switch** their account from one Intermediary to another.
+- **Rule AM-011-004:** If a user attempts to onboard at a new Intermediary, they MUST be offered the option to **Switch** their existing account.
+- The old account MUST be closed (offboarded) before the new one is fully activated.
 
 ## 4. Offboarding
 **Rule ONB-05:** Termination.

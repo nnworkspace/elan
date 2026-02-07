@@ -25,7 +25,7 @@ To provide a concrete example, this architecture reflects the **High-Level Desig
 
 The architecture is characterized by a strict **Intermediated Model**:
 - The **Eurosystem** acts as the settlement infrastructure provider and issuer.
-- **Supervised Intermediaries (PSPs)** act as the gatekeepers, managing user authentication, KYC, and the "waterfall" links to commercial bank money.
+- **Supervised Intermediaries (PSPs)** act as the gatekeepers, managing user authentication, KYC, and the "liquidity" links to commercial bank money.
 
 This design enforces a "privacy partition": the central settlement engine processes transactions pseudonymously, while the mapping to real-world identities remains strictly within the domain of the Intermediaries.
 
@@ -38,7 +38,7 @@ The architecture is defined through three primary views:
 | Artefact | Purpose | Key Question Answered |
 | :--- | :--- | :--- |
 | [`system-context.md`](./system-context.md) | High-level ecosystem view. | How do the Eurosystem, PSPs, and Users interact? |
-| [`component-inventory.md`](./component-inventory.md) | Logical blocks and services. | What specific engines (e.g., Waterfall, Settlement, Alias) must be built? |
+| [`component-inventory.md`](./component-inventory.md) | Logical blocks and services. | What specific engines (e.g., Liquidity, Settlement, Alias) must be built? |
 | [`security-and-privacy-zones.md`](./security-and-privacy-zones.md) | Data boundaries and trust. | How is the "Privacy Firewall" between the ECB and User Identity architected? |
 
 ## Traceability Relationships
@@ -48,7 +48,7 @@ This Architecture Set (`SET-ARCH`) sits between the rules and the detailed speci
 - **Upstream (`20-rulebook`):**
   Every architectural component exists to satisfy a Rule.
     - *Example:* The **Alias Service** component exists to satisfy the *Single Identity Principle* defined in the Rulebook.
-    - **Version-Awareness:** Architectural decisions must reference the specific **Rulebook Set Version** (e.g., `@rule=SET-RULEBOOK:1.0.0`) as declared in `20-rulebook/manifest.yaml`. This ensures our design satisfies the exact rules in force at the time of design.
+    - **Version-Awareness:** Architectural decisions must reference the specific **Rulebook Set Version** (e.g., `@rule=SET-RULEBOOK:0.9.0`) as declared in `20-rulebook/manifest.yaml`. This ensures our design satisfies the exact rules in force at the time of design.
     - **Enforcement:** `LINT-T2` (Anchoring) and `LINT-T4` (Version Syntax).
 
 - **Downstream (`40-specifications` & `50-code`):**

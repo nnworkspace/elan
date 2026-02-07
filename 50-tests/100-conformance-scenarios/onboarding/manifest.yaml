@@ -18,7 +18,7 @@ meta:
   
   # The Version of the *Tests* (Not the specs!)
   # Example: We fixed a bug in the test code, so we bump to 1.0.1
-  version: "0.1.1"
+  version: "0.1.2"
   
   # Lifecycle State
   status: FICTIONAL-RELEASED
@@ -35,3 +35,4 @@ targets:
 contains:
   - ONB-TS-01-registration.feature
   - ONB-TS-02-status-query.feature
+  - ONB-TS-03-switching.feature
