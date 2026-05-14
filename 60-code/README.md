@@ -236,6 +236,10 @@ The intent of this folder is to show that:
 When code is organised in this way, it becomes easier to audit, evolve, and trust.
 
 
+## Decision records
+
+Decisions specific to this layer are recorded in [`_decisions/`](./_decisions/) as repository-local decision records (`DR-`). See [`00-project-governance/decision-records.md`](../00-project-governance/decision-records.md) for the practice.
+
 ## Disclaimer
 
 The code in this folder is **illustrative and educational**.

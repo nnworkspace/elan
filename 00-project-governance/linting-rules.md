@@ -22,7 +22,7 @@ This replaces manual policing with instant, mechanical enforcement. It ensures t
 
 This document defines the **automated governance rules** enforced by the CI/CD pipeline. These rules ensure that the project's classification, traceability, and versioning strategies are applied consistently.
 
-These rules are **normative** and derive directly from the [Artefact Classification Model](artefact-classification.md) and [Configuration Management Strategy](configuration-management.md).
+These rules are **normative** and derive directly from the [Artefact Classification Model](artefact-classification.md), the [Configuration Management Strategy](configuration-management.md), and [Decision Records](decision-records.md).
 
 ## Enforcement Principles
 
@@ -76,6 +76,15 @@ These rules are **normative** and derive directly from the [Artefact Classificat
 | :--- | :--- | :--- | :--- |
 | **LINT-H1** | Audience declaration | **SHOULD** | Every artefact should explicitly declare its target audience. |
 | **LINT-H2** | Orphan detection | **SHOULD** | Artefacts not referenced by any other artefact should be flagged for review. |
+
+### F. Decision Records
+
+| ID | Rule Name | Level | Requirement |
+| :--- | :--- | :--- | :--- |
+| **LINT-D1** | Record metadata | **MUST** | Every decision record must declare classification metadata and a valid lifecycle status (`Proposed`, `Accepted`, `Superseded`, or `Deprecated`). |
+| **LINT-D2** | Contiguous numbering | **MUST** | Within each scope (`PDR-`, `DR-`), record numbers must be contiguous, zero-padded to four digits, and never reused. |
+| **LINT-D3** | Immutable once accepted | **MUST** | The body of an `Accepted` record must not be modified within a merge request; only its `Status` and `Superseded by` fields may change. |
+| **LINT-D4** | Supersession integrity | **MUST** | A record marked `Superseded` must name the record that supersedes it, and that record must exist. |
 
 ---
 

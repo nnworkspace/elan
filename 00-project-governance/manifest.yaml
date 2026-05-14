@@ -14,13 +14,13 @@ meta:
   title: "Project Governance and Standards"
   
   # The Normative Version
-  version: "0.8.0"
-  
+  version: "0.9.0"
+
   # The Lifecycle State (Educational context)
   status: FICTIONAL-RELEASED
-  
+
   # The Freeze Date
-  date: 2025-12-29
+  date: 2026-05-14
 
 # The explicit list of files that constitute this version
 contains:

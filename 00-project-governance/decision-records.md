@@ -48,8 +48,10 @@ The project is logically unified but physically distributed across repositories 
 
 | Scope            | Prefix | Location                              | For                                                       |
 | :--------------- | :----- | :------------------------------------ | :-------------------------------------------------------- |
-| Project-wide     | `PDR-` | `00-project-governance/decisions/`    | Decisions that cut across repositories: conventions, shared toolchain, governance changes. |
-| Repository-local | `DR-`  | `<repository>/decisions/`             | Decisions confined to a single repository.                |
+| Project-wide     | `PDR-` | `00-project-governance/_decisions/`   | Decisions that cut across repositories: conventions, shared toolchain, governance changes. |
+| Repository-local | `DR-`  | `<repository>/_decisions/`            | Decisions confined to a single repository.                |
+
+The `_decisions/` folder name is prefixed with an underscore to keep it grouped with other meta-folders, distinct from the layer's content artefacts.
 
 Each scope maintains its own number sequence, zero-padded to four digits, beginning at `0000`. `PDR-0000` and the first `DR-0000` of each repository record the decision to adopt this practice itself, and anchor it to this document.
 

@@ -56,3 +56,7 @@ The automation layer is divided into three functional domains:
 - All automation code acts as **infrastructure-as-code**, **governance-as-code**, and **policy-as-code**.
 - Changes to this folder are effectively **amendments to the constitution**, as they alter how the project is governed.
 
+## Decision records
+
+Decisions specific to this layer are recorded in [`_decisions/`](./_decisions/) as repository-local decision records (`DR-`). See [`00-project-governance/decision-records.md`](../00-project-governance/decision-records.md) for the practice.
+

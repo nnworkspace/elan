@@ -57,7 +57,7 @@ The governance corpus currently includes:
   Defines the strategy for maintaining auditable system states through atomic baselines (Sets), manifest-based versioning, and version-aware traceability.
 
 - **`decision-records.md`**
-  Defines how significant, hard-to-reverse decisions are recorded as immutable decision records, scoped project-wide and repository-local.
+  Defines how significant, hard-to-reverse decisions are recorded as immutable decision records, scoped project-wide and repository-local. Project-wide records (`PDR-`) live in the [`_decisions/`](./_decisions/) subfolder.
 
 - **`glossary.md`**
   Defines the authoritative terminology (e.g. "Digital Euro", "Issuance Component") used throughout the project to ensure semantic consistency.
@@ -69,7 +69,7 @@ The governance corpus currently includes:
   Defines the controlled vocabulary of issue labels (Type, Status, Impact) to ensure that the issue tracker serves as a reliable governance instrument.
 
 
-Additional governance instruments (such as issue templates) may live in subfolders and are governed by the same principles.
+Additional governance instruments (such as issue templates and decision records) may live in subfolders and are governed by the same principles.
 
 
 ## Normative status

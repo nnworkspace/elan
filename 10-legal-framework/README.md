@@ -86,6 +86,10 @@ All artefacts in this folder are expected to:
 Changes to legislative artefacts should reflect changes in the public legal landscape, not internal project decisions.
 
 
+## Decision records
+
+Decisions specific to this layer are recorded in [`_decisions/`](./_decisions/) as repository-local decision records (`DR-`). See [`00-project-governance/decision-records.md`](../00-project-governance/decision-records.md) for the practice.
+
 ## Final note
 
 Civilised systems begin with law.

@@ -108,6 +108,10 @@ The intent of this folder is to demonstrate that **institutional transparency do
 
 When artefacts are structured, classified, and traceable, meaningful reports can be generated automatically — reducing friction, increasing trust, and allowing leaders to focus on decisions rather than data collection.
 
+## Decision records
+
+Decisions specific to this layer are recorded in [`_decisions/`](./_decisions/) as repository-local decision records (`DR-`). See [`00-project-governance/decision-records.md`](../00-project-governance/decision-records.md) for the practice.
+
 ## Disclaimer
 
 The reports in this folder are **illustrative and educational**.

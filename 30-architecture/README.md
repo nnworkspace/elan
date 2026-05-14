@@ -61,6 +61,10 @@ This Architecture Set (`SET-ARCH`) sits between the rules and the detailed speci
 - **Status:** Normative.
 - **Review:** Architectural changes (e.g., moving a boundary, merging components) require a **Design Decision** issue (`[DESIGN]`) and broad stakeholder review.
 
+## Decision records
+
+Decisions specific to this layer are recorded in [`_decisions/`](./_decisions/) as repository-local decision records (`DR-`). See [`00-project-governance/decision-records.md`](../00-project-governance/decision-records.md) for the practice.
+
 ## Final Note
 
 A good architecture is a contract. It tells the builders what to build, the auditors what to verify, and the policy-makers how their rules are enforced in silicon.

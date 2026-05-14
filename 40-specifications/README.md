@@ -116,6 +116,10 @@ Within a set, documents are layered:
 
 This separation is intentional. It allows different concerns to evolve without entanglement.
 
+## Decision records
+
+Decisions specific to this layer are recorded in [`_decisions/`](./_decisions/) as repository-local decision records (`DR-`). See [`00-project-governance/decision-records.md`](../00-project-governance/decision-records.md) for the practice.
+
 ## A final note
 
 Civilisations do not fail because they lack ambition. They fail when intent cannot survive the journey from vision to execution.
