@@ -31,6 +31,7 @@ contains:
   - communication-and-project-management.md
   - commit-message-conventions.md
   - configuration-management.md
+  - decision-records.md
   - glossary.md
   - issue-labels.md
   - linting-rules.md

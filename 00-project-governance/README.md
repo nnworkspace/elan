@@ -56,6 +56,9 @@ The governance corpus currently includes:
 - **`configuration-management.md`** 
   Defines the strategy for maintaining auditable system states through atomic baselines (Sets), manifest-based versioning, and version-aware traceability.
 
+- **`decision-records.md`**
+  Defines how significant, hard-to-reverse decisions are recorded as immutable decision records, scoped project-wide and repository-local.
+
 - **`glossary.md`**
   Defines the authoritative terminology (e.g. "Digital Euro", "Issuance Component") used throughout the project to ensure semantic consistency.
 
