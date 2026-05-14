@@ -39,7 +39,7 @@ Version-control history records *what* changed and *when*, but it is a forensic 
 
 ## Decision
 
-The project adopts **decision records** as defined in [`decision-records.md`](../decision-records.md). Decisions that cut across repositories are recorded as `PDR-` files in `00-project-governance/_decisions/`; decisions confined to a single repository are recorded as `DR-` files in that repository's own `_decisions/` folder. Records are immutable once accepted; a decision is changed by writing a new record that supersedes the old one.
+The project adopts **decision records** as defined in [`decision-records.md`](../decision-records.md). Decisions that cut across repositories are recorded as `PDR-` files in `00-project-governance/decisions/`; decisions confined to a single repository are recorded as `DR-` files in that repository's own `_governance-local/decisions/` folder. Records are immutable once accepted; a decision is changed by writing a new record that supersedes the old one.
 
 Option 1 leaves no readable record. Option 2 makes the record mutable, which destroys its value as evidence of what was known at decision time, and offers nothing that a Markdown file under version control does not. Option 3 keeps the record next to the work, under the same governance and automation as every other artefact, and immutable once settled.
 

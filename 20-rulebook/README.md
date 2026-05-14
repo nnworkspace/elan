@@ -69,7 +69,7 @@ This Rulebook Set (`SET-RULEBOOK`) sits at the center of the traceability chain.
 
 ## Decision records
 
-Decisions specific to this layer are recorded in [`_decisions/`](./_decisions/) as repository-local decision records (`DR-`). See [`00-project-governance/decision-records.md`](../00-project-governance/decision-records.md) for the practice.
+Decisions specific to this layer are recorded in [`_governance-local/decisions/`](./_governance-local/decisions/) as repository-local decision records (`DR-`). See [`00-project-governance/decision-records.md`](../00-project-governance/decision-records.md) for the practice.
 
 ## Final Note
 

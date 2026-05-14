@@ -118,7 +118,7 @@ This separation is intentional. It allows different concerns to evolve without e
 
 ## Decision records
 
-Decisions specific to this layer are recorded in [`_decisions/`](./_decisions/) as repository-local decision records (`DR-`). See [`00-project-governance/decision-records.md`](../00-project-governance/decision-records.md) for the practice.
+Decisions specific to this layer are recorded in [`_governance-local/decisions/`](./_governance-local/decisions/) as repository-local decision records (`DR-`). See [`00-project-governance/decision-records.md`](../00-project-governance/decision-records.md) for the practice.
 
 ## A final note
 
