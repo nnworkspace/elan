@@ -10,39 +10,43 @@
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 @spec=SPEC-LIQ-FUNC @spec=SPEC-LIQ-DATA @component=COMP-PSP-02
 Feature: Liquidity Integrity & Security Controls
-  As a Security Auditor
-  I want to verify that the Liquidity Engine enforces strict financial integrity and privacy boundaries
-  So that double-spending is impossible and internal banking IDs are never exposed
+
+  Governing rule:  Financial integrity and data minimisation (REQ-LIQ-01 / SEC-LIQ-01)
+  Behaviour:       The Liquidity Engine guarantees that a single bank
+                   reservation cannot fund two wallets, that internal banking
+                   identifiers never cross the privacy boundary, and that
+                   funding is authorised only for a certificate holding the
+                   liquidity role.
 
   Background:
     Given the Access Gateway (COMP-EUR-05) is active
-    And I am monitoring the API traffic to the Eurosystem
+    And API traffic to the Eurosystem is monitored
 
   @trace=INT-LIQ-02 @trace=REQ-LIQ-01 @security_control=INTEGRITY
-  Scenario: Prevention of Double-Funding (Reservation Reuse)
+  Scenario: A reused reservation cannot fund a second wallet
     # Attack: An attacker tries to use one bank lock to fund TWO digital wallets
     # Technique: Replay a valid reservation_proof with a NEW Idempotency Key
-    Given I have successfully funded 10.00 EUR using reservation_proof "HASH_A"
-    When I send a NEW "POST /fund" request with the SAME reservation_proof "HASH_A"
-    And I provide a FRESH Idempotency-Key "UUID-NEW"
+    Given 10.00 EUR has already been funded using reservation_proof "HASH_A"
+    When a new "POST /fund" request reuses the same reservation_proof "HASH_A"
+    And a fresh Idempotency-Key "UUID-NEW" is provided
     Then the Access Gateway returns "409 Conflict"
     And the error code indicates "RESERVATION_ALREADY_USED"
     And no new Digital Euro liability is created
 
   @trace=DAT-PRI-01 @trace=SEC-LIQ-01 @security_control=DATA_MINIMIZATION
-  Scenario: Privacy Firewall Enforcement (Internal ID Leakage)
+  Scenario: An internal banking ID is blocked at the boundary
     # Attack: The PSP Adapter implementation is lazy and sends the raw CBS ID
-    Given I construct a Funding Payload
-    But I include a forbidden field "cbs_reference": "DE-INTERNAL-123"
-    When I send the "POST /fund" request
+    Given a Funding Payload is constructed
+    But it includes the forbidden field "cbs_reference": "DE-INTERNAL-123"
+    When the caller sends the "POST /fund" request
     Then the Access Gateway returns "400 Bad Request"
     And the error detail mentions "Forbidden field: cbs_reference"
     And the Security Audit Log records "PII_LEAK_ATTEMPT"
 
   @trace=ARCH-SEC-02 @security_control=AUTHORIZATION
-  Scenario: Role-Based Access Control (Wrong Certificate)
+  Scenario: A certificate without the liquidity role is refused
     # Attack: Use a valid QWAC, but one that is only authorized for Onboarding
-    Given I authenticate using a valid QWAC with role "ONBOARDING_AGENT"
-    When I attempt to call "POST /fund"
+    Given a caller authenticates using a valid QWAC with role "ONBOARDING_AGENT"
+    When the caller attempts to call "POST /fund"
     Then the Access Gateway returns "403 Forbidden"
     And the error indicates "Insufficient Role: LIQUIDITY_MANAGER required"
