@@ -5,12 +5,12 @@ audience: everyone
 form: text
 role: governance
 status: informative
-owner: project-governance
+owner: requirements-and-design
 ---
 
-# Decision records — Legal Framework
+# Decision records — Requirements
 
-This folder holds the **repository-local decision records** (`DR-`) for the legal framework layer: records of decisions confined to this layer, such as structural choices, tooling, and conventions specific to its artefacts.
+This folder holds the **repository-local decision records** (`DR-`) for the requirements layer: records of decisions confined to this layer, such as how journeys are scoped, how functional requirements are decomposed, and conventions specific to its artefacts.
 
 Decisions that cut across layers are recorded as `PDR-` records in [`00-project-governance/decisions/`](../../../00-project-governance/decisions/), not here.
 

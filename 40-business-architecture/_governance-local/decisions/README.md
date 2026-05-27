@@ -5,12 +5,12 @@ audience: everyone
 form: text
 role: governance
 status: informative
-owner: project-governance
+owner: business-architecture
 ---
 
-# Decision records — Legal Framework
+# Decision records — Business Architecture
 
-This folder holds the **repository-local decision records** (`DR-`) for the legal framework layer: records of decisions confined to this layer, such as structural choices, tooling, and conventions specific to its artefacts.
+This folder holds the **repository-local decision records** (`DR-`) for the business architecture layer: records of decisions confined to this layer, such as where trust boundaries are drawn, data-visibility rules, and the design of the privacy firewall.
 
 Decisions that cut across layers are recorded as `PDR-` records in [`00-project-governance/decisions/`](../../../00-project-governance/decisions/), not here.
 

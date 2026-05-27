@@ -199,15 +199,15 @@ CI/CD is the quiet authority of the system — the continuous translation of int
 policy-to-production/
 ├── 00-project-governance/        # Project governance: rules, conventions, communication, glossary, timelines
 ├── 10-legal-framework/           # Policy and legal context
-├── 15-requirements/              # User journeys and functional requirements
-├── 20-rulebook/                  # Scheme rules and operational obligations
-├── 25-business-architecture/     # Interactions, data visibility, and privacy design
-├── 30-system-architecture/       # System components and their design
-├── 40-specifications/            # Technical specifications
-├── 50-tests/                     # Acceptance criteria and evidence
-├── 60-code/                      # Illustrative implementations
-├── 70-reports/                   # Automatically generated reports (e.g. progress summaries, compliance views)
-├── 80-automation/                # Active Governance: Pipelines, Analysis, and AI Oracle
+├── 20-requirements/              # User journeys and functional requirements
+├── 30-rulebook/                  # Scheme rules and operational obligations
+├── 40-business-architecture/     # Interactions, data visibility, and privacy design
+├── 50-system-architecture/       # System components and their design
+├── 60-specifications/            # Technical specifications
+├── 70-tests/                     # Acceptance criteria and evidence
+├── 80-code/                      # Illustrative implementations
+├── 90-reports/                   # Automatically generated reports (e.g. progress summaries, compliance views)
+├── 100-automation/               # Active Governance: Pipelines, Analysis, and AI Oracle
 ├── README.md
 └── LICENSE
 

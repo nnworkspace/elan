@@ -5,12 +5,12 @@ audience: everyone
 form: text
 role: governance
 status: informative
-owner: project-governance
+owner: system-quality
 ---
 
-# Decision records — Legal Framework
+# Decision records — System Tests and Evidence
 
-This folder holds the **repository-local decision records** (`DR-`) for the legal framework layer: records of decisions confined to this layer, such as structural choices, tooling, and conventions specific to its artefacts.
+This folder holds the **repository-local decision records** (`DR-`) for the tests and evidence layer: records of decisions confined to this layer, such as structural choices, tooling, and conventions specific to its artefacts.
 
 Decisions that cut across layers are recorded as `PDR-` records in [`00-project-governance/decisions/`](../../../00-project-governance/decisions/), not here.
 
