@@ -37,7 +37,7 @@ Each component has a unique **Global ID** to allow precise citation in code and 
 | Global ID | File | Role |
 | :--- | :--- | :--- |
 | **SPEC-OB-ROOT** | [`onboarding-spec-overview.md`](./onboarding-spec-overview.md) | **Root Document**<br>Defines the Scope, Document Map, and Traceability rules. |
-| **SPEC-OB-FUNC** | [`onboarding-functional-spec.md`](./onboarding-functional-spec.md) | **Functional Spec**<br>Defines the State Machine (`DRAFT` → `ACTIVE`) and business rules. |
+| **SPEC-OB-FUNC** | [`onboarding-behaviour-spec.md`](./onboarding-behaviour-spec.md) | **Functional Spec**<br>Defines the State Machine (`DRAFT` → `ACTIVE`) and business rules. |
 | **SPEC-OB-INT** | [`onboarding-interfaces-spec.md`](./onboarding-interfaces-spec.md) | **Interface Spec**<br>Defines the interaction flows between PSP and Platform. |
 | **SPEC-OB-DATA** | [`onboarding-data-model-spec.md`](./onboarding-data-model-spec.md) | **Data Model Spec**<br>Defines the authoritative entities and privacy constraints. |
 | **SPEC-OB-API** | [`openapi.yaml`](./openapi.yaml) | **OpenAPI Definition**<br>Machine-readable contract implementing the above specs. |
@@ -51,7 +51,7 @@ This Specification Set acts as the bridge between high-level mandates and concre
 Every requirement must trace back to a specific **Rule ID**. This anchors technical behavior to the legal and operational framework.
 
 - **Mandate:** We implement the *Participant Onboarding Rules* defined in:
-    - `@rule=SET-RULEBOOK:0.9.0` (specifically [`functional-onboarding.md`](../../20-rulebook/functional-onboarding.md))
+    - `@rule=SET-RULEBOOK:0.9.0` (specifically [`onboarding-rules.md`](../../20-rulebook/onboarding-rules.md))
 - **Enforcement:** **LINT-T2** validates that every spec file contains valid `@rule` references.
 
 ### 4.2 Constraint (Architectural Boundary)

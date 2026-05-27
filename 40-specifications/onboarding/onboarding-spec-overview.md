@@ -39,10 +39,10 @@ This specification satisfies the mandates of **Rulebook Set v0.9.0** (`@rule=SET
 
 | Rule ID | Rule Name | Upstream Source |
 | :--- | :--- | :--- |
-| **ONB-01** | Single Identity Principle | [`functional-onboarding.md`](../../20-rulebook/functional-onboarding.md) |
-| **ONB-02** | Intermediary Responsibility | [`functional-onboarding.md`](../../20-rulebook/functional-onboarding.md) |
-| **ONB-03** | Digital Euro Account Creation | [`functional-onboarding.md`](../../20-rulebook/functional-onboarding.md) |
-| **ONB-04** | Portability & Limits | [`functional-onboarding.md`](../../20-rulebook/functional-onboarding.md) |
+| **ONB-01** | Single Identity Principle | [`onboarding-rules.md`](../../20-rulebook/onboarding-rules.md) |
+| **ONB-02** | Intermediary Responsibility | [`onboarding-rules.md`](../../20-rulebook/onboarding-rules.md) |
+| **ONB-03** | Digital Euro Account Creation | [`onboarding-rules.md`](../../20-rulebook/onboarding-rules.md) |
+| **ONB-04** | Portability & Limits | [`onboarding-rules.md`](../../20-rulebook/onboarding-rules.md) |
 
 ### 3.2 Architectural Basis
 This specification adheres to the components and security zones defined in **Architecture Set v0.1.0** (`@arch=SET-ARCH:0.1.0`).
@@ -60,7 +60,7 @@ The specification is split into three orthogonal views to ensure clarity and lin
 
 | View | Document | Global ID | Purpose |
 | :--- | :--- | :--- | :--- |
-| **Behavior** | [`onboarding-functional-spec.md`](./onboarding-functional-spec.md) | **SPEC-OB-FUNC** | **"The Logic"**<br>Defines State Machines (e.g., `PENDING_KYC` -> `ACTIVE`) and validation rules. |
+| **Behavior** | [`onboarding-behaviour-spec.md`](./onboarding-behaviour-spec.md) | **SPEC-OB-FUNC** | **"The Logic"**<br>Defines State Machines (e.g., `PENDING_KYC` -> `ACTIVE`) and validation rules. |
 | **Data** | [`onboarding-data-model-spec.md`](./onboarding-data-model-spec.md) | **SPEC-OB-DATA** | **"The Schema"**<br>Defines the `UserIdentityHash` and `Account` entities. |
 | **Interfaces** | [`onboarding-interfaces-spec.md`](./onboarding-interfaces-spec.md) | **SPEC-OB-INT** | **"The Flow"**<br>Sequence diagrams and API interactions. |
 

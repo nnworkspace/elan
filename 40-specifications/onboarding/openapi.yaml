@@ -34,7 +34,7 @@ info:
     to enforce the "One Person / One Identity" rule without revealing PII.
     
     **Traceability Dictionary:**
-    - **[SPEC-OB-FUNC]**: `onboarding-functional-spec.md` (State Machine & Logic)
+    - **[SPEC-OB-FUNC]**: `onboarding-behaviour-spec.md` (State Machine & Logic)
     - **[SPEC-OB-INT]**:  `onboarding-interfaces-spec.md` (Protocol & Headers)
     - **[SPEC-OB-DATA]**: `onboarding-data-model-spec.md` (Data Schemas & Privacy)
     

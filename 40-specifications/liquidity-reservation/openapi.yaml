@@ -34,7 +34,7 @@ info:
     against Commercial Bank Money reservations, supporting the "Two-Phase Commit" pattern.
     
     **Traceability Dictionary:**
-    - **[SPEC-LIQ-FUNC]**: `liquidity-functional-spec.md` (State Machine & Logic)
+    - **[SPEC-LIQ-FUNC]**: `liquidity-reservation-behaviour-spec.md` (State Machine & Logic)
     - **[SPEC-LIQ-INT]**:  `liquidity-interfaces-spec.md` (Protocol & Headers)
     - **[SPEC-LIQ-DATA]**: `liquidity-data-model-spec.md` (Data Schemas & Integrity)
     

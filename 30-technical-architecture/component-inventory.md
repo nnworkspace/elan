@@ -31,10 +31,10 @@ The **Digital Euro Service Platform (DESP)** is the central technical platform t
 | ID | Component Name | Responsibility | Upstream Rule |
 | :--- | :--- | :--- | :--- |
 | **COMP-EUR-01** | **Settlement Engine** | The core ledger within DESP. Validates digital signatures, prevents double-spending, and moves value between wallet addresses. | `actors-and-roles.md` |
-| **COMP-EUR-02** | **Alias Service** | A DESP service that maintains the registry of hashed user identifiers to enforce the Single Identity Rule across PSPs without revealing PII. | `functional-onboarding.md` |
+| **COMP-EUR-02** | **Alias Service** | A DESP service that maintains the registry of hashed user identifiers to enforce the Single Identity Rule across PSPs without revealing PII. | `onboarding-rules.md` |
 | **COMP-EUR-03** | **Dispute Management System** | A DESP service that allows PSPs to flag fraudulent transactions or technical errors for investigation and resolution. | *N/A (Future Scope)* |
-| **COMP-EUR-04** | **Digital Euro Service Platform (DESP)** | The platform domain: hosts core services (settlement engine, alias service, onboarding repository, simulation and test APIs) and provides platform governance, observability, and operator controls. | `actors-and-roles.md`, `functional-onboarding.md` |
-| **COMP-EUR-05** | **Digital Euro Access Gateway** | The canonical access point / API surface of DESP. Authenticates and authorises PSPs, validates and routes requests to DESP services, enforces platform-level controls (rate limiting, schemas, audit), and provides a single integration contract for intermediaries. | `actors-and-roles.md`, `functional-onboarding.md` |
+| **COMP-EUR-04** | **Digital Euro Service Platform (DESP)** | The platform domain: hosts core services (settlement engine, alias service, onboarding repository, simulation and test APIs) and provides platform governance, observability, and operator controls. | `actors-and-roles.md`, `onboarding-rules.md` |
+| **COMP-EUR-05** | **Digital Euro Access Gateway** | The canonical access point / API surface of DESP. Authenticates and authorises PSPs, validates and routes requests to DESP services, enforces platform-level controls (rate limiting, schemas, audit), and provides a single integration contract for intermediaries. | `actors-and-roles.md`, `onboarding-rules.md` |
 
 
 ### Detailed Definition: Digital Euro Service Platform (DESP) (`COMP-EUR-04`)

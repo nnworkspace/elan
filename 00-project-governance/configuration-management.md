@@ -97,7 +97,7 @@ meta:
 
 contains:
   - onboarding-spec-overview.md 
-  - onboarding-functional-spec.md
+  - onboarding-behaviour-spec.md
   - onboarding-interfaces-spec.md
   - onboarding-data-model-spec.md
   - openapi.yaml

@@ -41,7 +41,7 @@ The Digital Euro Rulebook is organised by functional domain in this demonstratio
 | Artefact | Description | Key Concepts |
 | :--- | :--- | :--- |
 | [`actors-and-roles.md`](./actors-and-roles.md) | Defines the "Who" of the system. | Eurosystem, Intermediaries (PSPs), Users, Merchants. |
-| [`functional-onboarding.md`](./functional-onboarding.md) | Rules for entry and identity. | One Person/One Identity, KYC responsibilities, Portability. |
+| [`onboarding-rules.md`](./onboarding-rules.md) | Rules for entry and identity. | One Person/One Identity, KYC responsibilities, Portability. |
 | [`liquidity-and-waterfall.md`](./liquidity-and-waterfall.md) | Rules for funding and defunding. | Manual funding, Automated Waterfall, Reverse Waterfall, Holding Limits. |
 
 

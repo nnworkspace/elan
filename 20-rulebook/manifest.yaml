@@ -26,5 +26,5 @@ meta:
 contains:
   - README.md
   - actors-and-roles.md
-  - functional-onboarding.md
+  - onboarding-rules.md
   - liquidity-and-waterfall.md
