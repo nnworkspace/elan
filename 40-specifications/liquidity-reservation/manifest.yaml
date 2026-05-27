@@ -37,12 +37,12 @@ traceability:
 
 contents:
   overview:
-    file: liquidity-reservation-functional-spec.md
+    file: liquidity-reservation-behaviour-spec.md
     id: SPEC-LIQ-ROOT
     description: The root document defining the scope (Funding, Defunding, Zero-Holding).
 
   specifications:
-    - file: liquidity-reservation-functional-spec.md
+    - file: liquidity-reservation-behaviour-spec.md
       id: SPEC-LIQ-FUNC
       type: behavior
       description: |

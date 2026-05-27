@@ -8,7 +8,7 @@ status: normative
 owner: system-design
 ---
 
-# Liquidity Reservation — Functional Specification
+# Liquidity Reservation — Behaviour Specification
 
 ## 1. Identification
 - **Global ID:** `SPEC-LIQ-FUNC`
@@ -19,7 +19,7 @@ owner: system-design
 
 ## 2. Purpose and Scope
 
-This document defines the **functional behaviour** of the **Liquidity Engine (`COMP-PSP-02`)**.
+This document defines the **behaviour** of the **Liquidity Engine (`COMP-PSP-02`)**.
 
 It specifies the **Reservation State Machine** required to bridge the PSP's internal **Commercial Bank Core** (Legacy) with the **Digital Euro Service Platform (DESP)**, ensuring atomic funding and defunding.
 

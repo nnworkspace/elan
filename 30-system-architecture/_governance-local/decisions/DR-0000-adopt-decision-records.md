@@ -5,7 +5,7 @@ audience: everyone
 form: text
 role: governance
 status: normative
-owner: system-architect
+owner: system-architecture
 ---
 
 # DR-0000: Adopt decision records for the architecture layer

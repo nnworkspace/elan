@@ -43,7 +43,7 @@ This specification satisfies the mandates of **Rulebook Set v0.9.0** (`@rule=SET
 | **LIQ-01** | **Reverse Waterfall (Auto-Funding)** | [`liquidity-and-waterfall.md`](../../20-rulebook/liquidity-and-waterfall.md) |
 | **LIQ-02** | **Waterfall (Defunding)** | [`liquidity-and-waterfall.md`](../../20-rulebook/liquidity-and-waterfall.md) |
 | **LIQ-03** | **Zero-Holding Option** | [`liquidity-and-waterfall.md`](../../20-rulebook/liquidity-and-waterfall.md) |
-| **LIQ-04** | **Holding Limits** | [`functional-onboarding.md`](../../20-rulebook/functional-onboarding.md) |
+| **LIQ-04** | **Holding Limits** | [`onboarding-rules.md`](../../20-rulebook/onboarding-rules.md) |
 
 ### 3.2 Architectural Basis
 This specification adheres to the components and security zones defined in **Architecture Set v0.1.0** (`@arch=SET-ARCH:0.1.0`).
@@ -61,7 +61,7 @@ The specification is split into three orthogonal views to ensure clarity and lin
 
 | View | Document | Global ID | Purpose |
 | :--- | :--- | :--- | :--- |
-| **Behavior** | [`liquidity-reservation-functional-spec.md`](./liquidity-reservation-functional-spec.md) | **SPEC-LIQ-FUNC** | **"The Logic"**<br>Defines the Reservation State Machine (e.g., `RESERVING` -> `LOCKED`) and shortfall calculations. |
+| **Behavior** | [`liquidity-reservation-behaviour-spec.md`](./liquidity-reservation-behaviour-spec.md) | **SPEC-LIQ-FUNC** | **"The Logic"**<br>Defines the Reservation State Machine (e.g., `RESERVING` -> `LOCKED`) and shortfall calculations. |
 | **Data** | [`liquidity-reservation-data-model-spec.md`](./liquidity-reservation-data-model-spec.md) | **SPEC-LIQ-DATA** | **"The Schema"**<br>Defines the `LiquidityLock` and `FundingInstruction` entities. |
 | **Interfaces** | [`liquidity-reservation-interfaces-spec.md`](./liquidity-reservation-interfaces-spec.md) | **SPEC-LIQ-INT** | **"The Flow"**<br>Sequence diagrams for `I_Funding` and `I_Settlement`. |
 
@@ -92,7 +92,7 @@ In accordance with `Rule LIQ-02`, Holding Limits are hard constraints.
     - Parse **Section 3.1** to find the `@rule` tag.
     - Check that this version matches the `version` field in `20-rulebook/manifest.yaml`.
     - Parse **Section 3.2** to find the `@arch` tag.
-    - Check that this version matches the `version` field in `30-architecture/manifest.yaml`.
+    - Check that this version matches the `version` field in `30-system-architecture/manifest.yaml`.
     - *Alert:* If versions mismatch, fail the build with `SpecDriftError`.
 
 3.  **Traceability Auditing:**

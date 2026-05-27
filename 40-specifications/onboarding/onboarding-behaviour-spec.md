@@ -8,7 +8,7 @@ status: normative
 owner: system-design
 ---
 
-# User Onboarding — Functional Specification
+# User Onboarding — Behaviour Specification
 
 ## 1. Identification
 - **Global ID:** `SPEC-OB-FUNC`
@@ -19,7 +19,7 @@ owner: system-design
 
 ## 2. Purpose and Scope
 
-This document defines the **functional behaviour** for onboarding a Natural Person (User) into the Digital Euro Scheme.
+This document defines the **behaviour** for onboarding a Natural Person (User) into the Digital Euro Scheme.
 
 It specifies the **State Machine** for the User Identity Lifecycle and the **Privacy-Preserving Uniqueness Check** required by `Rule ONB-01`.
 

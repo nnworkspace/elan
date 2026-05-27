@@ -1,30 +1,29 @@
-# artefact_type: rulebook
+# artefact_type: architecture
 # visibility: public
 # audience: everyone
 # form: text
 # role: manifest
 # status: operative
-# owner: scheme-authority
+# owner: business-architecture
 
 meta:
-  # Unique Identifier for the Rulebook Set
-  id: SET-RULEBOOK
-  
+  # Unique Identifier for the Business Architecture Set
+  id: SET-BUSINESS-ARCH
+
   # Human-readable title
-  title: "Digital Euro Scheme Rulebook"
-  
+  title: "Business Architecture"
+
   # The Normative Version
-  version: "0.9.0"
-  
+  version: "0.1.0"
+
   # The Lifecycle State
   status: FICTIONAL-RELEASED
-  
+
   # The Freeze Date
-  date: 2025-10-15
+  date: 2026-05-26
 
 # The explicit list of files that constitute this version
 contains:
   - README.md
-  - actors-and-roles.md
-  - onboarding-rules.md
-  - liquidity-and-waterfall.md
+  - system-context.md
+  - security-and-privacy-zones.md

@@ -5,7 +5,7 @@ audience: everyone
 form: text
 role: governance
 status: informative
-owner: system-architect
+owner: system-architecture
 ---
 
 # Decision records — System Architecture
