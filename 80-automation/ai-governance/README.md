@@ -27,7 +27,7 @@ We use AI not to write code, but to **navigate bureaucracy**.
 ## Components
 
 ### `knowledge_indexer.py`
-- Scans `20-rulebook`, `30-architecture`, `40-specifications`.
+- Scans `15-requirements`, `20-rulebook`, `25-business-architecture`, `30-system-architecture`, `40-specifications`.
 - Chunks text by headers.
 - Builds a `knowledge_base.json` (Mock Vector Store).
 

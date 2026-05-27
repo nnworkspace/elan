@@ -92,7 +92,7 @@ In accordance with `Rule LIQ-02`, Holding Limits are hard constraints.
     - Parse **Section 3.1** to find the `@rule` tag.
     - Check that this version matches the `version` field in `20-rulebook/manifest.yaml`.
     - Parse **Section 3.2** to find the `@arch` tag.
-    - Check that this version matches the `version` field in `30-architecture/manifest.yaml`.
+    - Check that this version matches the `version` field in `30-system-architecture/manifest.yaml`.
     - *Alert:* If versions mismatch, fail the build with `SpecDriftError`.
 
 3.  **Traceability Auditing:**

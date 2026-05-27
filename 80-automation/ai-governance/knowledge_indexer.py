@@ -16,8 +16,10 @@ import json
 import glob
 
 KNOWLEDGE_PATHS = [
+    "15-requirements/*.md",
     "20-rulebook/*.md",
-    "30-architecture/*.md",
+    "25-business-architecture/*.md",
+    "30-system-architecture/*.md",
     "40-specifications/**/*.md"
 ]
 

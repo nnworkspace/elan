@@ -141,7 +141,7 @@ While implementation details are free to vary by technology stack, each componen
         - implementation rationale that does not belong in global documentation.
 
    This folder MUST NOT duplicate:
-        - global architecture (`30-architecture/`),
+        - global architecture (`30-system-architecture/`),
         - specifications (`40-specifications/`),
         - or governance documents (`00-project-governance/`).
 

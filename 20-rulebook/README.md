@@ -49,12 +49,12 @@ The Digital Euro Rulebook is organised by functional domain in this demonstratio
 
 This Rulebook Set (`SET-RULEBOOK`) sits at the center of the traceability chain.
 
-- **Upstream (`10-legal-framework`):**
-  Rules here derive their authority from the external Legal Framework.
+- **Upstream (`10-legal-framework` & `15-requirements`):**
+  Rules here derive their authority from the external Legal Framework, and give operational effect to the user journeys and functional requirements defined in `15-requirements`.
     * *Example:* The "Reverse Waterfall" rule derives from the legal mandate to prevent excessive capital flight from commercial banks.
 
-- **Downstream (`30-architecture` & `40-specifications`):**
-  Technical specifications and architectural decisions MUST reference specific rules within this Set.
+- **Downstream (`25-business-architecture`, `30-system-architecture` & `40-specifications`):**
+  Architectural decisions and technical specifications MUST reference specific rules within this Set.
 
     * **Version-Awareness:** Downstream artefacts must cite the **Set Version** (e.g., `@rule=SET-RULEBOOK:0.1.0`) exactly as declared in this folder's **`manifest.yaml`**. This ensures that technical decisions are bound to a specific, immutable version of the rules.
     * **Enforcement:**

@@ -199,8 +199,10 @@ CI/CD is the quiet authority of the system — the continuous translation of int
 policy-to-production/
 ├── 00-project-governance/        # Project governance: rules, conventions, communication, glossary, timelines
 ├── 10-legal-framework/           # Policy and legal context
+├── 15-requirements/              # User journeys and functional requirements
 ├── 20-rulebook/                  # Scheme rules and operational obligations
-├── 30-architecture/              # High-level system design
+├── 25-business-architecture/     # Interactions, data visibility, and privacy design
+├── 30-system-architecture/       # System components and their design
 ├── 40-specifications/            # Technical specifications
 ├── 50-tests/                     # Acceptance criteria and evidence
 ├── 60-code/                      # Illustrative implementations

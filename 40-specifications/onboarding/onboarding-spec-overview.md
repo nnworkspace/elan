@@ -18,7 +18,7 @@ owner: system-design
 ## 2. Purpose and Scope
 This document defines the **technical scope** for onboarding Users and Payment Service Providers (PSPs) into the Digital Euro ecosystem.
 
-It translates the high-level policy rules defined in the **Scheme Rulebook** into concrete technical requirements, strictly adhering to the privacy boundaries defined in the **System Architecture**.
+It translates the high-level policy rules defined in the **Scheme Rulebook** into concrete technical requirements, strictly adhering to the privacy boundaries defined in the **Business Architecture**.
 
 ### 2.1 In Scope
 - **User Identity Resolution:** The mechanism to enforce "One Person / One Identity" (`Rule ONB-01`) via the **Alias Service** (`COMP-EUR-02`), orchestrated by the **DESP** (`COMP-EUR-04`).
@@ -89,7 +89,7 @@ In accordance with `Rule ONB-02`, the Eurosystem does not perform KYC. The syste
     - Parse **Section 3.1** to find the `@rule` tag.
     - Check that this version matches the `version` field in `20-rulebook/manifest.yaml`.
     - Parse **Section 3.2** to find the `@arch` tag.
-    - Check that this version matches the `version` field in `30-architecture/manifest.yaml`.
+    - Check that this version matches the `version` field in `30-system-architecture/manifest.yaml`.
     - *Alert:* If versions mismatch, fail the build with `SpecDriftError`.
 
 3.  **Traceability Auditing:**
