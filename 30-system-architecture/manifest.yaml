@@ -4,15 +4,15 @@
 # form: text
 # role: manifest
 # status: operative
-# owner: technical-architecture
+# owner: system-architecture
 
 meta:
-  # Unique Identifier for the (Technical) Architecture Set.
+  # Unique Identifier for the (System) Architecture Set.
   # Kept as SET-ARCH so downstream specs continue to anchor with @arch=SET-ARCH.
   id: SET-ARCH
 
   # Human-readable title
-  title: "Technical Architecture"
+  title: "System Architecture"
 
   # The Normative Version
   version: "0.1.0"

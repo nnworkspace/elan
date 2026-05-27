@@ -5,14 +5,14 @@ audience: everyone
 form: text
 role: architecture
 status: normative
-owner: technical-architecture
+owner: system-architecture
 ---
 
-# Technical Architecture
+# System Architecture
 
-This layer holds the **Technical Architecture**: the logical **components** of the system and their design. It is the realisation of the [Business Architecture](../25-business-architecture) (`25`), one altitude up, which defines *who interacts and who may see what*; this layer defines *which components are built to make that real*.
+This layer holds the **System Architecture**: the logical **components** of the system and their design. It is the realisation of the [Business Architecture](../25-business-architecture) (`25`), one altitude up, which defines *who interacts and who may see what*; this layer defines *which components are built to make that real*.
 
-> The single "architecture" layer was split into Business Architecture (25) and Technical Architecture (30); see [`PDR-0002`](../00-project-governance/decisions/PDR-0002-split-architecture-business-technical.md). In real programmes the owner boundary often falls here: the institution owns the business architecture above, a vendor builds the technical architecture at this layer and below.
+> The single "architecture" layer was split into Business Architecture (25) and System Architecture (30); see [`PDR-0002`](../00-project-governance/decisions/PDR-0002-split-architecture-business-system.md). The layer is named *System Architecture* rather than *Technical Architecture* to avoid overloading the word *technical* (see the naming law, [`PDR-0003`](../00-project-governance/decisions/PDR-0003-layer-naming-law.md)). In real programmes the owner boundary often falls here: the institution owns the business architecture above, a vendor builds the system architecture at this layer and below.
 
 ## Digital Euro Context
 
@@ -26,7 +26,7 @@ The components reflect the **High-Level Design of the Digital Euro** as communic
 
 ## Traceability Relationships
 
-This Technical Architecture Set keeps the identifier **`SET-ARCH`** (so that downstream specifications continue to anchor to it with `@arch=SET-ARCH:<version>`).
+This System Architecture Set keeps the identifier **`SET-ARCH`** (so that downstream specifications continue to anchor to it with `@arch=SET-ARCH:<version>`).
 
 - **Upstream (`25-business-architecture`):** every component realises a business-architecture choice (an interaction, a responsibility, a data boundary), which in turn satisfies a rule in `20-rulebook`.
     - *Example:* the **Alias Service** component realises the privacy-firewall identity-hashing design in `25-business-architecture/security-and-privacy-zones.md`, which satisfies the Single Identity rule.
@@ -36,7 +36,7 @@ This Technical Architecture Set keeps the identifier **`SET-ARCH`** (so that dow
 
 ## Governance
 
-- **Owner:** Technical Architecture (in a real programme, often a vendor under the institution's authority).
+- **Owner:** System Architecture (in a real programme, often a vendor under the institution's authority).
 - **Status:** Normative.
 - **Review:** changes to components (e.g. merging or splitting a component, moving a responsibility) require a Design Decision issue and stakeholder review.
 
@@ -46,4 +46,4 @@ Decisions specific to this layer are recorded in [`_governance-local/decisions/`
 
 ## Final Note
 
-A good architecture is a contract. The business architecture tells the institution how its rules are honoured; the technical architecture tells the builders what to build and the auditors what to verify.
+A good architecture is a contract. The business architecture tells the institution how its rules are honoured; the system architecture tells the builders what to build and the auditors what to verify.

@@ -37,7 +37,7 @@ The business architecture layer accumulates decisions that are costly to reverse
 
 This layer adopts repository-local decision records in `_governance-local/decisions/`, following the practice defined in [`00-project-governance/decision-records.md`](../../../00-project-governance/decision-records.md). Decisions specific to this layer are recorded here as `DR-` files; only decisions that cut across layers are escalated to `PDR-` records in `00-project-governance/decisions/`.
 
-The split of architecture into a business and a technical layer was itself a cross-cutting decision and is recorded project-wide in [`PDR-0002`](../../../00-project-governance/decisions/PDR-0002-split-architecture-business-technical.md).
+The split of architecture into a business and a technical layer was itself a cross-cutting decision and is recorded project-wide in [`PDR-0002`](../../../00-project-governance/decisions/PDR-0002-split-architecture-business-system.md).
 
 ## Consequences
 

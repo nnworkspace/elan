@@ -10,15 +10,15 @@ owner: business-architecture
 
 # Business Architecture
 
-"Architecture" in a regulated, multi-stakeholder system is two different things at two different altitudes. This layer holds the first: the **Business Architecture**, how the actors interact, who sees which data, the privacy and data-governance design, the interaction shape of the system. The second, the **Technical Architecture** (the components and their design), lives one layer down in [`30-technical-architecture`](../30-technical-architecture).
+"Architecture" in a regulated, multi-stakeholder system is two different things at two different altitudes. This layer holds the first: the **Business Architecture**, how the actors interact, who sees which data, the privacy and data-governance design, the interaction shape of the system. The second, the **System Architecture** (the components and their design), lives one layer down in [`30-system-architecture`](../30-system-architecture).
 
-Separating them makes a consequential boundary legible. Business architecture derives from the rulebook and expresses intent; technical architecture realises it. In real programmes the two frequently sit under **different owners**, the institution owning the business architecture, a vendor owning the technical architecture, with artefacts crossing that boundary. (Here the Digital Euro is used only to illustrate; the split itself is domain-agnostic. See [`PDR-0002`](../00-project-governance/decisions/PDR-0002-split-architecture-business-technical.md).)
+Separating them makes a consequential boundary legible. Business architecture derives from the rulebook and expresses intent; system architecture realises it. In real programmes the two frequently sit under **different owners**, the institution owning the business architecture, a vendor owning the system architecture, with artefacts crossing that boundary. (Here the Digital Euro is used only to illustrate; the split itself is domain-agnostic. See [`PDR-0002`](../00-project-governance/decisions/PDR-0002-split-architecture-business-system.md).)
 
 ## Purpose
 
 1. **Define interactions and responsibilities.** Which actors exist, what each is responsible for, and how they relate (the system context).
 2. **Define data visibility and privacy.** Who may see which data, and the trust boundaries that enforce it (the privacy firewall).
-3. **Stay above implementation.** This layer says *what the system must do and who may know what*, not *which components are built*. Components are the technical architecture's concern.
+3. **Stay above implementation.** This layer says *what the system must do and who may know what*, not *which components are built*. Components are the system architecture's concern.
 
 ## Source material
 
@@ -33,10 +33,10 @@ Derived from the public **High-Level Design of the Digital Euro** as communicate
 
 ## Traceability relationships
 
-This Business Architecture Set (`SET-BUSINESS-ARCH`) sits between the rulebook and the technical architecture.
+This Business Architecture Set (`SET-BUSINESS-ARCH`) sits between the rulebook and the system architecture.
 
 - **Upstream (`20-rulebook`):** every business-architecture choice exists to satisfy a rule. Architectural artefacts reference the specific **Rulebook Set Version** (e.g. `@rule=SET-RULEBOOK:0.9.0`).
-- **Downstream (`30-technical-architecture`):** the technical architecture realises this business architecture. The components in Layer 30 must trace back to the interactions, responsibilities, and data boundaries defined here.
+- **Downstream (`30-system-architecture`):** the system architecture realises this business architecture. The components in Layer 30 must trace back to the interactions, responsibilities, and data boundaries defined here.
 
 ## Decision records
 
