@@ -20,7 +20,7 @@ owner: project-governance
 
 ## Context and problem statement
 
-The word **"functional"** appeared at two different layers at once: as the requirements/functional-design sense upstream (near Layer 15) and as the **"functional specification"** downstream (a document in Layer 40). A reader could not tell, from the word alone, whether a thing fed the rulebook or derived from it. The single most important property of a layered model, the direction of dependency, was obscured by the vocabulary.
+The word **"functional"** appeared at two different layers at once: as the requirements/functional-design sense upstream (near Layer 20) and as the **"functional specification"** downstream (a document in Layer 60). A reader could not tell, from the word alone, whether a thing fed the rulebook or derived from it. The single most important property of a layered model, the direction of dependency, was obscured by the vocabulary.
 
 "Functional" is not the only offender. **"Standard"** spans scheme standards (upstream, near the rulebook) and the specification-format standard (downstream). **"Specification"** spans scheme-level specs and the Layer-40 technical spec sets. **"Product"** spans product design (upstream) and any "product specification" (downstream). Each such overload, left unmanaged, re-creates the same confusion.
 
@@ -44,9 +44,9 @@ Adopt the layer-naming law:
 
 First applications:
 
-- Layer 15 is named **Requirements**, not "Functional Design".
-- The Layer-40 behavioural document is renamed **behaviour spec**: `*-functional-spec.md` becomes `*-behaviour-spec.md`. The spec-set facet taxonomy is **Behaviour, Interface, Data Model, Message Catalogue, Code Contract**, each name unique to its level.
-- "Product" is reserved for the upstream product layers and not used to label Layer 40.
+- Layer 20 is named **Requirements**, not "Functional Design".
+- The Layer-60 behavioural document is renamed **behaviour spec**: `*-functional-spec.md` becomes `*-behaviour-spec.md`. The spec-set facet taxonomy is **Behaviour, Interface, Data Model, Message Catalogue, Code Contract**, each name unique to its level.
+- "Product" is reserved for the upstream product layers and not used to label Layer 60.
 
 The law is recorded in the project governance docs and applied to existing artefacts as part of this change.
 

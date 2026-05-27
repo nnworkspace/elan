@@ -41,11 +41,11 @@ Different artefact types require different versioning mechanisms to align with t
 
 | Artefact Domain | Mechanism | Granularity | Traceability Handle |
 | :--- | :--- | :--- | :--- |
-| **Governance & Rules** (`00`, `20`) | **Manifest File** | Folder (Domain) | `GOV-SET:1.0.0` |
-| **Architecture** (`30`) | **Manifest File** | Folder (System) | `ARCH-SET:2.1.0` |
-| **Specifications** (`40`) | **Manifest File** | Folder (Feature) | `SPEC-SET-ONB:1.2.0` |
-| **Source Code** (`50`) | **Git Tags / SemVer** | Repository / Component | `mvn:eu.eurosystem:desp-core:1.2.0` |
-| **Tests & Evidence** (`60`) | **Git Tags** | Repository | 'TEST-SET-ONB:1.2.0' |
+| **Governance & Rules** (`00`, `30`) | **Manifest File** | Folder (Domain) | `GOV-SET:1.0.0` |
+| **Architecture** (`40`, `50`) | **Manifest File** | Folder (System) | `ARCH-SET:2.1.0` |
+| **Specifications** (`60`) | **Manifest File** | Folder (Feature) | `SPEC-SET-ONB:1.2.0` |
+| **Tests & Evidence** (`70`) | **Git Tags** | Repository | `TEST-SET-ONB:1.2.0` |
+| **Source Code** (`80`) | **Git Tags / SemVer** | Repository / Component | `mvn:eu.eurosystem:desp-core:1.2.0` |
 
 ## The Manifest System
 
@@ -85,7 +85,7 @@ contains:
 
 **Example: Onboarding Specification Manifest**
 
-**Location:** `40-specifications/onboarding/manifest.yaml`
+**Location:** `60-specifications/onboarding/manifest.yaml`
 
 ```yaml
 meta:
@@ -145,7 +145,7 @@ Downstream artefacts MUST declare their dependencies using the format:
 #### Example: Gherkin Test Scenario
 
 ```gherkin
-# Location: 50-tests/100-conformance/onboarding/ONB-TS-01.feature
+# Location: 70-tests/100-conformance/onboarding/ONB-TS-01.feature
 
 # -----------------------------------------------------------
 # DEPENDENCY: SPEC-SET-ONB
@@ -161,7 +161,7 @@ Feature: Participant Onboarding Submission
 
 Automation or Audit processes MUST flag any mismatch where:
 1.  A Test references `SPEC-SET-ONB:1.2.0`
-2.  But the actual Manifest in `40-specifications/onboarding/` is `1.3.0`
+2.  But the actual Manifest in `60-specifications/onboarding/` is `1.3.0`
 
 This indicates **Spec Drift**: The specification has moved forward, but the test has not yet been updated to verify the new rules.
 
@@ -174,17 +174,17 @@ policy-to-production/
 ├── 00-project-governance/
 │   └── manifest.yaml             # Version: 1.0.0 (Governance is one unit)
 │
-├── 20-rulebook/
+├── 30-rulebook/
 │   └── manifest.yaml             # Version: 2.1.0 (Rulebook is one unit)
 │
-├── 40-specifications/
+├── 60-specifications/
 │   ├── onboarding/
 │   │   └── manifest.yaml         # Version: 1.2.0 (Atomic Feature Release)
 │   │
 │   └── liquidity-reservation/
 │       └── manifest.yaml         # Version: 0.9.0 (Atomic Feature Release)
 │
-└── 50-code/                      # Standard Git/Maven versioning
+└── 80-code/                      # Standard Git/Maven versioning
 ```
 
 ## Summary
