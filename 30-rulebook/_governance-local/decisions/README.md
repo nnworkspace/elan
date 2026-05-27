@@ -16,7 +16,7 @@ Decisions that cut across layers are recorded as `PDR-` records in [`00-project-
 
 The practice, the lifecycle, the immutability rule, and the record template are defined in [`00-project-governance/decision-records.md`](../../../00-project-governance/decision-records.md).
 
-To add a record, copy [`DR-TEMPLATE.md`](../../../00-project-governance/decisions/DR-TEMPLATE.md) into this folder, rename it to the next free `DR-NNNN-short-kebab-title.md`, and fill it in.
+To add a record, copy this layer's [`DR-TEMPLATE.md`](./DR-TEMPLATE.md), rename it to the next free `DR-NNNN-short-kebab-title.md`, and fill it in. The template is local to this layer and may be tailored to its nature.
 
 ## Index
 

@@ -92,7 +92,7 @@ To change an accepted decision, write a new record. Update only the `Status` and
 
 ## The record template
 
-A decision record is a single Markdown file named `PDR-NNNN-short-kebab-title.md` or `DR-NNNN-short-kebab-title.md`, using the following structure. Copyable starting points live alongside the records: [`decisions/PDR-TEMPLATE.md`](decisions/PDR-TEMPLATE.md) for project-wide records, and [`decisions/DR-TEMPLATE.md`](decisions/DR-TEMPLATE.md) to copy into a layer's `_governance-local/decisions/` folder.
+A decision record is a single Markdown file named `PDR-NNNN-short-kebab-title.md` or `DR-NNNN-short-kebab-title.md`, using the following structure. A copyable starting point for project-wide records lives alongside them at [`decisions/PDR-TEMPLATE.md`](decisions/PDR-TEMPLATE.md). For layer-local records, each layer keeps its **own** `DR-TEMPLATE.md` in its `_governance-local/decisions/` folder, so the template can be tailored to that layer's nature; these are deliberately not kept in sync.
 
 ```markdown
 ---

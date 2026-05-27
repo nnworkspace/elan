@@ -5,19 +5,20 @@ audience: everyone
 form: text
 role: governance
 status: normative
-owner: <owner>
+owner: project-governance
 ---
 
 <!--
-TEMPLATE: layer-local decision record (DR).
+TEMPLATE: layer-local decision record (DR) for the Reports layer.
 
-To use: copy this file into the relevant layer's `_governance-local/decisions/`
-folder as `DR-NNNN-short-kebab-title.md`, take the next free NNNN in that
-layer's own sequence, delete this comment, and fill in every field.
+To use: copy this file (in this same folder) to `DR-NNNN-short-kebab-title.md`,
+take the next free NNNN in this layer's own sequence, delete this comment, and
+fill in every field.
 
-Use the DR- scope for decisions confined to a single layer/repository. For a
-decision that cuts across repositories, copy `PDR-TEMPLATE.md` into
-`00-project-governance/decisions/` instead.
+This template is local to the Reports layer and may be tailored to its nature:
+adjust the decision-driver prompts or add fields that recur in this layer's
+decisions. For a decision that cuts across repositories, use the project-wide
+`00-project-governance/decisions/PDR-TEMPLATE.md` instead.
 
 See `00-project-governance/decision-records.md` for the practice, lifecycle, and
 immutability rule.
