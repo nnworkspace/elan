@@ -1,0 +1,29 @@
+# artefact_type: requirements
+# visibility: public
+# audience: everyone
+# form: text
+# role: manifest
+# status: operative
+# owner: requirements-and-design
+
+meta:
+  # Unique Identifier for the Requirements Set
+  id: SET-REQUIREMENTS
+
+  # Human-readable title
+  title: "Digital Euro Requirements"
+
+  # The Normative Version
+  version: "0.9.0"
+
+  # The Lifecycle State
+  status: FICTIONAL-RELEASED
+
+  # The Freeze Date
+  date: 2025-10-15
+
+# The explicit list of files that constitute this version
+contains:
+  - README.md
+  - onboarding-user-journey.md
+  - liquidity-requirements.md
