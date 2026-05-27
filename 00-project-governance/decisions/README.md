@@ -16,6 +16,8 @@ Decisions confined to a single repository are recorded as `DR-` files in that re
 
 The practice, the lifecycle, the immutability rule, and the record template are defined in [`../decision-records.md`](../decision-records.md).
 
+To add a record, copy [`PDR-TEMPLATE.md`](PDR-TEMPLATE.md), rename it to the next free `PDR-NNNN-short-kebab-title.md`, and fill it in.
+
 ## Index
 
 | ID | Title | Status |
