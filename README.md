@@ -14,7 +14,7 @@ owner: project-governance
  
  **Élan** (derived from the imperative to **Enable Automation**) is a demonstrative workbench for **institutional governance engineering**.
  
- It begins with a simple engineering directive: **enable the automation of rules**. In doing so, it reveals something more enduring — a system that moves with confidence, because its constraints are visible, its intent explicit, and its decisions traceable.
+ It begins with a simple engineering directive: **enable the automation of rules**. In doing so, it reveals something more enduring: a system that moves with confidence, because its constraints are visible, its intent explicit, and its decisions traceable.
 
 While the structure handles the entropy of **large, complex, multi-stakeholder projects**, its principles apply wherever **integrity** is more critical than raw velocity.
 
@@ -37,7 +37,7 @@ Institutional IT projects often struggle not because of a lack of expertise, but
 
 This repository demonstrates an alternative approach:
 
-> **Every artefact — from policy text to source code, delivery, and reports — is explicit, versioned, classified, and traceable.**
+> **Every artefact, from policy text to source code, delivery, and reports, is explicit, versioned, classified, and traceable.**
 
 Governance is enforced mechanically through automation, not informally through process documents.
 
@@ -54,7 +54,7 @@ In this sense, the repository **is**:
 - a Markdown-first, Git-based reference structure  
 - an educational template for policy-to-production traceability  
 - a demonstration of how automation enforces governance discipline  
-- a shared environment readable across disciplines — legal, technical, operational, and managerial  
+- a shared environment readable across disciplines: legal, technical, operational, and managerial  
 
 And it **is not**:
 
@@ -100,7 +100,7 @@ In practice, this means:
 - replacing illustrative artefacts with your own policy texts, specifications, and code  
 - adjusting automation rules as organisational maturity grows  
 
-The structure presented here is not prescriptive; it is **scaffolded**. Its purpose is to help diverse contributors — legal, technical, operational — work within a shared semantic frame.
+The structure presented here is not prescriptive; it is **scaffolded**. Its purpose is to help diverse contributors, legal, technical and operational, work within a shared semantic frame.
 
 In real institutional projects, artefacts will often be **physically distributed** across multiple repositories and registries due to visibility, contractual, or security constraints. Public rulebooks, restricted specifications, confidential implementations, and binary deliveries may therefore live in different locations.
 
@@ -133,13 +133,13 @@ GitHub and GitLab provide access control at the repository level, not at the fil
 
 In practice, teams should **promote the folder structure shown here into multiple repositories**, each with appropriate access control.
 
-This repository demonstrates *how to organise the work* — not how to bypass security or contractual boundaries.
+This repository demonstrates *how to organise the work*, not how to bypass security or contractual boundaries.
 
 ### Procurement and vendor engagement (scope note)
 
 Large institutional projects are, in practice, also procurement projects.
 
-Public tenders, technical requirements, evaluation criteria, contracts, and vendor agreements play a decisive role in shaping delivery. These processes are often governed by strict legal frameworks, and many of the resulting artefacts — particularly evaluations, commercial terms, and contractual details — are inherently confidential.
+Public tenders, technical requirements, evaluation criteria, contracts, and vendor agreements play a decisive role in shaping delivery. These processes are often governed by strict legal frameworks, and many of the resulting artefacts, particularly evaluations, commercial terms and contractual details, are inherently confidential.
 
 This repository does not attempt to simulate procurement processes or tender documentation. That omission is deliberate.
 
@@ -191,7 +191,7 @@ See:
 - [`00-project-governance/linting-rules.md`](00-project-governance/linting-rules.md)
 
 
-CI/CD is the quiet authority of the system — the continuous translation of intention into discipline, and of discipline into trust.
+CI/CD is the quiet authority of the system: the continuous translation of intention into discipline, and of discipline into trust.
 
 ## Repository structure (conceptual)
 
@@ -221,7 +221,7 @@ The numeric prefixes make the progression explicit and discourage accidental inv
 
 ## Relationship to restricted and confidential artefacts
 
-Some artefacts — particularly those related to security-sensitive components, platform integrations, or vendor-specific implementations — **cannot be public by design**.
+Some artefacts, particularly those related to security-sensitive components, platform integrations or vendor-specific implementations, **cannot be public by design**.
 
 In this repository, such artefacts are represented by:
 
@@ -272,7 +272,7 @@ Readers are encouraged to:
 
 - move freely between layers
 - follow references rather than sections
-- observe how intent is preserved — or lost — as systems become concrete
+- observe how intent is preserved, or lost, as systems become concrete
 
 The repository is organised so that abstraction gradually gives way to implementation, but no layer stands alone. Understanding arises from **co-presence**, not sequence.
 
@@ -304,7 +304,7 @@ This installs the pre-commit hooks. Once installed, any attempt to commit will b
 
 This repository is a **living educational reference**.
 
-Its value lies in structure, clarity, and discipline — not completeness.
+Its value lies in structure, clarity and discipline, not completeness.
 
 ## Community & Discussion
 
