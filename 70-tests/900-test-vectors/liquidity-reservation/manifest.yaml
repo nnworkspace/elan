@@ -16,9 +16,9 @@ meta:
   version: 0.1.0
   status: FICTIONAL-RELEASED
   date: 2025-12-30
-targets:
-- specification_id: SPEC-LIQ-DATA
-  specification_version: 0.1.0
+depends_on:
+- set: SPEC-LIQ-DATA
+  version: 0.1.0
 contains:
 - tv-liq-01-valid-funding.json
 - tv-liq-02-limit-breach.json

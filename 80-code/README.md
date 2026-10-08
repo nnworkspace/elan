@@ -251,7 +251,7 @@ It does not represent official implementations, production-ready components, or 
 A reference to an upstream artefact that does not exist yet carries the suffix `:TBD`, the same convention the specification layer uses for `@rule=RULEBOOK:TBD`.
 
 ```
-@SpecLink(specId = "SPEC-API-GW:TBD", refId = "REQ-API-FUND-01:TBD", version = "0.1")
+@SpecLink(specId = "SPEC-API-GW:TBD", refId = "REQ-API-FUND-01:TBD")
 ```
 
 The suffix means the artefact is genuinely missing upstream, not that the reference is wrong. A check can then separate the two cases: a reference without `:TBD` that does not resolve is a defect and fails; a reference with `:TBD` is a declared gap and is counted, not failed. References to external standards such as `GDPR-Art-32` are outside the resolver's scope.
@@ -262,14 +262,19 @@ The same traceability link is written in each language's own idiom, and the data
 
 | Language | Form | Field names |
 |:--|:--|:--|
-| Java | annotation | `specId`, `refId`, `version` |
-| Rust | attribute macro | `spec_id`, `ref_id`, `version` |
-| TypeScript | decorator | `spec_id`, `ref_id`, `version` |
-| Go | function call | positional: spec, ref, version |
+| Java | annotation | `specId`, `refId` |
+| Rust | attribute macro | `spec_id`, `ref_id` |
+| TypeScript | decorator | `spec_id`, `ref_id` |
+| Go | function call | positional: spec, ref |
 
-The difference in spelling is deliberate, not drift: each language keeps its own convention, and a reader of that language sees nothing unusual. A tool reading them normalises to `spec_id`, `ref_id` and `version`.
+The difference in spelling is deliberate, not drift: each language keeps its own convention, and a reader of that language sees nothing unusual. A tool reading them normalises to `spec_id` and `ref_id`.
 
-Two known deviations, recorded rather than hidden:
+No annotation carries a version. The version a component builds against is declared once, in its `manifest.yaml` under `depends_on`, the way a lockfile pins a library. See [`PDR-0005`](../00-project-governance/decisions/PDR-0005-reference-by-identifier-pin-version-once.md).
 
-- The Java annotation defaults `version` to `"current"`, which silently means unversioned. A default that weakens a traceability claim should be removed rather than documented.
-- Every annotation carries a version at all. The alternative, which the specification standard now describes, is to cite the identifier only and pin the version once per component in its build file, the way a lockfile pins a library. Until that is adopted here, a version bump upstream means touching every annotation.
+```yaml
+depends_on:
+  - set: SPEC-SET-LIQ
+    version: "0.1.0"
+```
+
+A set marked `:TBD` has no upstream artefact yet, so there is no version to pin.

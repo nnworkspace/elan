@@ -16,9 +16,9 @@ meta:
   version: 0.1.2
   status: FICTIONAL-RELEASED
   date: 2025-12-29
-targets:
-- specification_id: SPEC-SET-ONB
-  specification_version: 1.0.0
+depends_on:
+- set: SPEC-SET-ONB
+  version: 1.0.0
 contains:
 - ONB-TS-01-registration.feature
 - ONB-TS-02-status-query.feature

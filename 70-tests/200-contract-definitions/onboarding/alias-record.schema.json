@@ -11,7 +11,7 @@
     "status": "normative",
     "owner": "system-quality",
     "traceability": [
-      "@spec=SPEC-OB-DATA:0.1.0"
+      "@spec=SPEC-OB-DATA"
     ]
   },
   "title": "Alias Record Contract",

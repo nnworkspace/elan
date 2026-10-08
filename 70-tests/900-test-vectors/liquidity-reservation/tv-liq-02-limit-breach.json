@@ -12,7 +12,7 @@
   "metadata": {
     "vector_id": "TV-LIQ-02",
     "description": "Requests that are valid against the schema and refused by the holding limit.",
-    "upstream_spec": "SPEC-SET-LIQ v0.1.0",
+    "upstream_spec": "SPEC-SET-LIQ",
     "case_type": "negative",
     "traceability": [
       "@spec=SPEC-LIQ-DATA",

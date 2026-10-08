@@ -16,9 +16,9 @@ meta:
   version: 0.1.0
   status: FICTIONAL-RELEASED
   date: 2025-12-29
-targets:
-- specification_id: SPEC-SET-ONB
-  specification_version: 1.0.0
+depends_on:
+- set: SPEC-SET-ONB
+  version: 1.0.0
 contains:
 - tv-onb-01-valid-payloads.json
 - tv-onb-02-boundary-values.json

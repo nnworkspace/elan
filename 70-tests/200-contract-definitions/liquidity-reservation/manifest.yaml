@@ -16,9 +16,9 @@ meta:
   version: 0.1.0
   status: FICTIONAL-RELEASED
   date: 2025-12-30
-targets:
-- specification_id: SPEC-SET-LIQ
-  specification_version: 0.1.0
+depends_on:
+- set: SPEC-SET-LIQ
+  version: 0.1.0
 contains:
 - funding-request.schema.json
 - defunding-request.schema.json

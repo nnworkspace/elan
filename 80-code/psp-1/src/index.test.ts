@@ -21,21 +21,20 @@
  * This structure enables automated compliance verification and live impact analysis.
  */
 
+import { describe, test } from 'node:test';
+import assert from 'node:assert/strict';
 import { SpecLink } from 'governance-common';
 
 describe('PSP Application Traceability', () => {
 
-  @SpecLink({ spec_id: 'SPEC-PSP-TEST:TBD', ref_id: 'REQ-TEST-01:TBD', version: '0.1' })
+  @SpecLink({ spec_id: 'SPEC-PSP-TEST:TBD', ref_id: 'REQ-TEST-01:TBD' })
   class TestSuite {
-      // In a real suite, this class might hold shared setup/teardown logic
+    // In a real suite, this class might hold shared setup/teardown logic.
   }
 
-  test('should demonstrate traceability in test execution', () => {
-    // Illustrative assertion
-    // This proves that the test file itself is a governed artefact.
-    const expected = true;
-    if (!expected) {
-        throw new Error("Test failure");
-    }
+  test('a governed test artefact carries its own traceability link', () => {
+    // The assertion is illustrative. The point of the file is that the test
+    // itself is a governed artefact, linked to the statement it verifies.
+    assert.ok(TestSuite, 'the annotated suite class is defined');
   });
 });

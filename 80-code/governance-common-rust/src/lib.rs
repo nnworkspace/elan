@@ -16,7 +16,7 @@
 extern crate proc_macro;
 use proc_macro::TokenStream;
 
-/// Declares an explicit, version-aware traceability link between a code element
+/// Declares an explicit traceability link between a code element
 /// and a normative specification artefact.
 ///
 /// This attribute does not alter the runtime behavior of the code. It serves as
@@ -26,12 +26,16 @@ use proc_macro::TokenStream;
 ///
 /// * `spec_id` - The Global ID of the Specification Document (e.g., "SPEC-LIQ-FUNC").
 /// * `ref_id` - The Specific Requirement or Step ID (e.g., "REQ-LIQ-FUNC-01").
-/// * `version` - (Optional) The version of the spec being implemented. Defaults to "current".
+///
+/// No version is given. An identifier names one statement for as long as that
+/// statement exists, so the reference stays valid across releases. The version
+/// this component builds against is declared once, in its manifest, the way a
+/// lockfile pins a library.
 ///
 /// # Example
 ///
 /// ```rust,ignore
-/// #[spec_link(spec_id = "SPEC-LIQ-FUNC", ref_id = "REQ-LIQ-FUNC-01", version = "1.0.0")]
+/// #[spec_link(spec_id = "SPEC-LIQ-FUNC", ref_id = "REQ-LIQ-FUNC-01")]
 /// struct Ledger;
 /// ```
 #[proc_macro_attribute]

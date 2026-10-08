@@ -29,7 +29,7 @@ import eu.digitaleuro.governance.SpecLink;
 class DespApplicationTest {
 
     @Test
-    @SpecLink(specId = "SPEC-SET-CORE:TBD", refId = "REQ-SET-INIT-001:TBD", version = "0.1")
+    @SpecLink(specId = "SPEC-SET-CORE:TBD", refId = "REQ-SET-INIT-001:TBD")
     void contextLoads() {
         // This test verifies that the Spring Application Context loads successfully.
         // It provides traceability back to the initialization requirement.

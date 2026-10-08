@@ -30,11 +30,11 @@ const port = 3000;
 
 app.use(express.json());
 
-@SpecLink({ spec_id: "SPEC-PSP-CORE:TBD", ref_id: "REQ-PSP-APP-01:TBD", version: "0.1" })
+@SpecLink({ spec_id: "SPEC-PSP-CORE:TBD", ref_id: "REQ-PSP-APP-01:TBD" })
 class PspApplication {
 
     /**
-     * @SpecLink { spec_id: "SPEC-SET-ONB", ref_id: "REQ-PSP-ONB-01:TBD", version: "0.1" }
+     * @SpecLink { spec_id: "SPEC-SET-ONB", ref_id: "REQ-PSP-ONB-01:TBD" }
      */
     static handleOnboarding(req: Request, res: Response) {
         console.log('Received onboarding request:', req.body);

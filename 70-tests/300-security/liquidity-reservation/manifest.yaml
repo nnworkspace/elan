@@ -15,17 +15,17 @@ meta:
   title: Liquidity Reservation – Security Assurance
   version: 0.1.0
   status: FICTIONAL-RELEASED
-  description: |-
-    Security assurance set for the Liquidity domain. Focuses on financial integrity (Double-Spend prevention), privacy enforcement (Internal Data Minimization), and role-based authorization.
-targets:
-- specification_id: SPEC-LIQ-FUNC
-  specification_version: 0.1.0
-- specification_id: SPEC-LIQ-INT
-  specification_version: 0.1.0
-- specification_id: SPEC-LIQ-DATA
-  specification_version: 0.1.0
-- specification_id: RULE-SET
-  specification_version: 0.9.0
+  description: Security assurance set for the Liquidity domain. Focuses on financial integrity (Double-Spend
+    prevention), privacy enforcement (Internal Data Minimization), and role-based authorization.
+depends_on:
+- set: SPEC-LIQ-FUNC
+  version: 0.1.0
+- set: SPEC-LIQ-INT
+  version: 0.1.0
+- set: SPEC-LIQ-DATA
+  version: 0.1.0
+- set: RULE-SET
+  version: 0.9.0
 contains:
 - LIQ-SEC-01-integrity.feature
 governance:
@@ -33,5 +33,5 @@ governance:
   review_cycle: per-release
   change_policy: versioned-set-only
 notes:
-- |-
-  These controls are critical for preventing "Funding at Risk" and ensuring compliance with the Privacy Firewall architecture.
+- These controls are critical for preventing "Funding at Risk" and ensuring compliance with the Privacy
+  Firewall architecture.

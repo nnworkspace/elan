@@ -68,7 +68,7 @@ This allows governance tooling to reason about the system **without inspecting b
 ```rust
 use governance_common::spec_link;
 
-#[spec_link(spec_id = "SPEC-LIQ-FUNC", ref_id = "REQ-LIQ-FUNC-01", version = "1.2.0")]
+#[spec_link(spec_id = "SPEC-LIQ-FUNC", ref_id = "REQ-LIQ-FUNC-01")]
 fn process_transaction() {
     // Implementation logic...
 }

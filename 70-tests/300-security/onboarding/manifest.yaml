@@ -15,17 +15,18 @@ meta:
   title: Onboarding – Security Assurance
   version: 0.1.0
   status: FICTIONAL-RELEASED
-  description: |-
-    Security assurance set covering onboarding-related security guarantees, including authorisation, role separation, abuse prevention, and audit integrity. This set defines the security behaviour that MUST be preserved across all onboarding implementations.
-targets:
-- specification_id: SPEC-OB-FUNC
-  specification_version: 1.0.0
-- specification_id: SPEC-OB-INT
-  specification_version: 1.0.0
-- specification_id: SPEC-OB-DATA
-  specification_version: 1.0.0
-- specification_id: RULE-SET
-  specification_version: 0.9.0
+  description: Security assurance set covering onboarding-related security guarantees, including authorisation,
+    role separation, abuse prevention, and audit integrity. This set defines the security behaviour
+    that MUST be preserved across all onboarding implementations.
+depends_on:
+- set: SPEC-OB-FUNC
+  version: 1.0.0
+- set: SPEC-OB-INT
+  version: 1.0.0
+- set: SPEC-OB-DATA
+  version: 1.0.0
+- set: RULE-SET
+  version: 0.9.0
 contains:
 - ONB-SEC-01-controls.feature
 governance:
@@ -33,7 +34,7 @@ governance:
   review_cycle: per-release
   change_policy: versioned-set-only
 notes:
-- |-
-  This manifest defines an atomic security assurance baseline. Individual files within this folder inherit the version and lifecycle state declared here and MUST NOT declare their own.
-- |-
-  Security scenarios reference upstream artefacts using both identifier and version to ensure auditability over time.
+- This manifest defines an atomic security assurance baseline. Individual files within this folder inherit
+  the version and lifecycle state declared here and MUST NOT declare their own.
+- Security scenarios reference upstream artefacts using both identifier and version to ensure auditability
+  over time.

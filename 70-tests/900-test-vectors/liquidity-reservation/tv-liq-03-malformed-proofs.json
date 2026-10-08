@@ -12,7 +12,7 @@
   "metadata": {
     "vector_id": "TV-LIQ-03",
     "description": "Payloads the contract must refuse.",
-    "upstream_spec": "SPEC-SET-LIQ v0.1.0",
+    "upstream_spec": "SPEC-SET-LIQ",
     "case_type": "negative",
     "traceability": [
       "@spec=SPEC-LIQ-DATA",

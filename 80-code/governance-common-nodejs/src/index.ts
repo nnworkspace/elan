@@ -23,11 +23,10 @@
 export interface SpecLinkOptions {
   spec_id: string;
   ref_id: string;
-  version: string;
 }
 
 /**
- * Declares an explicit, version-aware traceability link between a code element
+ * Declares an explicit traceability link between a code element
  * and a normative specification artifact.
  *
  * This decorator/function does not alter runtime behavior but serves as a

@@ -4,10 +4,10 @@ import eu.digitaleuro.governance.tracing.SpecLink;
 import org.springframework.stereotype.Service;
 
 @Service
-@SpecLink(specId = "SPEC-LIQ-FUNC", refId = "REQ-LIQ-01", version = "0.1")
+@SpecLink(specId = "SPEC-LIQ-FUNC", refId = "REQ-LIQ-01")
 public class LiquidityManager {
 
-    @SpecLink(specId = "SPEC-LIQ-FUNC", refId = "TR-LIQ-04", version = "0.1")
+    @SpecLink(specId = "SPEC-LIQ-FUNC", refId = "TR-LIQ-04")
     public void mintDigitalEuro(long amount, String proof) {
         if (amount <= 0) {
             throw new IllegalArgumentException("Amount must be positive");
@@ -17,7 +17,7 @@ public class LiquidityManager {
         System.out.println("[CORE] Liability Created: " + amount);
     }
 
-    @SpecLink(specId = "SPEC-LIQ-FUNC", refId = "REQ-LIQ-FUNC-05", version = "0.1")
+    @SpecLink(specId = "SPEC-LIQ-FUNC", refId = "REQ-LIQ-FUNC-05")
     public void burnDigitalEuro(long amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("Amount must be positive");
