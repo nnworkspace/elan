@@ -1,6 +1,6 @@
 /*
- * artefact_type: code
- * role: build-definition
+ * artefact_type: implementation
+ * role: implementation
  * owner: engineering-platform
  * status: operative
  *

@@ -1,45 +1,35 @@
-artefact_type: evidence
-form: text
-role: manifest
-visibility: public
-audience: everyone
-status: FICTIONAL-RELEASED
-
+# artefact_type: evidence
+# visibility: public
+# audience: everyone
+# form: text
+# role: governance
+# status: operative
+# owner: system-quality
+#
 # DISCLAIMER: This content is illustrative and for educational purposes only.
 # It demonstrates a methodology for structure and traceability.
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 
-set:
+meta:
   id: OPS-SYS
-  name: System-level Operational Assurance
+  title: System-level Operational Assurance
   version: 0.1.0
-  description: >
-    Operational assurance set defining system-wide guarantees
-    related to deployability, availability, resilience,
-    and operational readiness. These guarantees apply uniformly
-    across all features and components.
-
-upstream:
-  specifications:
-    - id: SPEC-OPS-GLOBAL
-      version: 0.1
-  rulebooks:
-    - id: RULEBOOK-DE
-      version: 0.9
-
+  status: FICTIONAL-RELEASED
+  description: |-
+    Operational assurance set defining system-wide guarantees related to deployability, availability, resilience, and operational readiness. These guarantees apply uniformly across all features and components.
+targets:
+- specification_id: SPEC-OPS-GLOBAL:TBD
+  specification_version: '0.1'
+- specification_id: RULE-SET
+  specification_version: 0.9.0
 contains:
-  - SYS-OPT-01-deploy-readiness.yaml
-  
+- SYS-OPT-01-deploy-readiness.yaml
 governance:
   owner: system-quality
   review_cycle: per-release
   change_policy: versioned-set-only
-
 notes:
-  - >
-    This manifest defines an atomic system-level operational
-    assurance baseline. All contained artefacts inherit the
-    version and lifecycle state declared here.
-  - >
-    System-level operational assurances apply regardless of
-    feature-specific behaviour and MUST always hold.
+- |-
+  This manifest defines an atomic system-level operational assurance baseline. All contained artefacts inherit the version and lifecycle state declared here.
+- |-
+  System-level operational assurances apply regardless of feature-specific behaviour and MUST always hold.

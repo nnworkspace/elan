@@ -1,49 +1,39 @@
-artefact_type: evidence
-form: text
-role: evidence
-visibility: public
-audience: everyone
-status: FICTIONAL-RELEASED
-
+# artefact_type: evidence
+# visibility: public
+# audience: everyone
+# form: text
+# role: governance
+# status: operative
+# owner: system-quality
+#
 # DISCLAIMER: This content is illustrative and for educational purposes only.
 # It demonstrates a methodology for structure and traceability.
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 
-set:
+meta:
   id: OPS-ONB
-  name: Onboarding – Operational Assurance
+  title: Onboarding – Operational Assurance
   version: 0.1.0
-  description: >
-    Operational assurance set covering onboarding-related
-    runtime guarantees, including throughput expectations,
-    graceful degradation, and recovery behaviour under load.
-
-upstream:
-  specifications:
-    - id: SPEC-ONB-FUNC
-      version: 0.1
-    - id: SPEC-ONB-INT
-      version: 0.1
-  rulebooks:
-    - id: RULEBOOK-DE
-      version: 0.9
-
+  status: FICTIONAL-RELEASED
+  description: |-
+    Operational assurance set covering onboarding-related runtime guarantees, including throughput expectations, graceful degradation, and recovery behaviour under load.
+targets:
+- specification_id: SPEC-OB-FUNC
+  specification_version: 1.0.0
+- specification_id: SPEC-OB-INT
+  specification_version: 1.0.0
+- specification_id: RULE-SET
+  specification_version: 0.9.0
 contains:
-  - ONB-OPT-01-onboarding-performance.yaml
-
+- ONB-OPT-01-onboarding-performance.yaml
 governance:
   owner: system-quality
   review_cycle: per-release
   change_policy: versioned-set-only
-
 notes:
-  - >
-    This manifest defines an atomic operational assurance
-    baseline specific to the onboarding capability.
-  - >
-    Feature-level operational assurances complement, but do not
-    weaken, system-level operational guarantees.
-  - >
-    All traceability to upstream artefacts is version-aware
-    to ensure reproducible operational assurance over time.
-
+- |-
+  This manifest defines an atomic operational assurance baseline specific to the onboarding capability.
+- |-
+  Feature-level operational assurances complement, but do not weaken, system-level operational guarantees.
+- |-
+  All traceability to upstream artefacts is version-aware to ensure reproducible operational assurance over time.

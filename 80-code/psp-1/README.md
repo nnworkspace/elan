@@ -1,5 +1,5 @@
 ---
-artefact_type: code
+artefact_type: implementation
 visibility: public
 audience:
   - PSP

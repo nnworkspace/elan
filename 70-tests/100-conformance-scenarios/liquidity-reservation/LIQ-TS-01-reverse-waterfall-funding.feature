@@ -36,7 +36,7 @@ Feature: Liquidity Reverse Waterfall (Automated Funding)
     And the Internal Reservation transitions to "SETTLED"
     And the Liquidity Engine triggers "CaptureFunds" on the Core Banking System
 
-  @trace=TR-LIQ-06 @trace=REQ-LIQ-02 @trace=Rule_LIQ-01
+  @trace=TR-LIQ-06 @trace=REQ-LIQ-02 @trace=LIQ-01
   Scenario: A settlement refusal rolls back atomically
     # Critical Negative Path: Lock -> Fund Fail -> Void
     Given the Liquidity Engine has locked 50.00 EUR in the Core Banking System

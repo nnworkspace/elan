@@ -1,12 +1,12 @@
-artefact_type: code
-visibility: public
-audience:
-  - PSP
-  - NCB
-form: text
-role: implementation
-status: normative
-owner: External PSP
+# artefact_type: implementation
+# visibility: public
+# audience:
+#   - PSP
+#   - NCB
+# form: text
+# role: implementation
+# status: normative
+# owner: External PSP
 
 # DISCLAIMER:
 # The code in this folder is **illustrative and educational**.
@@ -36,9 +36,9 @@ implementation:
 
 upstream:
   specifications:
-    - id: SPEC-ONBOARDING
+    - id: SPEC-SET-ONB
       version: 0.1
-    - id: SPEC-PAYMENT-INIT
+    - id: SPEC-PAYMENT-INIT:TBD
       version: 0.1
 
 interfaces:

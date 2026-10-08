@@ -24,14 +24,14 @@ use proc_macro::TokenStream;
 ///
 /// # Arguments
 ///
-/// * `spec_id` - The Global ID of the Specification Document (e.g., "SPEC-LEDGER-001").
-/// * `ref_id` - The Specific Requirement or Step ID (e.g., "REQ-SETTLEMENT-05").
+/// * `spec_id` - The Global ID of the Specification Document (e.g., "SPEC-LIQ-FUNC").
+/// * `ref_id` - The Specific Requirement or Step ID (e.g., "REQ-LIQ-FUNC-01").
 /// * `version` - (Optional) The version of the spec being implemented. Defaults to "current".
 ///
 /// # Example
 ///
 /// ```rust,ignore
-/// #[spec_link(spec_id = "SPEC-LEDGER-001", ref_id = "REQ-01", version = "1.0.0")]
+/// #[spec_link(spec_id = "SPEC-LIQ-FUNC", ref_id = "REQ-LIQ-FUNC-01", version = "1.0.0")]
 /// struct Ledger;
 /// ```
 #[proc_macro_attribute]

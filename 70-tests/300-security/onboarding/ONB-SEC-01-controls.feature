@@ -23,7 +23,7 @@ Feature: Onboarding Security Controls & Privacy Firewall
     Given the Access Gateway (COMP-EUR-05) is active
     And the Security Firewall rules are loaded
 
-  @trace=INT-OB-01 @trace=DM-OB-03 @trace=Zone_B_Firewall @security_control=DATA_SANITIZATION
+  @trace=INT-OB-01 @trace=DM-OB-03 @trace=Zone_B_Firewall:TBD @security_control=DATA_SANITIZATION
   Scenario: A payload carrying a Zone A field is blocked
     # This tests that the Gateway acts as a firewall for Zone B
     Given a caller holds a valid Identity Hash

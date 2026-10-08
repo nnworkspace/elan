@@ -186,6 +186,16 @@ This establishes a clear chain:
 
 Automation may enforce this relationship.
 
+## Identifiers that are not yet assigned
+
+A reference to an upstream artefact that does not exist yet carries the suffix `:TBD`, the same convention the specification layer uses for `@rule=RULEBOOK:TBD`.
+
+```
+@SpecLink(specId = "SPEC-API-GW:TBD", refId = "REQ-API-FUND-01:TBD", version = "0.1")
+```
+
+The suffix means the artefact is genuinely missing upstream, not that the reference is wrong. A check can then separate the two cases: a reference without `:TBD` that does not resolve is a defect and fails; a reference with `:TBD` is a declared gap and is counted, not failed. References to external standards such as `GDPR-Art-32` are outside the resolver's scope.
+
 ## Relationship to CI/CD and reports
 
 Tests and evidence defined here are typically:

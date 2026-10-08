@@ -2,35 +2,23 @@
 # visibility: public
 # audience: everyone
 # form: text
-# role: manifest
+# role: governance
 # status: operative
 # owner: system-quality
+#
 # DISCLAIMER: This content is illustrative and for educational purposes only.
 # It demonstrates a methodology for structure and traceability.
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 
 meta:
-  # Unique Identifier for this Test Suite
   id: TEST-SET-LIQ
-  
-  # Human-readable title
-  title: "Liquidity Reservation (Reverse Waterfall & Waterfall) Conformance Suite"
-  
-  # The Version of the *Tests* (Not the specs!)
-  version: "0.1.0"
-  
-  # Lifecycle State
+  title: Liquidity Reservation (Reverse Waterfall & Waterfall) Conformance Suite
+  version: 0.1.0
   status: FICTIONAL-RELEASED
-  
   date: 2025-12-30
-
-# Dependency Declaration:
-# This Test Suite is designed to validate the following Spec Version
 targets:
-  specification_id: SPEC-SET-LIQ
-  specification_version: "1.0.0"
-
-# The executable contents
+- specification_id: SPEC-SET-LIQ
+  specification_version: 0.1.0
 contains:
-  - LIQ-TS-01-reverse-waterfall-funding.feature
-  - LIQ-TS-02-waterfall-defunding.feature
+- LIQ-TS-01-reverse-waterfall-funding.feature
+- LIQ-TS-02-waterfall-defunding.feature

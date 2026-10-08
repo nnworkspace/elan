@@ -1,11 +1,11 @@
 ---
-artefact_type: governance
-visibility: public
-audience: everyone
-form: source
-role: governance-instrument
-status: normative
-owner: programme-governance
+# artefact_type: governance
+# visibility: public
+# audience: everyone
+# form: source
+# role: governance
+# status: normative
+# owner: programme-governance
 
 meta:
   id: COMP-GOV-COMMON-RUST

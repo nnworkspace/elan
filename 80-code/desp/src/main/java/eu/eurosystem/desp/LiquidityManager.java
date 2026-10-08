@@ -4,7 +4,7 @@ import eu.digitaleuro.governance.tracing.SpecLink;
 import org.springframework.stereotype.Service;
 
 @Service
-@SpecLink(specId = "SPEC-LIQ-FUNC", refId = "REQ-LIQ-RULES-001", version = "0.1")
+@SpecLink(specId = "SPEC-LIQ-FUNC", refId = "REQ-LIQ-01", version = "0.1")
 public class LiquidityManager {
 
     @SpecLink(specId = "SPEC-LIQ-FUNC", refId = "TR-LIQ-04", version = "0.1")

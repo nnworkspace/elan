@@ -1,5 +1,5 @@
 ---
-artefact_type: code
+artefact_type: implementation
 visibility: restricted
 audience:
   - ECB
@@ -39,8 +39,8 @@ The Access Gateway is the **Shield of the Platform**. It is the only component r
 
 ## Architecture
 This component is designed as a high-concurrency **Edge Proxy**.
-It implements the `I_PSP_Gateway` interface defined in `SPEC-API-GW`.
+It implements the `I_PSP_Gateway` interface defined in `SPEC-API-GW:TBD`.
 
 ## Traceability
-*   `SPEC-SEC-OPS`: Firewall Rules
-*   `SPEC-API-GW`: REST Contract
+*   `SPEC-SEC-OPS:TBD`: Firewall Rules
+*   `SPEC-API-GW:TBD`: REST Contract

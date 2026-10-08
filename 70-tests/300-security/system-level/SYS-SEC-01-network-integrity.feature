@@ -32,7 +32,7 @@ Feature: System-Wide Network Integrity & Zone Isolation
     Then the Access Gateway (COMP-EUR-05) immediately terminates the TCP connection
     And no HTTP 4xx/5xx error page is served (Connection Reset)
 
-  @trace=ARCH-SEC-01 @trace=Zone_B_Firewall @security_control=NETWORK_SEGMENTATION
+  @trace=ARCH-SEC-01 @trace=Zone_B_Firewall:TBD @security_control=NETWORK_SEGMENTATION
   Scenario: Zone B is unroutable from the public internet
     # Verifies that Zone B components are not routable from the public internet
     Given the "Alias Service" (COMP-EUR-02) is running in Zone B
@@ -40,7 +40,7 @@ Feature: System-Wide Network Integrity & Zone Isolation
     Then all packets are dropped silently
     And the Zone B components are ONLY accessible via the DESP Platform (COMP-EUR-04)
 
-  @trace=ARCH-AUD-01 @trace=GDPR-Art-32 @security_control=AUDIT_INTEGRITY
+  @trace=ARCH-AUD-01:TBD @trace=GDPR-Art-32 @security_control=AUDIT_INTEGRITY
   Scenario: Every state change writes an immutable audit record
     # Verifies that every write operation, regardless of feature, leaves a trace
     Given a PSP performs a state-changing operation (e.g. onboarding or funding)

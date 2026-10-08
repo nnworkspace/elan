@@ -33,7 +33,7 @@ Feature: Liquidity Waterfall (Automated Defunding)
     And the Digital Euro balance is reduced to 3000.00 EUR
     And the Liquidity Engine credits 500.00 EUR to the user's Commercial Bank Account
 
-  @trace=Rule_LIQ-03 @trace=DAT-MSG-04
+  @trace=LIQ-03 @trace=DAT-MSG-04
   Scenario: A zero-holding merchant is defunded on receipt
     Given a Merchant has a Holding Limit of 0.00 EUR
     When the Merchant receives a payment of 50.00 EUR

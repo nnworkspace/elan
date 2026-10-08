@@ -20,7 +20,7 @@ metadata:
   # Tracing: Unique ID for audit logs
   assurance_id: "OPS-SYS-001"
   # Tracing: Links to the functional requirement for Deployment & Availability
-  upstream_id: "REQ-SYS-OPS-001"
+  upstream_id: "REQ-SYS-OPS-001:TBD"
   # Tracing: Verifies against this specific version of the requirement
   upstream_version: "v1.2.0"
   scope: "system-level"

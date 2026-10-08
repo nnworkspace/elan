@@ -1,5 +1,5 @@
 ---
-artefact_type: report
+artefact_type: evidence
 visibility: public
 audience: everyone
 form: text

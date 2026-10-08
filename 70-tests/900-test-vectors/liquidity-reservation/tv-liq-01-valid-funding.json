@@ -5,43 +5,85 @@
     "visibility": "public",
     "audience": "everyone",
     "form": "text",
-    "role": "data-vector",
+    "role": "evidence",
     "status": "operative",
     "owner": "system-quality"
   },
   "metadata": {
     "vector_id": "TV-LIQ-01",
-    "description": "Valid funding requests for successful reservation.",
-    "upstream_spec": "SPEC-LIQ-DATA v0.1.0",
-    "case_type": "positive"
+    "description": "Valid funding requests accepted by FundingRequest.",
+    "upstream_spec": "SPEC-SET-LIQ v0.1.0",
+    "case_type": "positive",
+    "traceability": [
+      "@spec=SPEC-LIQ-DATA",
+      "@spec=SPEC-LIQ-INT",
+      "@trace=INT-LIQ-02",
+      "@trace=DAT-MSG-01"
+    ]
   },
   "vectors": [
     {
       "id": "vec-001",
-      "description": "Standard Funding Request (Integer Amount)",
+      "description": "Standard funding request, 10.00 EUR in minor units",
       "input": {
         "amount": 1000,
         "currency": "EUR",
-        "reservation_proof": "a3b9425d...",
-        "idempotency_key": "uuid-v4-001"
+        "reservation_proof": "b7f1a2c84d9e03516a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4"
       },
-      "expected_output": {
-        "status": 201,
-        "reservation_id": "RES-001"
+      "headers": {
+        "Idempotency-Key": "uuid-v4-001"
+      },
+      "expected": {
+        "schema_validation": "PASS",
+        "http_status": 200,
+        "response_body": {
+          "status": "SETTLED",
+          "settled_at": "2026-10-09T08:15:30Z",
+          "settlement_ref": "EUR-STL-001"
+        }
       }
     },
     {
       "id": "vec-002",
-      "description": "Max Allowed Transaction Value",
+      "description": "Funding with optional remittance_info at its 140 character maximum",
       "input": {
-        "amount": 300000,
+        "amount": 25000,
         "currency": "EUR",
-        "reservation_proof": "f8c2910a...",
-        "idempotency_key": "uuid-v4-002"
+        "reservation_proof": "4c5d6e7f8091a2b3c4d5e6f708192a3bb7f1a2c84d9e03516a7b8c9d0e1f2a3b",
+        "remittance_info": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
       },
-      "expected_output": {
-        "status": 201,
-        "reservation_id": "RES-002"
+      "headers": {
+        "Idempotency-Key": "uuid-v4-002"
+      },
+      "expected": {
+        "schema_validation": "PASS",
+        "http_status": 200,
+        "response_body": {
+          "status": "SETTLED",
+          "settled_at": "2026-10-09T08:15:30Z",
+          "settlement_ref": "EUR-STL-002"
+        }
+      }
+    },
+    {
+      "id": "vec-003",
+      "description": "Smallest permitted amount, one cent",
+      "input": {
+        "amount": 1,
+        "currency": "EUR",
+        "reservation_proof": "b7f1a2c84d9e03516a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4"
+      },
+      "headers": {
+        "Idempotency-Key": "uuid-v4-003"
+      },
+      "expected": {
+        "schema_validation": "PASS",
+        "http_status": 200,
+        "response_body": {
+          "status": "SETTLED",
+          "settled_at": "2026-10-09T08:15:30Z",
+          "settlement_ref": "EUR-STL-003"
+        }
       }
     }
   ]

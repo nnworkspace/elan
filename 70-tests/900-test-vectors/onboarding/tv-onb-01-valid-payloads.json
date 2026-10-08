@@ -1,0 +1,63 @@
+{
+  "_header": {
+    "disclaimer": "This content is illustrative and for educational purposes only. It demonstrates a methodology for structure and traceability. It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.",
+    "artefact_type": "evidence",
+    "visibility": "public",
+    "audience": "everyone",
+    "form": "text",
+    "role": "evidence",
+    "status": "operative",
+    "owner": "system-quality"
+  },
+  "metadata": {
+    "vector_id": "TV-ONB-01",
+    "description": "Valid registration payloads accepted by OnboardingRequest.",
+    "upstream_spec": "SPEC-SET-ONB v1.0.0",
+    "case_type": "positive",
+    "traceability": [
+      "@spec=SPEC-OB-DATA",
+      "@spec=SPEC-OB-INT",
+      "@trace=INT-OB-01",
+      "@trace=DAT-MSG-01"
+    ]
+  },
+  "vectors": [
+    {
+      "id": "vec-001",
+      "description": "Minimal valid registration, BIC-8",
+      "input": {
+        "identity_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+        "psp_id": "DEUTDEFF"
+      },
+      "expected": {
+        "schema_validation": "PASS",
+        "http_status": 201
+      }
+    },
+    {
+      "id": "vec-002",
+      "description": "Valid registration, BIC-11 with branch code",
+      "input": {
+        "identity_hash": "60303ae22b998861bce3b28f33eec1be758a213c86c93c076dbe9f558c11c752",
+        "psp_id": "DEUTDEFFXXX"
+      },
+      "expected": {
+        "schema_validation": "PASS",
+        "http_status": 201
+      }
+    },
+    {
+      "id": "vec-003",
+      "description": "Valid switch request, switch_consent set (REQ-OB-FUNC-09)",
+      "input": {
+        "identity_hash": "2c624232cdd221771294dfbb310aca000a0df6ac8b66b696d90ef06fdefb64a3",
+        "psp_id": "BNPAFRPP",
+        "switch_consent": true
+      },
+      "expected": {
+        "schema_validation": "PASS",
+        "http_status": 201
+      }
+    }
+  ]
+}

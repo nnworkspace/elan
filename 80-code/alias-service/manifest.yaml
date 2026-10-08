@@ -1,12 +1,12 @@
-artefact_type: code
-visibility: restricted
-audience:
-  - ECB
-  - PSP
-form: text
-role: implementation
-status: normative
-owner: ECB
+# artefact_type: implementation
+# visibility: restricted
+# audience:
+#   - ECB
+#   - PSP
+# form: text
+# role: implementation
+# status: normative
+# owner: ECB
 
 # DISCLAIMER:
 # The code in this folder is **illustrative and educational**.
@@ -36,9 +36,9 @@ implementation:
 
 upstream:
   specifications:
-    - id: SPEC-ALIAS-LOOKUP
+    - id: SPEC-ALIAS-LOOKUP:TBD
       version: 0.1
-    - id: SPEC-PRIVACY-OPS
+    - id: SPEC-PRIVACY-OPS:TBD
       version: 0.1
 
 interfaces:

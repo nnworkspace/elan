@@ -1,7 +1,7 @@
 package eu.eurosystem.desp;
 
 /*
- * artefact_type: code
+ * artefact_type: implementation
  * visibility: restricted
  * audience: [NCB, PSP]
  * form: source
@@ -29,7 +29,7 @@ import eu.digitaleuro.governance.SpecLink;
 class DespApplicationTest {
 
     @Test
-    @SpecLink(specId = "SPEC-SET-CORE", refId = "REQ-SET-INIT-001", version = "0.1")
+    @SpecLink(specId = "SPEC-SET-CORE:TBD", refId = "REQ-SET-INIT-001:TBD", version = "0.1")
     void contextLoads() {
         // This test verifies that the Spring Application Context loads successfully.
         // It provides traceability back to the initialization requirement.

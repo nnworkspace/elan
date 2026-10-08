@@ -1,5 +1,5 @@
 ---
-artefact_type: code
+artefact_type: implementation
 visibility: public
 audience: everyone
 form: text
@@ -246,5 +246,30 @@ The code in this folder is **illustrative and educational**.
 
 It does not represent official implementations, production-ready components, or endorsed technical approaches for the Digital Euro or any other real-world system.
 
+## Identifiers that are not yet assigned
 
+A reference to an upstream artefact that does not exist yet carries the suffix `:TBD`, the same convention the specification layer uses for `@rule=RULEBOOK:TBD`.
 
+```
+@SpecLink(specId = "SPEC-API-GW:TBD", refId = "REQ-API-FUND-01:TBD", version = "0.1")
+```
+
+The suffix means the artefact is genuinely missing upstream, not that the reference is wrong. A check can then separate the two cases: a reference without `:TBD` that does not resolve is a defect and fails; a reference with `:TBD` is a declared gap and is counted, not failed. References to external standards such as `GDPR-Art-32` are outside the resolver's scope.
+
+## One link, four languages
+
+The same traceability link is written in each language's own idiom, and the data it carries is identical:
+
+| Language | Form | Field names |
+|:--|:--|:--|
+| Java | annotation | `specId`, `refId`, `version` |
+| Rust | attribute macro | `spec_id`, `ref_id`, `version` |
+| TypeScript | decorator | `spec_id`, `ref_id`, `version` |
+| Go | function call | positional: spec, ref, version |
+
+The difference in spelling is deliberate, not drift: each language keeps its own convention, and a reader of that language sees nothing unusual. A tool reading them normalises to `spec_id`, `ref_id` and `version`.
+
+Two known deviations, recorded rather than hidden:
+
+- The Java annotation defaults `version` to `"current"`, which silently means unversioned. A default that weakens a traceability claim should be removed rather than documented.
+- Every annotation carries a version at all. The alternative, which the specification standard now describes, is to cite the identifier only and pin the version once per component in its build file, the way a lockfile pins a library. Until that is adopted here, a version bump upstream means touching every annotation.

@@ -23,7 +23,7 @@ Feature: User Account Switching (Portability)
     Given the Access Gateway (COMP-EUR-05) is available
     And the receiving PSP "PSP-DE-002" holds a valid QWAC certificate
 
-  @trace=TR-OB-06 @trace=OP-OB-03 @trace=Rule_ONB-04 @trace=REQ-OB-FUNC-09
+  @trace=TR-OB-06 @trace=OP-OB-03 @trace=ONB-04 @trace=REQ-OB-FUNC-09
   Scenario: An existing user is switched to a new PSP
     Given the Identity Hash for "PASSPORT:DE:123456789" is currently registered with "PSP-DE-001" (Old PSP)
     When the receiving PSP sends a "POST /aliases" request with:
