@@ -12,7 +12,7 @@
   "metadata": {
     "vector_id": "TV-ONB-01",
     "description": "Valid registration payloads accepted by OnboardingRequest.",
-    "upstream_spec": "SPEC-SET-ONB v1.0.0",
+    "upstream_spec": "SPEC-SET-ONB",
     "case_type": "positive",
     "traceability": [
       "@spec=SPEC-OB-DATA",

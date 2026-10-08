@@ -34,12 +34,6 @@ implementation:
     framework: express
     runtime: nodejs
 
-upstream:
-  specifications:
-    - id: SPEC-SET-ONB
-      version: 0.1
-    - id: SPEC-PAYMENT-INIT:TBD
-      version: 0.1
 
 interfaces:
   consumed:
@@ -47,3 +41,19 @@ interfaces:
       protocol: library
     - id: I_Access_Gateway
       protocol: REST
+
+# The version each specification set is built against is declared here, once,
+# the way a lockfile pins a library. Annotations in the source carry the
+# identifier only. A set marked :TBD has no upstream artefact yet, so there is
+# no version to pin.
+depends_on:
+  - set: SPEC-SET-ONB
+    version: "1.0.0"
+  - set: SPEC-SET-LIQ
+    version: "0.1.0"
+  - set: SPEC-PSP-CORE:TBD
+    version: null        # not yet assigned
+  - set: SPEC-PSP-TEST:TBD
+    version: null        # not yet assigned
+  - set: SPEC-PAYMENT-INIT:TBD
+    version: null        # not yet assigned

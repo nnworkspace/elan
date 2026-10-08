@@ -11,7 +11,7 @@
     "status": "normative",
     "owner": "system-quality",
     "traceability": [
-      "@spec=SPEC-LIQ-DATA:0.1.0"
+      "@spec=SPEC-LIQ-DATA"
     ]
   },
   "title": "Liquidity Response Contract",

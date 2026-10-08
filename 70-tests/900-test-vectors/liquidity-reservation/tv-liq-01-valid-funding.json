@@ -12,7 +12,7 @@
   "metadata": {
     "vector_id": "TV-LIQ-01",
     "description": "Valid funding requests accepted by FundingRequest.",
-    "upstream_spec": "SPEC-SET-LIQ v0.1.0",
+    "upstream_spec": "SPEC-SET-LIQ",
     "case_type": "positive",
     "traceability": [
       "@spec=SPEC-LIQ-DATA",

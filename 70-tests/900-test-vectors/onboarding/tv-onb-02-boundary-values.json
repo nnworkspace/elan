@@ -12,7 +12,7 @@
   "metadata": {
     "vector_id": "TV-ONB-02",
     "description": "Boundary values of the two payload fields.",
-    "upstream_spec": "SPEC-SET-ONB v1.0.0",
+    "upstream_spec": "SPEC-SET-ONB",
     "case_type": "boundary",
     "traceability": [
       "@spec=SPEC-OB-DATA",

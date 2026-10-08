@@ -38,7 +38,7 @@ This library provides the standard governance primitives for Node.js and TypeScr
 ```typescript
 import { SpecLink } from 'governance-common';
 
-@SpecLink({ spec_id: 'SPEC-LIQ-FUNC', ref_id: 'REQ-LIQ-FUNC-01', version: '1.0' })
+@SpecLink({ spec_id: 'SPEC-LIQ-FUNC', ref_id: 'REQ-LIQ-FUNC-01' })
 
 class MyComponent {}
 ```

@@ -11,8 +11,8 @@
     "status": "normative",
     "owner": "system-quality",
     "traceability": [
-      "@spec=SPEC-OB-DATA:0.1.0",
-      "@spec=SPEC-OB-INT:0.1.0"
+      "@spec=SPEC-OB-DATA",
+      "@spec=SPEC-OB-INT"
     ]
   },
   "title": "Onboarding Request Contract",

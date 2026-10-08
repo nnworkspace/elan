@@ -42,7 +42,7 @@ fn main() {
     let _ = oracle.verify_blind_signature("zk-proof-sample");
 }
 
-#[spec_link(spec_id = "SPEC-ALIAS-LOOKUP:TBD", ref_id = "REQ-ALIAS-ENG-01:TBD", version = "0.1")]
+#[spec_link(spec_id = "SPEC-ALIAS-LOOKUP:TBD", ref_id = "REQ-ALIAS-ENG-01:TBD")]
 struct AliasOracle {
     // In a real implementation, this would hold a connection to a high-performance Redis/KV store
     // and a rotating pepper key for privacy.
@@ -54,14 +54,14 @@ impl AliasOracle {
         AliasOracle { pepper_version: 1 }
     }
 
-    #[spec_link(spec_id = "SPEC-ALIAS-LOOKUP:TBD", ref_id = "REQ-ALIAS-PERF-02:TBD", version = "0.1")]
+    #[spec_link(spec_id = "SPEC-ALIAS-LOOKUP:TBD", ref_id = "REQ-ALIAS-PERF-02:TBD")]
     fn start(&self) {
         println!("Alias Engine initialized with pepper version {}.", self.pepper_version);
     }
 
     /// Resolves a hashed alias to an IBAN.
     /// The input  must be blinded to prevent enumeration attacks.
-    #[spec_link(spec_id = "SPEC-ALIAS-LOOKUP:TBD", ref_id = "REQ-RES-01:TBD", version = "0.1")]
+    #[spec_link(spec_id = "SPEC-ALIAS-LOOKUP:TBD", ref_id = "REQ-RES-01:TBD")]
     fn resolve_alias(&self, alias_hash: &str) -> Result<String, String> {
         println!("Processing lookup for hash: {}", alias_hash);
         
@@ -76,7 +76,7 @@ impl AliasOracle {
 
     /// Verifies a Zero-Knowledge Proof that the requestor owns the alias check credential.
     /// This ensures that even the Oracle cannot see *who* is asking, only *what* they are asking.
-    #[spec_link(spec_id = "SPEC-PRIVACY-OPS:TBD", ref_id = "REQ-BLIND-05:TBD", version = "0.2")]
+    #[spec_link(spec_id = "SPEC-PRIVACY-OPS:TBD", ref_id = "REQ-BLIND-05:TBD")]
     fn verify_blind_signature(&self, zk_proof: &str) -> bool {
         // Illustrative pass-through
         !zk_proof.is_empty()
@@ -88,7 +88,7 @@ mod tests {
     use super::*;
 
     #[test]
-    #[spec_link(spec_id = "SPEC-ALIAS-T01:TBD", ref_id = "REQ-TEST-01:TBD", version = "0.1")]
+    #[spec_link(spec_id = "SPEC-ALIAS-T01:TBD", ref_id = "REQ-TEST-01:TBD")]
     fn test_alias_resolution_traceability() {
         let oracle = AliasOracle::new();
         // Illustrative assertion: Verifying internal state to prove white-box access
