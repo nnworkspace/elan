@@ -1,5 +1,5 @@
 /*
- * artefact_type: code
+ * artefact_type: implementation
  * visibility: restricted
  * audience:
  *   - ECB
@@ -32,7 +32,7 @@ import (
 // Illustrative Unit Test
 func TestFundingLogicTraceability(t *testing.T) {
 	// Demonstrates that tests are also governed artefacts.
-	gov.SpecLink("SPEC-API-GW", "REQ-API-FUND-01", "0.1")
+	gov.SpecLink("SPEC-API-GW:TBD", "REQ-API-FUND-01:TBD", "0.1")
 
 	// Actual test logic would reside here.
 	// For this educational example, we just ensure the test runner executes this.

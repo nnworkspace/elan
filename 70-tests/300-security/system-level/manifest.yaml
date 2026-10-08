@@ -1,48 +1,37 @@
-artefact_type: evidence
-form: text
-role: manifest
-visibility: public
-audience: everyone
-status: FICTIONAL-RELEASED
-
+# artefact_type: evidence
+# visibility: public
+# audience: everyone
+# form: text
+# role: governance
+# status: operative
+# owner: system-quality
+#
 # DISCLAIMER: This content is illustrative and for educational purposes only.
 # It demonstrates a methodology for structure and traceability.
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 
-set:
+meta:
   id: SEC-SYS
-  name: System-level Security Assurance
+  title: System-level Security Assurance
   version: 0.1.0
-  description: >
-    Security assurance set covering system-wide security guarantees
-    that apply across all features and components. This includes
-    authentication enforcement, transport security, abuse prevention,
-    and audit integrity rules that MUST hold uniformly.
-
-upstream:
-  specifications:
-    - id: SPEC-SEC-GLOBAL
-      version: 0.1
-  rulebooks:
-    - id: RULEBOOK-DE
-      version: 0.9
-
+  status: FICTIONAL-RELEASED
+  description: |-
+    Security assurance set covering system-wide security guarantees that apply across all features and components. This includes authentication enforcement, transport security, abuse prevention, and audit integrity rules that MUST hold uniformly.
+targets:
+- specification_id: SPEC-SEC-GLOBAL:TBD
+  specification_version: '0.1'
+- specification_id: RULE-SET
+  specification_version: 0.9.0
 contains:
-  - SEC-SYS-01-network-integrity.feature
-    
+- SYS-SEC-01-network-integrity.feature
 governance:
   owner: system-quality
   review_cycle: per-release
   change_policy: versioned-set-only
-
 notes:
-  - >
-    This manifest defines an atomic system-level security assurance baseline.
-    All contained artefacts inherit the version and lifecycle state
-    declared here and MUST NOT declare their own.
-  - >
-    System-level security scenarios apply across all features and
-    MUST be satisfied regardless of feature-specific behaviour.
-  - >
-    Traceability to upstream artefacts is version-aware by design
-    to ensure auditability over time.
+- |-
+  This manifest defines an atomic system-level security assurance baseline. All contained artefacts inherit the version and lifecycle state declared here and MUST NOT declare their own.
+- |-
+  System-level security scenarios apply across all features and MUST be satisfied regardless of feature-specific behaviour.
+- |-
+  Traceability to upstream artefacts is version-aware by design to ensure auditability over time.

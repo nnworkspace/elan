@@ -1,45 +1,37 @@
-artefact_type: evidence
-form: text
-role: manifest
-visibility: public
-audience: everyone
-status: FICTIONAL-RELEASED
-
+# artefact_type: evidence
+# visibility: public
+# audience: everyone
+# form: text
+# role: governance
+# status: operative
+# owner: system-quality
+#
 # DISCLAIMER: This content is illustrative and for educational purposes only.
 # It demonstrates a methodology for structure and traceability.
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 
-set:
+meta:
   id: SEC-LIQ
-  name: Liquidity Reservation – Security Assurance
+  title: Liquidity Reservation – Security Assurance
   version: 0.1.0
-  description: >
-    Security assurance set for the Liquidity domain.
-    Focuses on financial integrity (Double-Spend prevention),
-    privacy enforcement (Internal Data Minimization), and
-    role-based authorization.
-
-upstream:
-  specifications:
-    - id: SPEC-LIQ-FUNC
-      version: 1.0.0
-    - id: SPEC-LIQ-INT
-      version: 1.0.0
-    - id: SPEC-LIQ-DATA
-      version: 1.0.0
-  rulebooks:
-    - id: RULEBOOK-DE
-      version: 0.9
-
+  status: FICTIONAL-RELEASED
+  description: |-
+    Security assurance set for the Liquidity domain. Focuses on financial integrity (Double-Spend prevention), privacy enforcement (Internal Data Minimization), and role-based authorization.
+targets:
+- specification_id: SPEC-LIQ-FUNC
+  specification_version: 0.1.0
+- specification_id: SPEC-LIQ-INT
+  specification_version: 0.1.0
+- specification_id: SPEC-LIQ-DATA
+  specification_version: 0.1.0
+- specification_id: RULE-SET
+  specification_version: 0.9.0
 contains:
-  - LIQ-SEC-01-integrity.feature
-    
+- LIQ-SEC-01-integrity.feature
 governance:
   owner: system-security
   review_cycle: per-release
   change_policy: versioned-set-only
-
 notes:
-  - >
-    These controls are critical for preventing "Funding at Risk"
-    and ensuring compliance with the Privacy Firewall architecture.
+- |-
+  These controls are critical for preventing "Funding at Risk" and ensuring compliance with the Privacy Firewall architecture.

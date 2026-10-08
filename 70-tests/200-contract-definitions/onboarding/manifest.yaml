@@ -2,36 +2,23 @@
 # visibility: public
 # audience: everyone
 # form: text
-# role: manifest
-# status: normative
+# role: governance
+# status: operative
 # owner: system-quality
+#
 # DISCLAIMER: This content is illustrative and for educational purposes only.
 # It demonstrates a methodology for structure and traceability.
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 
 meta:
-  # Unique Identifier for this Contract Set
   id: CONTRACT-SET-ONB
-  
-  # Human-readable title
-  title: "Onboarding Interface Contracts (Schemas)"
-  
-  # Version of these Contract Definitions
-  version: "0.1.0"
-  
-  # Lifecycle State
+  title: Onboarding Interface Contracts (Schemas)
+  version: 0.1.0
   status: FICTIONAL-RELEASED
-  
   date: 2025-12-29
-
-# Dependency Declaration:
-# Validates interfaces defined in the following Spec Set
 targets:
-  specification_id: SPEC-SET-ONB
-  specification_version: "0.1.0"
-
-# The executable contents (JSON Schemas)
+- specification_id: SPEC-SET-ONB
+  specification_version: 1.0.0
 contains:
-  - onboarding-request.schema.json
-  - alias-record.schema.json
-
+- onboarding-request.schema.json
+- alias-record.schema.json

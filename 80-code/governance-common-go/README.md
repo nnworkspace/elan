@@ -33,7 +33,7 @@ Example usage:
 ```go
 func ProcessTransaction() {
     // Declare traceability to the specification
-    tracing.SpecLink("SPEC-LEDGER-001", "REQ-SETTLEMENT-05", "1.2.0")
+    tracing.SpecLink("SPEC-LIQ-FUNC", "REQ-LIQ-FUNC-01", "1.2.0")
     
     // Implementation logic...
 }

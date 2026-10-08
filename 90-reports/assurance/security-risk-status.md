@@ -1,7 +1,7 @@
 ---
 report_type: assurance-statement
 visibility: restricted
-audience: risk-committee
+audience: ECB
 derived_from:
   - security test execution logs (70-tests/300-security)
   - operational test results (70-tests/400-operational)

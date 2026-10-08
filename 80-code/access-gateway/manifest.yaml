@@ -1,12 +1,12 @@
-artefact_type: code
-visibility: restricted
-audience:
-  - ECB
-  - PSP
-form: text
-role: implementation
-status: normative
-owner: NCB
+# artefact_type: implementation
+# visibility: restricted
+# audience:
+#   - ECB
+#   - PSP
+# form: text
+# role: implementation
+# status: normative
+# owner: NCB
 
 # DISCLAIMER:
 # The code in this folder is **illustrative and educational**.
@@ -36,9 +36,9 @@ implementation:
 
 upstream:
   specifications:
-    - id: SPEC-API-GW
+    - id: SPEC-API-GW:TBD
       version: 0.1
-    - id: SPEC-SEC-OPS
+    - id: SPEC-SEC-OPS:TBD
       version: 0.1
 
 interfaces:

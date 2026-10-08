@@ -1,11 +1,11 @@
-artefact_type: governance
-visibility: public
-audience:
-  - everyone
-form: text
-role: governance
-status: normative
-owner: eurosystem
+# artefact_type: governance
+# visibility: public
+# audience:
+#   - everyone
+# form: text
+# role: governance
+# status: normative
+# owner: eurosystem
 
 # DISCLAIMER:
 # The code in this folder is **illustrative and educational**.

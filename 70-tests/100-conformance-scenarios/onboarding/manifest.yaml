@@ -2,37 +2,24 @@
 # visibility: public
 # audience: everyone
 # form: text
-# role: manifest
+# role: governance
 # status: operative
 # owner: system-quality
+#
 # DISCLAIMER: This content is illustrative and for educational purposes only.
 # It demonstrates a methodology for structure and traceability.
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 
 meta:
-  # Unique Identifier for this Test Suite
   id: TEST-SET-ONB
-  
-  # Human-readable title
-  title: "Participant Onboarding Conformance Suite"
-  
-  # The Version of the *Tests* (Not the specs!)
-  # Example: We fixed a bug in the test code, so we bump to 1.0.1
-  version: "0.1.2"
-  
-  # Lifecycle State
+  title: Participant Onboarding Conformance Suite
+  version: 0.1.2
   status: FICTIONAL-RELEASED
-  
   date: 2025-12-29
-
-# Dependency Declaration:
-# This Test Suite is designed to validate the following Spec Version
 targets:
-  specification_id: SPEC-SET-ONB
-  specification_version: "0.1.0"
-
-# The executable contents
+- specification_id: SPEC-SET-ONB
+  specification_version: 1.0.0
 contains:
-  - ONB-TS-01-registration.feature
-  - ONB-TS-02-status-query.feature
-  - ONB-TS-03-switching.feature
+- ONB-TS-01-registration.feature
+- ONB-TS-02-status-query.feature
+- ONB-TS-03-switching.feature

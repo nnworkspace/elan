@@ -1,12 +1,12 @@
-artefact_type: code
-visibility: restricted
-audience:
-  - NCB
-  - PSP
-form: text
-role: implementation
-status: normative
-owner: ECB
+# artefact_type: implementation
+# visibility: restricted
+# audience:
+#   - NCB
+#   - PSP
+# form: text
+# role: implementation
+# status: normative
+# owner: ECB
 
 # DISCLAIMER:
 # The code in this folder is **illustrative and educational**.
@@ -38,9 +38,9 @@ upstream:
   specifications:
     - id: SPEC-LIQ-FUNC
       version: 0.1
-    - id: SPEC-SET-CORE
+    - id: SPEC-SET-CORE:TBD
       version: 0.1
-    - id: SPEC-ONB-FUNC
+    - id: SPEC-OB-FUNC
       version: 0.1
 
 interfaces:

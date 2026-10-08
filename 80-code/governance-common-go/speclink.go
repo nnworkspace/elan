@@ -18,8 +18,8 @@ package tracing
 //
 // Arguments:
 //
-//	specID:  The Global ID of the Specification Document (e.g., "SPEC-LEDGER-001").
-//	refID:   The Specific Requirement or Step ID (e.g., "REQ-SETTLEMENT-05").
+//	specID:  The Global ID of the Specification Document (e.g., "SPEC-LIQ-FUNC").
+//	refID:   The Specific Requirement or Step ID (e.g., "REQ-LIQ-FUNC-01").
 //	version: The version of the spec being implemented (e.g., "1.2.0" or "current").
 func SpecLink(specID string, refID string, version string) {
 	// This function intentionally does nothing.

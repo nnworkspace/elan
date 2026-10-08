@@ -1,5 +1,5 @@
 ---
-artefact_type: code
+artefact_type: implementation
 visibility: restricted
 audience:
   - NCB
@@ -48,7 +48,7 @@ This implementation uses a standard Hexagonal (Ports & Adapters) architecture:
 ## Traceability
 
 This code realises requirements defined in:
-*   `SPEC-SET-CORE`: Settlement Logic
+*   `SPEC-SET-CORE:TBD`: Settlement Logic
 *   `SPEC-LIQ-FUNC`: Liquidity/Waterfall Logic
 
 See `manifest.yaml` for the complete machine-readable contract.

@@ -5,63 +5,99 @@
     "visibility": "public",
     "audience": "everyone",
     "form": "text",
-    "role": "data-vector",
+    "role": "evidence",
     "status": "operative",
     "owner": "system-quality"
   },
   "metadata": {
     "vector_id": "TV-ONB-03",
-    "description": "Invalid formats, missing mandatory fields, and logical errors.",
-    "upstream_spec": "SPEC-SET-ONB v0.1.0",
-    "case_type": "negative"
+    "description": "Payloads the contract must refuse, including the privacy rule INT-OB-01.",
+    "upstream_spec": "SPEC-SET-ONB v1.0.0",
+    "case_type": "negative",
+    "traceability": [
+      "@spec=SPEC-OB-DATA",
+      "@spec=SPEC-OB-INT",
+      "@trace=INT-OB-01",
+      "@trace=DAT-MSG-01"
+    ]
   },
   "vectors": [
     {
-      "id": "vec-020",
-      "description": "Missing mandatory field (LEI Code)",
+      "id": "vec-sec-020",
+      "description": "Uppercase hex, pattern requires lowercase",
       "input": {
-        "legal_name": "Incomplete Data Corp",
-        "lei_code": null,
-        "bic_code": "INCXXX22",
-        "incorporation_country": "US",
-        "regulatory_status": "LICENSED_CREDIT_INSTITUTION"
+        "identity_hash": "9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08",
+        "psp_id": "DEUTDEFF"
       },
-      "expected_result": {
-        "validation": "FAIL",
-        "error_code": "ERR_MISSING_FIELD",
-        "error_field": "lei_code"
+      "expected": {
+        "schema_validation": "FAIL",
+        "http_status": 400,
+        "error_code": "INVALID_FORMAT"
       }
     },
     {
-      "id": "vec-021",
-      "description": "Invalid LEI Checksum format",
+      "id": "vec-sec-021",
+      "description": "Non-hex character in identity_hash",
       "input": {
-        "legal_name": "Bad Checksum Ltd",
-        "lei_code": "549300L5678901234000",
-        "bic_code": "BADCLT22",
-        "incorporation_country": "IE",
-        "regulatory_status": "LICENSED_CREDIT_INSTITUTION"
+        "identity_hash": "zf86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+        "psp_id": "DEUTDEFF"
       },
-      "expected_result": {
-        "validation": "FAIL",
-        "error_code": "ERR_INVALID_FORMAT",
-        "error_message": "LEI checksum validation failed"
+      "expected": {
+        "schema_validation": "FAIL",
+        "http_status": 400,
+        "error_code": "INVALID_FORMAT"
       }
     },
     {
-      "id": "vec-022",
-      "description": "Injection attempt in text field",
+      "id": "vec-sec-022",
+      "description": "psp_id is not a BIC",
       "input": {
-        "legal_name": "Hacker <script>alert('xss')</script> Ltd",
-        "lei_code": "724500X9Y8Z7A6B5C433",
-        "bic_code": "HACKXX22",
-        "incorporation_country": "GB",
-        "regulatory_status": "AUTHORIZED_PSP"
+        "identity_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+        "psp_id": "PSP-DE-001"
       },
-      "expected_result": {
-        "validation": "FAIL",
-        "error_code": "ERR_INVALID_CHARACTERS",
-        "note": "Input sanitization must trigger."
+      "expected": {
+        "schema_validation": "FAIL",
+        "http_status": 400,
+        "error_code": "INVALID_FORMAT"
+      }
+    },
+    {
+      "id": "vec-sec-023",
+      "description": "psp_id missing, both fields are required",
+      "input": {
+        "identity_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+      },
+      "expected": {
+        "schema_validation": "FAIL",
+        "http_status": 400,
+        "error_code": "INVALID_FORMAT"
+      }
+    },
+    {
+      "id": "vec-sec-024",
+      "description": "Clear-text PII in an extra field, refused by INT-OB-01",
+      "input": {
+        "identity_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+        "psp_id": "DEUTDEFF",
+        "legal_name": "Jane Doe"
+      },
+      "expected": {
+        "schema_validation": "FAIL",
+        "http_status": 400,
+        "error_code": "INVALID_FORMAT"
+      }
+    },
+    {
+      "id": "vec-sec-025",
+      "description": "SQL injection attempt in identity_hash",
+      "input": {
+        "identity_hash": "a3b9'; DROP TABLE ALIASES; --",
+        "psp_id": "DEUTDEFF"
+      },
+      "expected": {
+        "schema_validation": "FAIL",
+        "http_status": 400,
+        "error_code": "INVALID_FORMAT"
       }
     }
   ]

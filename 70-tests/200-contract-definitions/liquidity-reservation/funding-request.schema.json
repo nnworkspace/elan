@@ -3,11 +3,11 @@
   "$id": "https://specs.digitaleuro.eu/schemas/liquidity/funding-request/v1",
   "_header": {
     "disclaimer": "This content is illustrative and for educational purposes only. It demonstrates a methodology for structure and traceability. It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.",
-    "artefact_type": "contract_definition",
+    "artefact_type": "test",
     "visibility": "public",
     "audience": "everyone",
     "form": "text",
-    "role": "assurance",
+    "role": "test",
     "status": "normative",
     "owner": "system-quality",
     "traceability": [

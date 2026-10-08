@@ -1,8 +1,8 @@
-# artefact_type: descriptor
+# artefact_type: governance
 # visibility: public
 # audience: everyone
-# form: yaml
-# role: manifest
+# form: text
+# role: governance
 # status: operative
 # owner: programme-governance
 

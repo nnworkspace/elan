@@ -1,5 +1,5 @@
 /*
- * artefact_type: code
+ * artefact_type: implementation
  * visibility: public
  * audience:
  *   - PSP
@@ -25,7 +25,7 @@ import { SpecLink } from 'governance-common';
 
 describe('PSP Application Traceability', () => {
 
-  @SpecLink({ spec_id: 'SPEC-PSP-TEST', ref_id: 'REQ-TEST-01', version: '0.1' })
+  @SpecLink({ spec_id: 'SPEC-PSP-TEST:TBD', ref_id: 'REQ-TEST-01:TBD', version: '0.1' })
   class TestSuite {
       // In a real suite, this class might hold shared setup/teardown logic
   }

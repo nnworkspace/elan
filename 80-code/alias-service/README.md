@@ -1,5 +1,5 @@
 ---
-artefact_type: code
+artefact_type: implementation
 visibility: restricted
 audience:
   - ECB
@@ -38,4 +38,4 @@ The Alias Service is a high-performance **Privacy Oracle**. It enables PSPs to r
 3.  **High Throughput**: Designed for millions of lookups per second using Rust/Tokio.
 
 ## Traceability
-*   `SPEC-ALIAS-LOOKUP`: The resolution protocol.
+*   `SPEC-ALIAS-LOOKUP:TBD`: The resolution protocol.

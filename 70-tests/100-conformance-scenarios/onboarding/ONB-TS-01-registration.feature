@@ -32,7 +32,7 @@ Feature: User Identity Registration
     And the response payload contains a valid "alias_id"
     And the User State transitions from "CHECKING_ALIAS" to "ACTIVE"
 
-  @trace=TR-OB-05 @trace=REQ-OB-FUNC-05 @trace=STEP-DUP-04 @trace=Rule_ONB-01
+  @trace=TR-OB-05 @trace=REQ-OB-FUNC-05 @trace=STEP-DUP-04 @trace=ONB-01
   Scenario: A duplicate identity is rejected
     Given the Identity Hash for "PASSPORT:FR:987654321" already exists in the Registry
     When the PSP sends a "POST /aliases" request with this existing Identity Hash

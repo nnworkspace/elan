@@ -1,36 +1,25 @@
-artefact_type: evidence
-form: text
-role: manifest
-visibility: public
-audience: everyone
-status: FICTIONAL-RELEASED
-
+# artefact_type: evidence
+# visibility: public
+# audience: everyone
+# form: text
+# role: governance
+# status: operative
+# owner: system-quality
+#
 # DISCLAIMER: This content is illustrative and for educational purposes only.
 # It demonstrates a methodology for structure and traceability.
 # It does not represent the test scenarios or requirements of the official Digital Euro project or any other real project.
 
 meta:
-  # Unique Identifier for this Vector Set
   id: VEC-SET-LIQ
-  
-  # Human-readable title
-  title: "Liquidity Reservation Test Vectors"
-  
-  # The Version of the *Vectors* (Data definitions)
-  version: "0.1.0"
-  
-  # Lifecycle State
+  title: Liquidity Reservation Test Vectors
+  version: 0.1.0
   status: FICTIONAL-RELEASED
-  
   date: 2025-12-30
-
-# Dependency Declaration:
 targets:
-  specification_id: SPEC-LIQ-DATA
-  specification_version: "0.1.0"
-
-# The data contents (Machine-readable test inputs/outputs)
+- specification_id: SPEC-LIQ-DATA
+  specification_version: 0.1.0
 contains:
-  - tv-liq-01-valid-funding.json
-  - tv-liq-02-limit-breach.json
-  - tv-liq-03-malformed-proofs.json
+- tv-liq-01-valid-funding.json
+- tv-liq-02-limit-breach.json
+- tv-liq-03-malformed-proofs.json
