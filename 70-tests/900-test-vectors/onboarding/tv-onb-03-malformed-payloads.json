@@ -12,7 +12,7 @@
   "metadata": {
     "vector_id": "TV-ONB-03",
     "description": "Payloads the contract must refuse, including the privacy rule INT-OB-01.",
-    "upstream_spec": "SPEC-SET-ONB v1.0.0",
+    "upstream_spec": "SPEC-SET-ONB",
     "case_type": "negative",
     "traceability": [
       "@spec=SPEC-OB-DATA",

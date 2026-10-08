@@ -35,6 +35,17 @@ traceability:
           - COMP-PSP-01  # PSP Adapter
           - COMP-EUR-01  # Settlement Engine (Target)
 
+# What changed in this version, by identifier. A consumer's impact check reads
+# these lists: an identifier that is removed or changed is what forces a
+# re-read downstream. Lists stay present and empty rather than being omitted.
+changes:
+  added: []
+  changed: []
+  removed: []
+  summary: |
+    First released shape of the liquidity set. Nothing has changed yet because
+    no earlier version was published.
+
 contents:
   overview:
     file: liquidity-reservation-behaviour-spec.md

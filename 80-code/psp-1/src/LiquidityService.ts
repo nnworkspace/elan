@@ -34,7 +34,7 @@ class GatewayClient {
     }
 }
 
-@SpecLink({ spec_id: "SPEC-LIQ-FUNC", ref_id: "REQ-LIQ-FUNC-01", version: "0.1" })
+@SpecLink({ spec_id: "SPEC-LIQ-FUNC", ref_id: "REQ-LIQ-FUNC-01" })
 export class LiquidityService {
 
     /**
@@ -42,7 +42,7 @@ export class LiquidityService {
      * Trigger: Payment Shortfall
      * Logic: Lock (CBS) -> Fund (DESP) -> Capture (CBS)
      */
-    @SpecLink({ spec_id: "SPEC-LIQ-FUNC", ref_id: "TR-LIQ-01", version: "0.1" })
+    @SpecLink({ spec_id: "SPEC-LIQ-FUNC", ref_id: "TR-LIQ-01" })
     static async performReverseWaterfall(shortfallAmount: number) {
         console.log(`Starting Reverse Waterfall for ${shortfallAmount}...`);
 
@@ -68,7 +68,7 @@ export class LiquidityService {
      * Trigger: Holding Limit Breach
      * Logic: Defund (DESP) -> Credit (CBS)
      */
-    @SpecLink({ spec_id: "SPEC-LIQ-FUNC", ref_id: "REQ-LIQ-FUNC-04", version: "0.1" })
+    @SpecLink({ spec_id: "SPEC-LIQ-FUNC", ref_id: "REQ-LIQ-FUNC-04" })
     static async performWaterfall(excessAmount: number) {
         console.log(`Starting Waterfall for ${excessAmount}...`);
 

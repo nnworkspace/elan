@@ -11,8 +11,8 @@
     "status": "normative",
     "owner": "system-quality",
     "traceability": [
-      "@spec=SPEC-LIQ-DATA:0.1.0",
-      "@spec=SPEC-LIQ-INT:0.1.0"
+      "@spec=SPEC-LIQ-DATA",
+      "@spec=SPEC-LIQ-INT"
     ]
   },
   "title": "Funding Request Contract",

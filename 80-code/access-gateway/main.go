@@ -60,7 +60,7 @@ func handleFunding(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Granular Traceability Link
-	gov.SpecLink("SPEC-API-GW:TBD", "REQ-API-FUND-01:TBD", "0.1")
+	gov.SpecLink("SPEC-API-GW:TBD", "REQ-API-FUND-01:TBD")
 
 	fmt.Fprintf(w, "Funding Endpoint Reached via %s", r.Method)
 }
@@ -73,7 +73,7 @@ func handleDefunding(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Granular Traceability Link
-	gov.SpecLink("SPEC-API-GW:TBD", "REQ-API-DEFUND-01:TBD", "0.1")
+	gov.SpecLink("SPEC-API-GW:TBD", "REQ-API-DEFUND-01:TBD")
 
 	fmt.Fprintf(w, "Defunding Endpoint Reached via %s", r.Method)
 }

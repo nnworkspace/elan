@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class DespApplication {
 
-    @SpecLink(specId = "SPEC-SET-CORE:TBD", refId = "REQ-SET-CONF-01:TBD", version = "0.1")
+    @SpecLink(specId = "SPEC-SET-CORE:TBD", refId = "REQ-SET-CONF-01:TBD")
     private final String settlementConfig = "STUB_CONFIG";
 
     public static void main(String[] args) {
@@ -43,7 +43,7 @@ public class DespApplication {
      * Implements the core requirement for immutable ledger startup.
      */
     @Bean
-    @SpecLink(specId = "SPEC-SET-CORE:TBD", refId = "REQ-SET-INIT-001:TBD", version = "0.1")
+    @SpecLink(specId = "SPEC-SET-CORE:TBD", refId = "REQ-SET-INIT-001:TBD")
     public Object settlementEngine() {
         System.out.println("Initializing Settlement Engine...");
         return new Object(); // Stub

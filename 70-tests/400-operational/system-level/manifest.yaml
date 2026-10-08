@@ -15,13 +15,14 @@ meta:
   title: System-level Operational Assurance
   version: 0.1.0
   status: FICTIONAL-RELEASED
-  description: |-
-    Operational assurance set defining system-wide guarantees related to deployability, availability, resilience, and operational readiness. These guarantees apply uniformly across all features and components.
-targets:
-- specification_id: SPEC-OPS-GLOBAL:TBD
-  specification_version: '0.1'
-- specification_id: RULE-SET
-  specification_version: 0.9.0
+  description: Operational assurance set defining system-wide guarantees related to deployability, availability,
+    resilience, and operational readiness. These guarantees apply uniformly across all features and
+    components.
+depends_on:
+- set: SPEC-OPS-GLOBAL:TBD
+  version: '0.1'
+- set: RULE-SET
+  version: 0.9.0
 contains:
 - SYS-OPT-01-deploy-readiness.yaml
 governance:
@@ -29,7 +30,7 @@ governance:
   review_cycle: per-release
   change_policy: versioned-set-only
 notes:
-- |-
-  This manifest defines an atomic system-level operational assurance baseline. All contained artefacts inherit the version and lifecycle state declared here.
-- |-
-  System-level operational assurances apply regardless of feature-specific behaviour and MUST always hold.
+- This manifest defines an atomic system-level operational assurance baseline. All contained artefacts
+  inherit the version and lifecycle state declared here.
+- System-level operational assurances apply regardless of feature-specific behaviour and MUST always
+  hold.

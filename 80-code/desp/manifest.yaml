@@ -34,14 +34,6 @@ implementation:
     framework: spring-boot-3
     build_tool: maven
 
-upstream:
-  specifications:
-    - id: SPEC-LIQ-FUNC
-      version: 0.1
-    - id: SPEC-SET-CORE:TBD
-      version: 0.1
-    - id: SPEC-OB-FUNC
-      version: 0.1
 
 interfaces:
   exposed:
@@ -57,3 +49,15 @@ assurance:
   tests:
     - set_id: OPS-LIQ
       coverage: partial
+
+# The version each specification set is built against is declared here, once,
+# the way a lockfile pins a library. Annotations in the source carry the
+# identifier only. A set marked :TBD has no upstream artefact yet, so there is
+# no version to pin.
+depends_on:
+  - set: SPEC-SET-LIQ
+    version: "0.1.0"
+  - set: SPEC-SET-CORE:TBD
+    version: null        # not yet assigned
+  - set: SPEC-SET-ONB
+    version: "1.0.0"

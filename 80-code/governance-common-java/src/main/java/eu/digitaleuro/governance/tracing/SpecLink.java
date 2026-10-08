@@ -17,7 +17,7 @@ package eu.digitaleuro.governance.tracing;
 import java.lang.annotation.*;
 
 /**
- * Declares an explicit, version-aware traceability link between a code element
+ * Declares an explicit traceability link between a code element
  * and a normative specification artefact.
  *
  * <p>
@@ -54,9 +54,9 @@ public @interface SpecLink {
      */
     String refId();
 
-    /**
-     * The version of the spec being implemented.
-     */
-    String version() default "current";
+    // No version attribute. An identifier names one statement for as long as
+    // that statement exists, so the reference stays valid across releases. The
+    // version this component builds against is declared once, in its manifest,
+    // the way a lockfile pins a library.
 }
 
